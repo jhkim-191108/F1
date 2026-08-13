@@ -29,12 +29,20 @@
         <div id="upperBarRight">
             <!-- 검색창 js로 엔터눌러 검색 등을 하기 위해 form으로 감쌈-->
             <form id="searchForm">
-                <input type="text" name="search" id="searchTextArea" placeholder="물품이나 동네를 검색해보세요">
+                <input type="search" name="search" id="searchTextArea" placeholder="물품이나 동네를 검색해보세요">
             </form>
-            <!-- 채팅하기버튼 -->
-            <a href="./chat" id="upperChatButton">채팅하기</a>
-            <!-- 로그아웃버튼 -->
-            <button type="button" id="upperLogoutButton">로그아웃</button>
+            <!-- 로그아웃 상태에서만 보일 버튼 -->
+            <div id="logoutStatusHeader">
+                <a href="./login.html" id="upperLoginButton">로그인</a>
+            </div>
+            
+            <!-- 로그인 상태에서만 보일 버튼 -->
+            <div id="loginStatusHeader" hidden>
+                <!-- 채팅하기버튼 -->
+                <a href="./chat.html" id="upperChatButton">채팅하기</a>
+                <!-- 로그아웃버튼 -->
+                <button type="button" id="upperLogoutButton">로그아웃</button>
+            </div>
         </div>
     </header>
         <!-- 메인 -->
@@ -50,6 +58,7 @@
                 <button type="button" id="nextPage" aria-label="다음 페이지"></button>
             </nav>
         </main>
-    <script src="search.js"></script>
+    <script src="./header.js"></script>
+    <script src="./search.js"></script>
 </body>
 </html>

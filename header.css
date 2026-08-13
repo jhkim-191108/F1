@@ -80,3 +80,25 @@ body {
     font-weight: 400;
     font-family: inherit;
 }
+
+#upperLoginButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 7px 17px;
+    width: 98px; height: 39px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 1.063rem; color: var(--gray-900);
+    background-color: var(--gray-000);
+    font-weight: 400;
+    font-family: inherit;
+}
+
+#loginStatusHeader:not([hidden]),
+#logoutStatusHeader:not([hidden]) {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
