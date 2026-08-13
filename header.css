@@ -1,81 +1,82 @@
-:root{
---gray-000: #FFFFFF;
---gray-050: #F8F9FA;
---gray-100: #F2F3F6; 
---gray-200: #DBDCE2; 
---gray-300: #D0D1DA; 
---gray-400: #BDBEC8; 
---gray-500: #AAABB4; 
---gray-600: #898A93; 
---gray-700: #686971; 
---gray-800: #525359; 
---gray-900: #111111; 
---yellow-200: #FFFAE0;  
---orange-600: #FF6F0E;  
---green-200: #E6F3E6; 
---green-400: #C2E8C2; 
+body {
+    background-color: var(--gray-050);
 }
 
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Thin.woff2') format('woff2');
-    font-weight: 100;
-    font-display: swap;
+.upperBar {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; height: 60px;
+    padding: 7px 120px;
+    background-color: var(--gray-000);
+    box-sizing: border-box;
 }
 
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraLight.woff2') format('woff2');
-    font-weight: 200;
-    font-display: swap;
+#upperBarLeft {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 68px;
 }
 
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Light.woff2') format('woff2');
-    font-weight: 300;
-    font-display: swap;
+.upperLogo{
+    width: 71px;
+    height: 34px;
+    object-fit: cover;
 }
 
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Regular.woff2') format('woff2');
+.upperLeftText {
+    display: flex;
+    gap: 31px;
+    font-size: 19px;
+    font-weight: bold;
+}
+
+.mainLogoText {
+    color: var(--orange-600);
+}
+
+#upperBarRight{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#searchTextArea {
+    border-radius: 10px;
+    background-color: var(--gray-100);
+    width: 288px; height: 39px;
+    border-style: none;
+    padding: 7px 10px;
+    box-sizing: border-box;
+}
+
+#upperChatButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 7px 17px;
+    width: 98px; height: 39px;
+    border: 1px solid var(--orange-600);
+    border-radius: 8px;
+    background-color: var(--gray-000);
+    font-size: 17px; color: var(--orange-600);
     font-weight: 400;
-    font-display: swap;
 }
 
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Medium.woff2') format('woff2');
-    font-weight: 500;
-    font-display: swap;
+#upperLogoutButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 7px 17px;
+    width: 98px; height: 39px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 17px; color: var(--gray-900);
+    background-color: var(--gray-000);
+    font-weight: 400;
+    font-family: inherit;
 }
-
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-SemiBold.woff2') format('woff2');
-    font-weight: 600;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Bold.woff2') format('woff2');
-    font-weight: 700;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-ExtraBold.woff2') format('woff2');
-    font-weight: 800;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Pretendard';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/pretendard@1.0/Pretendard-Black.woff2') format('woff2');
-    font-weight: 900;
-    font-display: swap;
-}
-
