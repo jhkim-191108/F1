@@ -34,3 +34,21 @@
 }
 
 /* ========== 인기매물 ========== */
+.popular-con {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.popular-con .title-box {
+  text-align: center;
+  padding-top: 112px;
+  padding-bottom: 64px;
+}
+
+.popular-con .title-box .title {
+  color: var(--gray-900);
+  font-size: 2.625rem;
+  font-weight: 700;
+  line-height: 54px;
+}
