@@ -108,6 +108,7 @@ section {
 body {
   line-height: 1;
   font-family: "Pretendard", sans-serif;
+  background-color: var(--gray-000);
 }
 ol,
 ul {
@@ -127,4 +128,12 @@ q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
+}
+a {
+  text-decoration: none;
+  color: inherit;
+}
+img {
+  display: block;
+  width: 100%;
 }
