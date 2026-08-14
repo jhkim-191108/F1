@@ -3,6 +3,10 @@ body {
   text-align: center;
 }
 
+button {
+  cursor: pointer;
+}
+
 /* ========== 메인 ========== */
 .main-con {
   width: 100%;
@@ -45,6 +49,7 @@ body {
   height: 380px;
   background-color: var(--gray-200);
   border-radius: 10px;
+  cursor: pointer;
 }
 
 .post .img-box img {
@@ -69,7 +74,8 @@ body {
 
 .post-id {
   font-size: 1rem;
-  font-weight: 400;
+  font-weight: 500;
+  cursor: pointer;
 }
 
 .post-loc {
@@ -97,6 +103,10 @@ body {
 .post-box-2 {
   font-size: 1.25rem;
   font-weight: 400;
+}
+
+.post-box-2 .post-title {
+  font-weight: 700;
 }
 
 .post-sub {
