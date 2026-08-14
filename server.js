@@ -95,7 +95,6 @@ app.get("/api/chats", async (req, res) => {
             "Accept": "application/json"
         };
 
-        // 브라우저에서 받은 Authorization 전달
         if (req.headers.authorization) {
             headers.Authorization = req.headers.authorization;
         }
@@ -119,6 +118,67 @@ app.get("/api/chats", async (req, res) => {
             error: "채팅 목록을 가져오지 못했습니다."
         });
     }
+});
+
+
+async function proxyToApi(req, res, path) {
+    try {
+        const headers = {
+            "X-API-Key": API_KEY
+        };
+
+        if (req.headers.authorization) {
+            headers.Authorization = req.headers.authorization;
+        }
+
+        const options = {
+            method: req.method,
+            headers
+        };
+
+        if (req.method !== "GET" && req.method !== "HEAD") {
+            headers["Content-Type"] = "application/json";
+            options.body = JSON.stringify(req.body);
+        }
+
+        const response = await fetch(`${API_BASE}${path}`, options);
+        const text = await response.text();
+
+        console.log(req.method, path, response.status);
+        console.log("response:", text);
+
+        res.status(response.status).send(text);
+    } catch (error) {
+        console.error("API 요청 실패:", path, error);
+
+        res.status(500).json({
+            error: "서버에서 API 요청에 실패했습니다."
+        });
+    }
+}
+
+app.get("/api/auth/me", (req, res) => {
+    proxyToApi(req, res, "/api/auth/me");
+});
+
+app.post("/api/chats", (req, res) => {
+    console.log("===== CREATE CHAT =====");
+    console.log("request:", req.body);
+    proxyToApi(req, res, "/api/chats");
+});
+
+app.get("/api/chats/:id/messages", (req, res) => {
+    proxyToApi(req, res, `/api/chats/${req.params.id}/messages`);
+});
+
+app.post("/api/chats/:id/messages", (req, res) => {
+    console.log("===== SEND MESSAGE =====");
+    console.log("request:", req.body);
+    proxyToApi(req, res, `/api/chats/${req.params.id}/messages`);
+});
+
+app.get("/api/chats/:id", (req, res) => {
+    proxyToApi(req, res, `/api/chats/${req.params.id}`);
 });
 
 

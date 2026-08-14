@@ -55,7 +55,7 @@ async function loginUser(userData) {
         );
 
         alert("로그인되었습니다.");
-        // 원하는 페이지로 이동
+        
         location.href = "./chat.html";
 
     } catch (error) {

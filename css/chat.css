@@ -153,6 +153,10 @@
     cursor: pointer;
 }
 
+.chat-room-item.is-active {
+    background-color: var(--gray-050);
+}
+
 .chat-room-item-info {
     flex: 1;
     min-width: 0;
@@ -251,6 +255,8 @@
 .chat-product-thumb {
     width: 48px;
     height: 48px;
+    background-size: cover;
+    background-position: center;
 }
 
 .chat-product-info {
@@ -378,4 +384,129 @@
 
 .chat-send-btn:hover {
     filter: brightness(0.95);
+}
+
+.chat-fab {
+    position: fixed;
+    right: 32px;
+    bottom: 32px;
+    width: 56px;
+    height: 56px;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--orange-600);
+    color: var(--gray-000);
+    font-size: 32px;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+    z-index: 20;
+}
+
+.chat-fab:hover {
+    filter: brightness(0.95);
+}
+
+.chat-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 30;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-modal.is-open {
+    display: flex;
+}
+
+.chat-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(17, 17, 17, 0.4);
+}
+
+.chat-modal-panel {
+    position: relative;
+    width: 400px;
+    max-width: calc(100% - 48px);
+    padding: 24px;
+    background-color: var(--gray-000);
+    border-radius: 12px;
+    z-index: 1;
+}
+
+.chat-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.chat-modal-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--gray-900);
+}
+
+.chat-modal-close {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    font-size: 24px;
+    line-height: 1;
+    color: var(--gray-600);
+    cursor: pointer;
+}
+
+.chat-modal-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.chat-modal-field label {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gray-900);
+}
+
+.chat-modal-field input,
+.chat-modal-field textarea {
+    width: 100%;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 15px;
+    color: var(--gray-900);
+    background-color: var(--gray-100);
+    border: none;
+    border-radius: 8px;
+    outline: none;
+}
+
+.chat-modal-field textarea {
+    min-height: 96px;
+    resize: none;
+    line-height: 1.5;
+}
+
+.chat-modal-field input::placeholder,
+.chat-modal-field textarea::placeholder {
+    color: var(--gray-500);
+}
+
+.chat-modal-submit {
+    width: 100%;
+    margin-top: 8px;
+    padding: 12px 16px;
+    font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--gray-000);
+    background-color: var(--orange-600);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
 }
