@@ -33,7 +33,7 @@ button {
 
 .post {
   background-color: var(--gray-000);
-  color: var(--gray-9 00);
+  color: var(--gray-900);
   border: 1px solid var(--gary-100);
   border-radius: 10px;
   overflow: hidden;
