@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -13,29 +13,77 @@
     <!-- 헤더 -->
 
     <!-- 메인 -->
-    <!-- 메인 컨테이너 -->
-    <!-- 뒤로가기 버튼 -->
-    <!-- 게시글 콘텐츠 -->
-    <!-- 콘텐츠 - 이미지 -->
-    <!-- 콘텐츠 - 프로필, 채팅하기 -->
-    <!-- 프로필 - 아이디-->
-    <!-- 프로필 - 지역-->
-    <!-- 채팅하기 버튼 -->
+    <main>
+      <!-- 메인 컨테이너 -->
+      <div class="main-con">
+        <!-- 뒤로가기 버튼 -->
+        <div class="btn-back-box">
+          <button class="btn-back">
+            <span><</span>
+            <span>뒤로가기</span>
+          </button>
+        </div>
+        <!-- 게시글 콘텐츠 -->
+        <article class="post">
+          <!-- 콘텐츠 - 이미지 -->
+          <div class="img-box">
+            <img src="" alt="게시글 이미지" />
+          </div>
+          <!-- 콘텐츠 - 프로필 + 채팅하기 버튼 -->
+          <div class="post-box-1">
+            <!-- 콘텐츠 - 프로필 -->
+            <div class="post-profile">
+              <!-- 프로필 - 아이디-->
+              <span class="post-id">아이디</span>
+              <!-- 프로필 - 지역-->
+              <span class="post-loc">부평 1동</span>
+            </div>
+            <!-- 채팅하기 버튼 -->
+            <button class="btn-chat">채팅하기</button>
+          </div>
 
-    <!-- 콘텐츠 - 게시글 정보 -->
-    <!-- 게시글 정보 - 게시글 제목 -->
-    <!-- 게시글 정보 - 부가 정보 -->
-    <!-- 부가 정보 - 가격 -->
-    <!-- 부가 정보 - 조회, 채팅 -->
+          <!-- 콘텐츠 - 게시글 정보 -->
+          <div class="post-box-2">
+            <!-- 게시글 정보 - 게시글 제목 -->
+            <h1 class="post-title">글 제목 입니다.</h1>
+            <!-- 게시글 정보 - 부가 정보 -->
+            <div class="post-sub">
+              <!-- 부가 정보 - 가격 -->
+              <span class="post-price">50,000원</span>
+              <!-- 부가 정보 - 조회, 채팅 -->
+              <div class="stat">
+                <span>조회</span>
+                <span>5</span>
+                <span class="devider">|</span>
+                <span>채팅</span>
+                <span>2</span>
+              </div>
+            </div>
+          </div>
 
-    <!-- 콘텐츠 - 본문 -->
-    <!-- 본문 - 텍스트 -->
+          <!-- 콘텐츠 - 본문 -->
+          <div class="post-content">
+            <!-- 본문 - 텍스트 -->
+            <p class="post-text">글 내용입니다.</p>
+          </div>
 
-    <!-- 콘텐츠 - 거래 장소 -->
+          <!-- 콘텐츠 - 거래 장소 -->
+          <div class="post-place">
+            <span>희망 거래장소</span>
+            <span>|</span>
+            <span>부평역 1번출구</span>
+          </div>
 
-    <!-- 콘텐츠 - 버튼 -->
-    <!-- 삭제하기 버튼 -->
-    <!-- 수정하기 버튼 -->
+          <!-- 콘텐츠 - 버튼 -->
+          <div class="ppost-btn-box">
+            <!-- 삭제하기 버튼 -->
+            <button class="btn-delete">삭제하기</button>
+            <!-- 수정하기 버튼 -->
+            <button class="btn-edit">수정하기</button>
+          </div>
+        </article>
+      </div>
+    </main>
     <script src="js/trade-post.js"></script>
   </body>
 </html>
