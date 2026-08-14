@@ -3,27 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>채팅</title>
 
-    <link rel="stylesheet" href="./css/reset.css" />
-    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="../css/reset.css" />
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/chat.css" />
+    
 </head>
 <body>
-    <main class = "main">
-        <section class = "chat-content">
-            <div class = "chat-list-container">
-                <div class = "chat-info">
+    <main class="main">
+        <section class="chat-content">
+            <div class="chat-list-container">
+                <div class="chat-info">
+                    <h1 class="chat-info-id">내 아이디</h1>
+                    <label class="chat-unread-toggle">
+                        <span>읽지 않은 채팅</span>
+                        <input type="checkbox" />
+                        <span class="chat-unread-switch"></span>
+                    </label>
+                </div>
+
+                <div class="chat-ai">
+                    <div class="chat-ai-icon-wrap">
+                        <img src="../images/icon-bot.png" alt="AI 챗봇" class="chat-ai-icon" />
+                    </div>
+                    <div class="chat-ai-text">
+                        <p class="chat-ai-title">AI 챗봇</p>
+                        <p class="chat-ai-desc">궁금한 내용을 물어보세요!</p>
+                    </div>
                     
                 </div>
-                <div class = "">
 
-                </div>
+                <ul class="chat-room-list" id ="chatRoomList">
+                    <!-- 여기에 채팅을 넣을꺼야. -->
+                </ul>
             </div>
 
-            <div class = "chat-content-container">
+            <div class="chat-content-container">
+                <div class="chat-room-header">
+                    <h2 class="chat-room-header-id">상대방아이디</h2>
+                    <span class="chat-manner-temp"></span>
+                </div>
 
+                <div class="chat-product-bar">
+                    <div class="chat-product-thumb"></div>
+                    <div class="chat-product-info">
+                        <p class="chat-product-title"></p>
+                        <p class="chat-product-price"></p>
+                    </div>
+                    <button type="button" class="chat-product-status"></button>
+                </div>
+
+                <div class="chat-message-area"></div>
+
+                <form class="chat-input-area">
+                    <textarea class="chat-input" placeholder="메시지를 입력해주세요"></textarea>
+                    <button type="submit" class="chat-send-btn">전송</button>
+                </form>
             </div>
         </section>
     </main>
+    <script src="../js/chat.js"></script>
 </body>
 </html>
