@@ -7,7 +7,7 @@ loginForm.addEventListener("submit", async (event) => {
 
 
     await loginUser({
-        userId,
+        email: userId,
         password
     });
 
