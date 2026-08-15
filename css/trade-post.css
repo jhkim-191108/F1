@@ -8,6 +8,10 @@ button {
 }
 
 /* ========== 메인 ========== */
+main {
+  padding: 0 24px;
+}
+
 .main-con {
   width: 100%;
   max-width: 1200px;
@@ -77,6 +81,7 @@ button {
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .post-loc {
@@ -93,6 +98,7 @@ button {
   font-size: 1.063rem;
   font-weight: 700;
   padding: 12px 50px;
+  white-space: nowrap;
 }
 
 .line {
@@ -108,6 +114,7 @@ button {
 
 .post-box-2 .post-title {
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .post-sub {
@@ -161,4 +168,41 @@ button {
   color: var(--gray-600);
   border: none;
   background-color: transparent;
+}
+
+/* ========== 모바일 ========== */
+@media (max-width: 480px) {
+  .post {
+    padding: 24px;
+  }
+
+  .btn-back {
+    font-size: 0.875rem;
+  }
+
+  .btn-chat {
+    font-size: 0.875rem;
+    padding: 10px 30px;
+  }
+
+  .post-box-2 {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .post-sub {
+    align-items: flex-start;
+  }
+
+  .post-price {
+    font-size: 1rem;
+  }
+
+  .stat {
+    font-size: 0.75rem;
+  }
+
+  .post-place {
+    font-size: 0.875rem;
+  }
 }
