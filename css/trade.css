@@ -1,5 +1,8 @@
 /* ========== 플로팅 버튼 ========== */
 .btn-floating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border: none;
   width: 106px;
   height: 106px;
