@@ -25,6 +25,7 @@ button {
 .btn-back {
   border: none;
   color: var(--gray-500);
+  background-color: transparent;
   font-size: 1.063rem;
   font-weight: 600;
 }
