@@ -18,9 +18,7 @@ app.use("/images", express.static("images"));
 // 회원가입
 // ================================
 app.post("/api/auth/signup", async (req, res) => {
-    console.log("SIGNUP ROUTE 들어옴");
     try {
-        console.log("===== SIGNUP =====");
         console.log("request:", req.body);
 
         const response = await fetch(`${API_BASE}/api/auth/signup`, {
