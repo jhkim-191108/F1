@@ -1,0 +1,77 @@
+const imgBox = document.querySelector(".img-box");
+const fileInput = document.querySelector("#write-image");
+const cameraIcon = document.querySelector(".icon-camera");
+const preview = document.querySelector(".preview");
+
+let uploadedImageUrl = "";
+
+// 1) 카메라 아이콘 클릭 → 파일 선택창 열기
+cameraIcon.addEventListener("click", () => {
+  fileInput.click();
+});
+
+// 2) 파일 고르면 바로 서버에 업로드
+fileInput.addEventListener("change", () => {
+  const file = fileInput.files[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append("image", file);
+
+  const token = localStorage.getItem("token");
+
+  fetch("/api/images", {
+    method: "POST",
+    headers: { Authorization: `Bearer ${token}` },
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      uploadedImageUrl = data.image.url;
+
+      // 미리보기 표시
+      preview.src = uploadedImageUrl;
+      preview.hidden = false;
+      cameraIcon.hidden = true;
+    })
+    .catch((err) => console.error("이미지 업로드 실패:", err));
+});
+
+// 3) 완료 버튼 → 상품 등록
+document.querySelector(".btn-done").addEventListener("click", () => {
+  const title = document.querySelector("#write-title").value;
+  const price = Number(
+    document.querySelector("#write-price").value.replace(/[^0-9]/g, ""),
+  );
+  const description = document.querySelector("#write-desc").value;
+  const location = document.querySelector("#write-place").value;
+
+  if (!title || !price) {
+    alert("제목과 가격을 입력해주세요.");
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+
+  fetch("/api/products", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({
+      title,
+      description,
+      price,
+      location,
+      images: uploadedImageUrl ? [uploadedImageUrl] : [],
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      window.location.href = `trade-post.html?id=${data.product.id}`;
+    })
+    .catch((err) => console.error("상품 등록 실패:", err));
+});
