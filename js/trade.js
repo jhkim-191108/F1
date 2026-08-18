@@ -1,18 +1,17 @@
 // js/trade.js
 
-let currentPage = 1; // 지금 몇 페이지까지 불러왔는지
-let isLoading = false; // 지금 불러오는 중인지 (중복 요청 방지)
-let hasNext = true; // 더 불러올 게 남았는지
+let currentPage = 1;
+let isLoading = false;
+let hasNext = true;
 
 const listEl = document.querySelector(".popular-list");
 
 function loadProducts() {
-  // 이미 불러오는 중이거나, 더 불러올 게 없으면 중단
   if (isLoading || !hasNext) return;
 
   isLoading = true;
 
-  fetch(`/api/products?page=${currentPage}`)
+  fetch(`http://localhost:3000/api/products?page=${currentPage}`)
     .then((res) => res.json())
     .then((data) => {
       data.items.forEach((product) => {
@@ -44,8 +43,8 @@ function loadProducts() {
         listEl.appendChild(li);
       });
 
-      hasNext = data.hasNext; // 서버가 알려주는 "더 있음/없음"
-      currentPage++; // 다음엔 그다음 페이지를 부르도록
+      hasNext = data.hasNext;
+      currentPage++;
       isLoading = false;
     })
     .catch((err) => {
@@ -54,10 +53,8 @@ function loadProducts() {
     });
 }
 
-// 처음 한 번 불러오기
 loadProducts();
 
-// 스크롤이 바닥 근처(300px 전)에 닿으면 다음 페이지 불러오기
 window.addEventListener("scroll", () => {
   const scrolledToBottom =
     window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;

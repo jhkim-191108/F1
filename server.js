@@ -176,7 +176,6 @@ app.delete("/api/chats/:id", (req, res) => {
 });
 
 // 상품 목록
-// 상품 목록
 app.get("/api/products", (req, res) => {
   proxyToApi(req, res, "/api/products");
 });

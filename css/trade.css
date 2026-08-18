@@ -17,6 +17,11 @@
   font-size: 1rem;
   font-weight: 700;
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-floating:hover {
+  transform: translateY(-2px);
 }
 
 /* ========== 배너 ========== */
@@ -93,6 +98,10 @@
   border-radius: 12px;
   margin-bottom: 16px;
   overflow: hidden;
+}
+
+.popular-thumb img {
+  height: 100%;
 }
 
 .popular-text-box {
