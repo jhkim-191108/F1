@@ -16,7 +16,7 @@ function headerStatus(isLoggedIn) {
     locationNav.hidden = !isLoggedIn;
 }
 
-headerStatus();
+headerStatus(false);
 // 로그인 상태가 true라면 logoutStatus숨김 false면 반대
 // lohinStatus에서 로그아웃을 누르면 다시 logoutStatus가 나타나고 loginStatus가 hidden으로 돌아가는 이벤트 리스너
 logoutButton.addEventListener("click", function () { headerStatus(false); });
@@ -51,4 +51,9 @@ updateActiveNav();
 
 profile.addEventListener("click", function(){
     profileDropdown.hidden = !profileDropdown.hidden;
+
+    profile.setAttribute(
+        "aria-expanded",
+        String(!profileDropdown.hidden)
+    );
 });
