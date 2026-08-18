@@ -15,6 +15,7 @@
 }
 
 .write-box-1 {
+  width: 100%;
   display: flex;
   gap: 40px;
 }
@@ -84,4 +85,18 @@ textarea {
   border-radius: 6px;
   font-size: 1.063rem;
   font-weight: 700;
+}
+
+/* ========== 모바일 ========== */
+@media (max-width: 480px) {
+  .write {
+    font-size: 0.875rem;
+  }
+  .write-box-1 {
+    flex-direction: column;
+  }
+
+  .write-box-1 .img-box {
+    width: 100%;
+  }
 }
