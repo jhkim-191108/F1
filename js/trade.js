@@ -11,7 +11,7 @@ function loadProducts() {
 
   isLoading = true;
 
-  fetch(`http://localhost:3000/api/products?page=${currentPage}`)
+  fetch(`/api/products?page=${currentPage}`)
     .then((res) => res.json())
     .then((data) => {
       data.items.forEach((product) => {

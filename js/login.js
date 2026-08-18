@@ -33,7 +33,7 @@ async function loginUser(userData) {
 
         localStorage.setItem("token", data.token);
         alert("로그인되었습니다.");
-        location.href = "./chat.html";
+        location.href = "./onboarding.html";
     } catch (error) {
         console.error("로그인 요청 실패:", error);
         alert("서버와 통신할 수 없습니다.");

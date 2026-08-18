@@ -9,6 +9,7 @@ body {
 }
 
 .register {
+    margin-top: 60px;
     flex: 1;
     min-height: 0;
     display: flex;
