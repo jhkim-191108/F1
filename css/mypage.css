@@ -8,11 +8,12 @@ body {
     flex-direction: column;
 }
 
-.register, .register input{
+.mypage,
+.mypage input{
     box-sizing: border-box;
 }
 
-.register {
+.mypage {
     flex: 1;
     min-height: 0;
     display: flex;
@@ -21,24 +22,67 @@ body {
     background-color: var(--gray-100);
 }
 
-.register-form {
+.mypage-card {
     width: 360px;
 }
 
-.register-field {
+.mypage-title {
+    margin-bottom: 24px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    text-align: center;
+}
+
+.mypage-profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 32px;
+    padding: 24px 16px;
+    background-color: var(--gray-000);
+    border-radius: 12px;
+}
+
+.mypage-avatar {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 16px;
+    background-color: var(--gray-200);
+    background-size: cover;
+    background-position: center;
+    border-radius: 50%;
+}
+
+.mypage-nickname {
+    margin-bottom: 6px;
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--gray-900);
+}
+
+.mypage-email,
+.mypage-location,
+.mypage-date {
+    font-size: 0.875rem;
+    color: var(--gray-600);
+    line-height: 1.5;
+}
+
+.mypage-field {
     display: flex;
     flex-direction: column;
     gap: 8px;
     margin-bottom: 24px;
 }
 
-.register-field label {
+.mypage-field label {
     font-size: 0.875rem;
     font-weight: 700;
     color: var(--gray-900);
 }
 
-.register-field input {
+.mypage-field input {
     width: 100%;
     padding: 14px 16px;
     font-family: inherit;
@@ -50,15 +94,15 @@ body {
     outline: none;
 }
 
-.register-field input::placeholder {
+.mypage-field input::placeholder {
     color: var(--gray-400);
 }
 
-.register-field input:focus {
+.mypage-field input:focus {
     box-shadow: 0 0 0 2px var(--orange-600);
 }
 
-.register-btn {
+.mypage-btn {
     width: 100%;
     margin-top: 8px;
     padding: 14px 16px;
@@ -70,21 +114,4 @@ body {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-}
-
-.register-guide {
-    margin-top: 32px;
-    font-size: 0.875rem;
-    color: var(--gray-600);
-    text-align: center;
-}
-
-.register-login {
-    display: block;
-    margin-top: 8px;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--orange-600);
-    text-align: center;
-    text-decoration: none;
 }

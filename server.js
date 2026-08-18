@@ -13,112 +13,7 @@ app.use("/css", express.static("css"));
 app.use("/js", express.static("js"));
 app.use("/images", express.static("images"));
 
-
-// ================================
-// 회원가입
-// ================================
-app.post("/api/auth/signup", async (req, res) => {
-    try {
-        console.log("request:", req.body);
-
-        const response = await fetch(`${API_BASE}/api/auth/signup`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-API-Key": API_KEY
-            },
-            body: JSON.stringify(req.body)
-        });
-
-        const text = await response.text();
-
-        console.log("status:", response.status);
-        console.log("response:", text);
-
-        res.status(response.status).send(text);
-
-    } catch (error) {
-        console.error("회원가입 API 요청 실패:", error);
-
-        res.status(500).json({
-            error: "회원가입 요청에 실패했습니다."
-        });
-    }
-});
-
-
-// ================================
-// 로그인
-// ================================
-app.post("/api/auth/login", async (req, res) => {
-    try {
-        console.log("===== LOGIN =====");
-        console.log("request:", req.body);
-
-        const response = await fetch(`${API_BASE}/api/auth/login`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "X-API-Key": API_KEY
-            },
-            body: JSON.stringify(req.body)
-        });
-
-        const text = await response.text();
-
-        console.log("status:", response.status);
-        console.log("response:", text);
-
-        res.status(response.status).send(text);
-
-    } catch (error) {
-        console.error("로그인 API 요청 실패:", error);
-
-        res.status(500).json({
-            error: "로그인 요청에 실패했습니다."
-        });
-    }
-});
-
-
-// ================================
-// 채팅 목록
-// ================================
-app.get("/api/chats", async (req, res) => {
-    try {
-        console.log("===== GET CHATS =====");
-
-        const headers = {
-            "X-API-Key": API_KEY,
-            "Accept": "application/json"
-        };
-
-        if (req.headers.authorization) {
-            headers.Authorization = req.headers.authorization;
-        }
-
-        const response = await fetch(`${API_BASE}/api/chats`, {
-            method: "GET",
-            headers
-        });
-
-        const text = await response.text();
-
-        console.log("status:", response.status);
-        console.log("response:", text);
-
-        res.status(response.status).send(text);
-
-    } catch (error) {
-        console.error("채팅 목록 API 요청 실패:", error);
-
-        res.status(500).json({
-            error: "채팅 목록을 가져오지 못했습니다."
-        });
-    }
-});
-
-
+// API 전달
 async function proxyToApi(req, res, path) {
     try {
         const headers = {
@@ -155,30 +50,130 @@ async function proxyToApi(req, res, path) {
     }
 }
 
+// 회원가입
+app.post("/api/auth/signup", async (req, res) => {
+    try {
+        console.log("request:", req.body);
+
+        const response = await fetch(`${API_BASE}/api/auth/signup`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-API-Key": API_KEY
+            },
+            body: JSON.stringify(req.body)
+        });
+
+        const text = await response.text();
+
+        console.log("status:", response.status);
+        console.log("response:", text);
+
+        res.status(response.status).send(text);
+    } catch (error) {
+        console.error("회원가입 API 요청 실패:", error);
+
+        res.status(500).json({
+            error: "회원가입 요청에 실패했습니다."
+        });
+    }
+});
+
+// 로그인
+app.post("/api/auth/login", async (req, res) => {
+    try {
+        console.log("request:", req.body);
+
+        const response = await fetch(`${API_BASE}/api/auth/login`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-API-Key": API_KEY
+            },
+            body: JSON.stringify(req.body)
+        });
+
+        const text = await response.text();
+
+        console.log("status:", response.status);
+        console.log("response:", text);
+
+        res.status(response.status).send(text);
+    } catch (error) {
+        console.error("로그인 API 요청 실패:", error);
+
+        res.status(500).json({
+            error: "로그인 요청에 실패했습니다."
+        });
+    }
+});
+
+// 내 정보 조회
 app.get("/api/auth/me", (req, res) => {
     proxyToApi(req, res, "/api/auth/me");
 });
 
+// 내 정보 수정
+app.patch("/api/auth/me", (req, res) => {
+    proxyToApi(req, res, "/api/auth/me");
+});
+
+// 채팅 목록
+app.get("/api/chats", async (req, res) => {
+    try {
+        const headers = {
+            "X-API-Key": API_KEY,
+            "Accept": "application/json"
+        };
+
+        if (req.headers.authorization) {
+            headers.Authorization = req.headers.authorization;
+        }
+
+        const response = await fetch(`${API_BASE}/api/chats`, {
+            method: "GET",
+            headers
+        });
+
+        const text = await response.text();
+
+        console.log("status:", response.status);
+        console.log("response:", text);
+
+        res.status(response.status).send(text);
+    } catch (error) {
+        console.error("채팅 목록 API 요청 실패:", error);
+
+        res.status(500).json({
+            error: "채팅 목록을 가져오지 못했습니다."
+        });
+    }
+});
+
+// 채팅방 만들기
 app.post("/api/chats", (req, res) => {
-    console.log("===== CREATE CHAT =====");
-    console.log("request:", req.body);
     proxyToApi(req, res, "/api/chats");
 });
 
+// 메시지 조회
 app.get("/api/chats/:id/messages", (req, res) => {
     proxyToApi(req, res, `/api/chats/${req.params.id}/messages`);
 });
 
+// 메시지 보내기
 app.post("/api/chats/:id/messages", (req, res) => {
-    console.log("===== SEND MESSAGE =====");
-    console.log("request:", req.body);
     proxyToApi(req, res, `/api/chats/${req.params.id}/messages`);
 });
 
+// 채팅방 상세
 app.get("/api/chats/:id", (req, res) => {
     proxyToApi(req, res, `/api/chats/${req.params.id}`);
 });
 
+// 채팅방 나가기
+app.delete("/api/chats/:id", (req, res) => {
+    proxyToApi(req, res, `/api/chats/${req.params.id}`);
+});
 
 app.listen(PORT, () => {
     console.log(`http://localhost:${PORT}`);
