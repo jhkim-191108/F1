@@ -15,6 +15,7 @@ body {
     align-items: center;
     justify-content: center;
     background-color: var(--gray-100);
+    margin-top: 60px;
 }
 
 .register-form {
