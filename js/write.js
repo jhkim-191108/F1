@@ -71,6 +71,12 @@ document.querySelector(".btn-done").addEventListener("click", () => {
     .then((res) => res.json())
     .then((data) => {
       console.log("등록 응답:", data);
+
+      if (!data.product) {
+        alert("등록에 실패했어요. 다시 시도해주세요.");
+        return;
+      }
+
       window.location.href = `trade-post.html?id=${data.product.id}`;
     })
     .catch((err) => console.error("상품 등록 실패:", err));
