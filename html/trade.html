@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>trade</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/reset.css" />
+    <link rel="stylesheet" href="../css/trade.css" />
+    <link rel="stylesheet" href="../css/header.css" />
+  </head>
+  <body>
+    <!-- 트레이드 페이지 -->
+    <div class="trade-page">
+      <!-- 플로팅 버튼 -->
+      <a href="../html/write.html" class="btn-floating">거래 글쓰기</a>
+      <!-- 헤더 -->
+      <header class="upperBar">
+        <!-- header내부 섹션1 : 로고 및 중고거래 동네인증 버튼 -->
+        <nav id="upperBarLeft">
+          <!-- 로고 이미지 + 홈화면 링크 -->
+          <a href="../html/onboarding.html">
+                <img src="../images/logo.png" alt="당근로고" class="upperLogo">
+            </a>
+            <!-- 로고 이미지 옆 버튼 묶음 div -->
+            <div class="upperLeftText">
+                <a href="../html/trade.html" class="mainLogoText">중고거래</a>
+                <a href="./location.html" class="locationVerify">동네인증</a>
+            </div>
+        </nav>
+        <!-- header 내부 섹션2 : flex, gap이 10으로 동일하기 때문에 따로 나눠서 감싸지 않음-->
+        <div id="upperBarRight">
+          <!-- 검색창 js로 엔터눌러 검색 등을 하기 위해 form으로 감쌈-->
+          <form id="searchForm">
+            <input
+              type="search"
+              name="search"
+              id="searchTextArea"
+              placeholder="물품이나 동네를 검색해보세요"
+            />
+          </form>
+          <!-- 로그아웃 상태에서만 보일 버튼 -->
+          <div id="logoutStatusHeader">
+            <a href="../html/login.html" id="upperLoginButton">로그인</a>
+          </div>
+
+          <!-- 로그인 상태에서만 보일 버튼 -->
+          <div id="loginStatusHeader" hidden>
+            <!-- 채팅하기버튼 -->
+            <a href="../html/chat.html" id="upperChatButton">채팅하기</a>
+            <!-- 로그아웃버튼 -->
+            <button type="button" id="upperLogoutButton">로그아웃</button>
+          </div>
+        </div>
+      </header>
+      <!-- 배너 -->
+      <section class="banner">
+        <!-- 배너 - 컨테이너 -->
+        <div class="banner-con">
+          <!-- 컨테이너 - 타이틀 박스 -->
+          <div class="title-box">
+            <!-- 타이틀 박스 - 타이틀(h1) -->
+            <h1 class="title">믿을만한<br />이웃 간 중고거래</h1>
+            <!-- 타이틀 박스 - 서브 타이틀(p) -->
+            <p class="sub-title">
+              동네 주민들과 가깝고 따뜻한 거래를<br />지금 경험해보세요.
+            </p>
+          </div>
+          <!-- 컨테이너 - 이미지 박스 -->
+          <div class="img-box">
+            <!-- 이미지 박스 - 이미지 -->
+            <img src="../images/banner-img.png" alt="배너 이미지" />
+          </div>
+        </div>
+      </section>
+
+      <!-- 중고거래 인기매물 -->
+      <section class="popular">
+        <!-- 인기매물 - 컨테이너 -->
+        <div class="popular-con">
+          <!-- 컨테이너 - 타이틀 박스 -->
+          <div class="title-box">
+            <!-- 타이틀 박스 - 타이틀(h2) -->
+            <h2 class="title">중고거래 인기매물</h2>
+          </div>
+          <!-- 컨테이너 - 리스트 박스 -->
+          <ul class="popular-list">
+            <!-- 리스트 박스 - 리스트(grid) -->
+          
+          </ul>
+        </div>
+      </section>
+    </div>
+    <script src="../js/trade.js"></script>
+    <script src="../js/header.js"></script>
+  </body>
+</html>

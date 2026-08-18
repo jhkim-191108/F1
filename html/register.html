@@ -7,9 +7,43 @@
 
     <link rel="stylesheet" href="../css/reset.css" />
     <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/header.css" />
     <link rel="stylesheet" href="../css/register.css" />
 </head>
 <body>
+    <header class="upperBar">
+        <!-- header내부 섹션1 : 로고 및 중고거래 동네인증 버튼 -->
+        <nav id="upperBarLeft">
+        <!-- 로고 이미지 + 홈화면 링크 -->
+            <a href="../html/onboarding.html">
+                <img src="../images/logo.png" alt="당근로고" class="upperLogo">
+            </a>
+            <!-- 로고 이미지 옆 버튼 묶음 div -->
+            <div class="upperLeftText">
+                <a href="../html/trade.html" class="mainLogoText">중고거래</a>
+                <a href="./location.html" class="locationVerify">동네인증</a>
+            </div>
+        </nav>
+        <!-- header 내부 섹션2 : flex, gap이 10으로 동일하기 때문에 따로 나눠서 감싸지 않음-->
+        <div id="upperBarRight">
+            <!-- 검색창 js로 엔터눌러 검색 등을 하기 위해 form으로 감쌈-->
+            <form id="searchForm">
+                <input type="search" name="search" id="searchTextArea" placeholder="물품이나 동네를 검색해보세요">
+            </form>
+            <!-- 로그아웃 상태에서만 보일 버튼 -->
+            <div id="logoutStatusHeader">
+                <a href="./login.html" id="upperLoginButton">로그인</a>
+            </div>
+            
+            <!-- 로그인 상태에서만 보일 버튼 -->
+            <div id="loginStatusHeader" hidden>
+                <!-- 채팅하기버튼 -->
+                <a href="./chat.html" id="upperChatButton">채팅하기</a>
+                <!-- 로그아웃버튼 -->
+                <button type="button" id="upperLogoutButton">로그아웃</button>
+            </div>
+        </div>
+    </header>
     <main class="register">
         <form class="register-form" id = "registerForm">
             <div class="register-field">
@@ -30,5 +64,7 @@
         </form>
     </main>
     <script src= "../js/register.js"></script>
+    <script src="../js/header.js"></script>
+
 </body>
 </html>

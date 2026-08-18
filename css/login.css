@@ -1,14 +1,17 @@
-html {
-    font-size: 16px;
+body {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
-
 .register,
-.register * {
+.register input{
     box-sizing: border-box;
 }
 
 .register {
-    min-height: 100vh;
+    margin-top: 60px;
+    flex: 1;
+    min-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -16,14 +19,14 @@ html {
 }
 
 .register-form {
-    width: 22.5rem;
+    width: 360px;
 }
 
 .register-field {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
+    gap: 8px;
+    margin-bottom: 24px;
 }
 
 .register-field label {
@@ -34,13 +37,13 @@ html {
 
 .register-field input {
     width: 100%;
-    padding: 0.875rem 1rem;
+    padding: 14px 16px;
     font-family: inherit;
     font-size: 1rem;
     color: var(--gray-900);
     background-color: var(--gray-000);
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 8px;
     outline: none;
 }
 
@@ -49,20 +52,20 @@ html {
 }
 
 .register-field input:focus {
-    box-shadow: 0 0 0 0.125rem var(--orange-600);
+    box-shadow: 0 0 0 2px var(--orange-600);
 }
 
 .register-btn {
     width: 100%;
-    margin-top: 0.5rem;
-    padding: 0.875rem 1rem;
+    margin-top: 8px;
+    padding: 14px 16px;
     font-family: inherit;
     font-size: 1rem;
     font-weight: 600;
     color: var(--gray-000);
     background-color: var(--orange-600);
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 8px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -70,7 +73,7 @@ html {
 }
 
 .register-guide {
-    margin-top: 2rem;
+    margin-top: 32px;
     font-size: 0.875rem;
     color: var(--gray-600);
     text-align: center;
@@ -78,18 +81,19 @@ html {
 
 .register-login {
     display: block;
-    margin-top: 0.5rem;
+    margin-top: 8px;
     font-size: 0.9375rem;
     font-weight: 600;
     color: var(--orange-600);
     text-align: center;
     text-decoration: none;
 }
-.google-btn{
+
+.google-btn {
     background: var(--gray-000);
     color: var(--gray-900);
 }
 
-.google-btn img{
+.google-btn img {
     margin-right: 7px;
 }

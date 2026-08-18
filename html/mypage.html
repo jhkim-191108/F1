@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>당근 - 동네인증</title>
-    <link rel="stylesheet" href="../css/common.css">
-    <link rel="stylesheet" href="../css/reset.css">
+    <title>마이페이지</title>
+
+    <link rel="stylesheet" href="../css/reset.css" />
+    <link rel="stylesheet" href="../css/common.css" />
     <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/location.css">
+    <link rel="stylesheet" href="../css/mypage.css" />
 </head>
 <body>
-
-        <!-- 상단Header -->
     <header class="upperBar">
         <!-- header내부 섹션1 : 로고 및 중고거래 동네인증 버튼 -->
         <nav id="upperBarLeft">
@@ -45,33 +44,36 @@
             </div>
         </div>
     </header>
+    <main class="mypage">
+        <section class="mypage-card">
+            <h1 class="mypage-title">마이페이지</h1>
 
-    <main class="location">
-    <section class="location-box">
-
-        <div class="location-set">
-        <label class="location-label" data-role="title">어디에 살고 계신가요?</label>
-            <div class="input-row">
-                <input type="text" class="location-input" placeholder="예) 서울 강서구 화곡동" data-role="input">
-                <button class="btn-outline" data-role="edit-btn">내 동네 설정</button>
+            <div class="mypage-profile">
+                <div class="mypage-avatar" id="profileImage"></div>
+                <p class="mypage-nickname" id="nickname"></p>
+                <p class="mypage-email" id="email"></p>
+                <p class="mypage-location" id="location"></p>
+                <p class="mypage-date" id="createdAt"></p>
             </div>
-        </div>
 
-        <div class="location-verify">
-            <p class="location-label">현재 위치로 동네 인증하기</p>
-            
-            <iframe id="map" class="location-map" title="지도"></iframe>
-            
-            <p class="location-status" data-role="status"></p>
-            
-            <button class="btn-confirm" data-role="confirm-btn" disabled>동네인증 완료하기</button>
-        </div>
-
-    </section>
+            <form class="mypage-form" id="mypageForm">
+                <div class="mypage-field">
+                    <label for="nicknameInput">닉네임</label>
+                    <input type="text" id="nicknameInput" name="nickname" placeholder="닉네임을 입력해주세요" />
+                </div>
+                <div class="mypage-field">
+                    <label for="locationInput">지역</label>
+                    <input type="text" id="locationInput" name="location" placeholder="지역을 입력해주세요" />
+                </div>
+                <div class="mypage-field">
+                    <label for="profileImageInput">프로필 이미지 URL</label>
+                    <input type="text" id="profileImageInput" name="profileImage" placeholder="이미지 URL을 입력해주세요" />
+                </div>
+                <button type="submit" class="mypage-btn">정보 수정</button>
+            </form>
+        </section>
     </main>
-
-    <script src="../common/common.js"></script>
-    <!-- 지도 API 스크립트는 여기에 (예: 카카오맵 SDK) -->
-    <script src="location.js"></script>
+    <script src="../js/mypage.js"></script>
+    <script src="../js/header.js"></script>
 </body>
 </html>
