@@ -1,0 +1,93 @@
+.location {
+    display: flex;
+    justify-content: center;
+    padding: 60px 120px 60px;
+    padding-top: calc(60px + 60px);
+    background: var(--yellow-200);
+    min-height: calc(100vh - 60px);
+    box-sizing: border-box;
+}
+
+
+.location-box {
+    width: 100%;
+    max-width: 870px;
+}
+
+.location-label {
+    display: block;
+    font-size: 1rem;
+    color: var(--gray-900);
+}
+
+.input-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 40px;
+    margin-top: 8px;
+}
+
+.location-input {
+    flex: 1;
+    padding: 14px 16px;
+    border: 1px solid var(--gray-000);
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: var(--gray-000);
+}
+
+.btn-outline {
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid var(--orange-600);
+    border-radius: 8px;
+    padding: 14px 20px;
+    background: var(--gray-000);
+    color: var(--orange-600);
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.location-verify {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+.location-map {
+    max-width: 870px;
+    height: 468px;
+    background: var(--gray-100);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.location-status {
+    text-align: center;
+    font-size: 1rem;
+    color: var(--gray-900);
+    line-height: 1.5;
+}
+
+.btn-confirm {
+    appearance: none;
+    -webkit-appearance: none;
+    display: block;
+    width: 100%;
+    border: none;
+    border-radius: 8px;
+    padding: 16px;
+    background: var(--orange-600);
+    color: var(--gray-000);
+    font-size: 1.125rem;
+    font-weight: bold;
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.btn-confirm:disabled {
+    background: color-mix(in srgb, var(--orange-600) 30%, transparent); /* 비활성 상태 */
+    cursor: not-allowed;
+}
