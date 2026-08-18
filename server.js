@@ -221,3 +221,13 @@ app.listen(PORT, () => {
 app.post("/api/products", (req, res) => {
   proxyToApi(req, res, "/api/products");
 });
+
+// 상품 수정
+app.patch("/api/products/:id", (req, res) => {
+  proxyToApi(req, res, `/api/products/${req.params.id}`);
+});
+
+// 상품 삭제
+app.delete("/api/products/:id", (req, res) => {
+  proxyToApi(req, res, `/api/products/${req.params.id}`);
+});

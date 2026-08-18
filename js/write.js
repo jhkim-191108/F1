@@ -1,5 +1,29 @@
 // js/write.js
 
+// 수정 모드인지 확인
+const editParams = new URLSearchParams(window.location.search);
+const editId = editParams.get("id");
+
+// 수정 모드면 기존 값 채워넣기
+if (editId) {
+  fetch(`/api/products/${editId}`)
+    .then((res) => res.json())
+    .then((data) => {
+      const p = data.product || data;
+      document.querySelector("#write-title").value = p.title;
+      document.querySelector("#write-price").value = p.price;
+      document.querySelector("#write-desc").value = p.description;
+      document.querySelector("#write-place").value = p.location;
+
+      if (p.thumbnail?.startsWith("http")) {
+        uploadedImageUrl = p.thumbnail;
+        preview.src = p.thumbnail;
+        preview.hidden = false;
+        cameraIcon.hidden = true;
+      }
+    });
+}
+
 const fileInput = document.querySelector("#write-image");
 const cameraIcon = document.querySelector(".icon-camera");
 const preview = document.querySelector(".preview");
@@ -54,8 +78,8 @@ document.querySelector(".btn-done").addEventListener("click", () => {
 
   const token = localStorage.getItem("token");
 
-  fetch("/api/products", {
-    method: "POST",
+  fetch(editId ? `/api/products/${editId}` : "/api/products", {
+    method: editId ? "PATCH" : "POST",
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,

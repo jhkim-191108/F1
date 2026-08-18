@@ -68,3 +68,28 @@ document.querySelector(".btn-chat").addEventListener("click", () => {
     })
     .catch((err) => console.error("채팅방을 못 만들었어요:", err));
 });
+
+// 삭제하기
+document.querySelector(".btn-delete").addEventListener("click", () => {
+  if (!confirm("정말 삭제할까요?")) return;
+
+  const token = localStorage.getItem("token");
+
+  fetch(`/api/products/${productId}`, {
+    method: "DELETE",
+    headers: { Authorization: `Bearer ${token}` },
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("삭제 실패");
+      window.location.href = "trade.html";
+    })
+    .catch((err) => {
+      console.error(err);
+      alert("삭제에 실패했어요.");
+    });
+});
+
+// 수정하기
+document.querySelector(".btn-edit").addEventListener("click", () => {
+  window.location.href = `write.html?id=${productId}`;
+});
