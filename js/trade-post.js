@@ -38,3 +38,12 @@ fetch(`/api/products/${productId}`)
     }
   })
   .catch((err) => console.error("상품 정보를 못 가져왔어요:", err));
+
+// 뒤로가기 버튼
+document.querySelector(".btn-back").addEventListener("click", () => {
+  if (history.length > 1) {
+    history.back();
+  } else {
+    window.location.href = "trade.html"; // 기록 없으면 목록으로
+  }
+});
