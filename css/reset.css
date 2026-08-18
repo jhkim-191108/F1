@@ -31,7 +31,8 @@ footer, header, hgroup, menu, nav, section {
 body {
 	line-height: 1;
 	font-family: 'Pretendard', sans-serif;
-    background-color: var(--gray-000);
+	background-color: var(--gray-000);
+
 }
 ol, ul {
 	list-style: none;
@@ -48,11 +49,14 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+
 a {
-    text-decoration: none;
-    color: inherit;
+	text-decoration: none;
+	color: inherit;
 }
 img {
-    display: block;
-    width: 100%;
+	display: block;
+	width: 100%;
+
 }

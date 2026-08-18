@@ -1,0 +1,315 @@
+const chatRoomListEl = document.getElementById("chatRoomList");
+const chatMessageAreaEl = document.getElementById("chatMessageArea");
+const chatSendForm = document.getElementById("chatSendForm");
+const chatInput = document.getElementById("chatInput");
+
+let myUserId = null;
+let currentRoomId = null;
+
+function authHeaders(extra = {}) {
+    const token = localStorage.getItem("token");
+    const headers = { ...extra };
+
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+
+    return headers;
+}
+
+function formatTime(dateString) {
+    if (!dateString) {
+        return "";
+    }
+
+    const diff = Date.now() - new Date(dateString).getTime();
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+
+    if (minutes < 1) {
+        return "방금 전";
+    }
+    if (minutes < 60) {
+        return `${minutes}분 전`;
+    }
+    if (hours < 24) {
+        return `${hours}시간 전`;
+    }
+    if (days < 7) {
+        return `${days}일 전`;
+    }
+    return `${Math.floor(days / 7)}주전`;
+}
+
+function formatClock(dateString) {
+    if (!dateString) {
+        return "";
+    }
+
+    const date = new Date(dateString);
+    const hours = date.getHours();
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const period = hours < 12 ? "오전" : "오후";
+    const hour12 = hours % 12 || 12;
+
+    return `${period} ${hour12}:${minutes}`;
+}
+
+function formatPrice(price) {
+    return `${Number(price).toLocaleString("ko-KR")}원`;
+}
+
+function createChatRoomItem(chat) {
+    const li = document.createElement("li");
+    li.className = "chat-room-item";
+    li.dataset.roomId = chat.id;
+
+    if (Number(chat.id) === Number(currentRoomId)) {
+        li.classList.add("is-active");
+    }
+
+    const info = document.createElement("div");
+    info.className = "chat-room-item-info";
+
+    const top = document.createElement("div");
+    top.className = "chat-room-item-top";
+
+    const nickname = document.createElement("span");
+    nickname.className = "chat-room-item-id";
+    nickname.textContent = chat.nickname;
+
+    const meta = document.createElement("span");
+    meta.className = "chat-room-item-meta";
+    meta.textContent = `${chat.location} · ${chat.time}`;
+
+    top.append(nickname, meta);
+
+    const preview = document.createElement("p");
+    preview.className = "chat-room-item-preview";
+    preview.textContent = chat.lastMessage;
+
+    info.append(top, preview);
+
+    const thumb = document.createElement("div");
+    thumb.className = "chat-room-item-thumb";
+    if (chat.thumbnail) {
+        thumb.style.backgroundImage = `url("${chat.thumbnail}")`;
+    }
+
+    li.append(info, thumb);
+    li.addEventListener("click", () => openChatRoom(chat.id));
+    return li;
+}
+
+function renderChatList(chatList) {
+    chatRoomListEl.replaceChildren();
+    chatList.forEach((chat) => {
+        chatRoomListEl.append(createChatRoomItem(chat));
+    });
+}
+
+function renderRoomHeader(room) {
+    document.querySelector(".chat-room-header-id").textContent = room.partner.nickname;
+    document.querySelector(".chat-product-title").textContent = room.product.title;
+    document.querySelector(".chat-product-price").textContent = formatPrice(room.product.price);
+    document.querySelector(".chat-product-status").textContent = room.product.statusLabel || "";
+
+    const thumb = document.querySelector(".chat-product-thumb");
+    if (room.product.thumbnail) {
+        thumb.style.backgroundImage = `url("${room.product.thumbnail}")`;
+    } else {
+        thumb.style.backgroundImage = "";
+    }
+}
+
+function createMessageEl(message) {
+    const isMine = Number(message.senderId) === Number(myUserId);
+    const wrap = document.createElement("div");
+    wrap.className = isMine ? "chat-message chat-message-sent" : "chat-message chat-message-received";
+
+    const bubble = document.createElement("p");
+    bubble.className = "chat-message-bubble";
+    bubble.textContent = message.content;
+
+    const time = document.createElement("span");
+    time.className = "chat-message-time";
+    time.textContent = formatClock(message.createdAt);
+
+    if (isMine) {
+        wrap.append(time, bubble);
+    } else {
+        wrap.append(bubble, time);
+    }
+
+    return wrap;
+}
+
+function renderMessages(messages) {
+    chatMessageAreaEl.replaceChildren();
+    messages.forEach((message) => {
+        chatMessageAreaEl.append(createMessageEl(message));
+    });
+    chatMessageAreaEl.scrollTop = chatMessageAreaEl.scrollHeight;
+}
+
+async function fetchMe() {
+    const response = await fetch("/api/auth/me", {
+        headers: authHeaders(),
+    });
+
+    if (!response.ok) {
+        return;
+    }
+
+    const data = await response.json();
+    myUserId = data.user.id;
+    document.querySelector(".chat-info-id").textContent = data.user.nickname;
+}
+
+async function fetchChatList() {
+    const response = await fetch("/api/chats", {
+        method: "GET",
+        headers: authHeaders(),
+    });
+
+    if (!response.ok) {
+        throw new Error(`채팅 목록 요청 실패: ${response.status}`);
+    }
+
+    const data = await response.json();
+
+    const chatList = data.items.map((room) => ({
+        id: room.id,
+        nickname: room.partner.nickname,
+        location: room.product.location,
+        time: formatTime(room.lastMessageAt),
+        lastMessage: room.lastMessage ? room.lastMessage.content : "",
+        thumbnail: room.product.thumbnail,
+    }));
+
+    renderChatList(chatList);
+}
+
+async function openChatRoom(roomId) {
+    currentRoomId = roomId;
+
+    const [roomResponse, messagesResponse] = await Promise.all([
+        fetch(`/api/chats/${roomId}`, {
+            headers: authHeaders(),
+        }),
+        fetch(`/api/chats/${roomId}/messages`, {
+            headers: authHeaders(),
+        }),
+    ]);
+
+    if (!roomResponse.ok) {
+        const data = await roomResponse.json();
+        alert(data.message || "채팅방을 불러오지 못했습니다.");
+        return;
+    }
+
+    const roomData = await roomResponse.json();
+    renderRoomHeader(roomData.room);
+
+    if (messagesResponse.ok) {
+        const messageData = await messagesResponse.json();
+        renderMessages(messageData.items);
+    }
+
+    document.querySelectorAll(".chat-room-item").forEach((item) => {
+        item.classList.toggle("is-active", Number(item.dataset.roomId) === Number(roomId));
+    });
+}
+
+async function sendMessage(content) {
+    if (!currentRoomId) {
+        alert("채팅방을 먼저 선택해주세요.");
+        return;
+    }
+
+    const response = await fetch(`/api/chats/${currentRoomId}/messages`, {
+        method: "POST",
+        headers: authHeaders({
+            "Content-Type": "application/json",
+        }),
+        body: JSON.stringify({ content }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        alert(data.message || "메시지를 보내지 못했습니다.");
+        return;
+    }
+
+    chatMessageAreaEl.append(createMessageEl(data.message));
+    chatMessageAreaEl.scrollTop = chatMessageAreaEl.scrollHeight;
+    await fetchChatList();
+}
+
+chatSendForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const content = chatInput.value.trim();
+    if (!content) {
+        return;
+    }
+
+    chatInput.value = "";
+    await sendMessage(content);
+});
+
+const chatCreateBtn = document.getElementById("chatCreateBtn");
+const chatCreateModal = document.getElementById("chatCreateModal");
+const chatCreateForm = document.getElementById("chatCreateForm");
+const chatModalClose = document.getElementById("chatModalClose");
+const chatModalBackdrop = document.getElementById("chatModalBackdrop");
+
+function openCreateModal() {
+    chatCreateModal.classList.add("is-open");
+    document.getElementById("createProductId").focus();
+}
+
+function closeCreateModal() {
+    chatCreateModal.classList.remove("is-open");
+    chatCreateForm.reset();
+}
+
+chatCreateBtn.addEventListener("click", openCreateModal);
+chatModalClose.addEventListener("click", closeCreateModal);
+chatModalBackdrop.addEventListener("click", closeCreateModal);
+
+chatCreateForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const productId = Number(document.getElementById("createProductId").value);
+    const content = document.getElementById("createMessage").value.trim();
+
+    const response = await fetch("/api/chats", {
+        method: "POST",
+        headers: authHeaders({
+            "Content-Type": "application/json",
+        }),
+        body: JSON.stringify({ productId }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        alert(data.message || "채팅방을 만들지 못했습니다.");
+        return;
+    }
+
+    closeCreateModal();
+    await fetchChatList();
+    await openChatRoom(data.room.id);
+
+    if (content) {
+        await sendMessage(content);
+    }
+});
+
+fetchMe()
+    .then(() => fetchChatList())
+    .catch(console.error);

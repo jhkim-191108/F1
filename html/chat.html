@@ -3,27 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>채팅</title>
 
-    <link rel="stylesheet" href="./css/reset.css" />
-    <link rel="stylesheet" href="./css/common.css" />
+    <link rel="stylesheet" href="../css/reset.css" />
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/chat.css" />
+    
 </head>
 <body>
-    <main class = "main">
-        <section class = "chat-content">
-            <div class = "chat-list-container">
-                <div class = "chat-info">
+    <main class="main">
+        <section class="chat-content">
+            <div class="chat-list-container">
+                <div class="chat-info">
+                    <h1 class="chat-info-id"></h1>
+                    <label class="chat-unread-toggle">
+                        <span>읽지 않은 채팅</span>
+                        <input type="checkbox" />
+                        <span class="chat-unread-switch"></span>
+                    </label>
+                </div>
+
+                <div class="chat-ai">
+                    <div class="chat-ai-icon-wrap">
+                        <img src="../images/icon-bot.png" alt="AI 챗봇" class="chat-ai-icon" />
+                    </div>
+                    <div class="chat-ai-text">
+                        <p class="chat-ai-title">AI 챗봇</p>
+                        <p class="chat-ai-desc">궁금한 내용을 물어보세요!</p>
+                    </div>
                     
                 </div>
-                <div class = "">
 
-                </div>
+                <ul class="chat-room-list" id ="chatRoomList">
+                </ul>
             </div>
 
-            <div class = "chat-content-container">
+            <div class="chat-content-container">
+                <div class="chat-room-header">
+                    <h2 class="chat-room-header-id"></h2>
+                    <span class="chat-manner-temp"></span>
+                </div>
 
+                <div class="chat-product-bar">
+                    <div class="chat-product-thumb"></div>
+                    <div class="chat-product-info">
+                        <p class="chat-product-title"></p>
+                        <p class="chat-product-price"></p>
+                    </div>
+                    <button type="button" class="chat-product-status"></button>
+                </div>
+
+                <div class="chat-message-area" id="chatMessageArea"></div>
+
+                <form class="chat-input-area" id="chatSendForm">
+                    <textarea class="chat-input" id="chatInput" placeholder="메시지를 입력해주세요"></textarea>
+                    <button type="submit" class="chat-send-btn">전송</button>
+                </form>
             </div>
         </section>
     </main>
+
+    <button type="button" class="chat-fab" id="chatCreateBtn" aria-label="채팅방 만들기">+</button>
+
+    <div class="chat-modal" id="chatCreateModal">
+        <div class="chat-modal-backdrop" id="chatModalBackdrop"></div>
+        <div class="chat-modal-panel">
+            <div class="chat-modal-header">
+                <h2>채팅방 만들기</h2>
+                <button type="button" class="chat-modal-close" id="chatModalClose" aria-label="닫기">×</button>
+            </div>
+            <form class="chat-modal-form" id="chatCreateForm">
+                <div class="chat-modal-field">
+                    <label for="createProductId">상품 번호</label>
+                    <input type="number" id="createProductId" name="productId" min="1" placeholder="채팅할 상품 번호를 입력해주세요" required />
+                </div>
+                <div class="chat-modal-field">
+                    <label for="createMessage">메시지</label>
+                    <textarea id="createMessage" name="content" placeholder="상대방에게 보낼 메시지를 입력해주세요"></textarea>
+                </div>
+                <button type="submit" class="chat-modal-submit">채팅 보내기</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/chat.js"></script>
 </body>
 </html>
