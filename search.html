@@ -21,8 +21,8 @@
             </a>
             <!-- 로고 이미지 옆 버튼 묶음 div -->
             <div class="upperLeftText">
-                <a href="./index.html" class="mainLogoText">중고거래</a>
-                <a href="./location.html" class="locationVerify">동네인증</a>
+                <a href="./trade.html" id="tradeNav">중고거래</a>
+                <a href="./location.html" id="locationNav" hidden>동네인증</a>
             </div>
         </nav>
         <!-- header 내부 섹션2 : flex, gap이 10으로 동일하기 때문에 따로 나눠서 감싸지 않음-->
@@ -42,6 +42,18 @@
                 <a href="./chat.html" id="upperChatButton">채팅하기</a>
                 <!-- 로그아웃버튼 -->
                 <button type="button" id="upperLogoutButton">로그아웃</button>
+                <!-- 프로필 버튼 -->
+                <div class="profileDropdown">
+                    <button type="button" id="profileButton" aria-expanded="false" aria-controls="dropdownMenu" aria-label="프로필 메뉴 열기">
+                        <img src="./img/profile.svg" alt="defaultIcon" class="defaultIcon"/>
+                    </button>
+                    <ul id="dropdownMenu" hidden>
+                        <li class="dropdownList" id="firstDropdownchild">😊<a href="#">프로필보기</a></li>
+                        <li class="dropdownList">📈<a href="#">판매관리</a></li>
+                        <li class="dropdownList">🛒<a href="#">구매내역</a></li>
+                        <li class="dropdownList">👀<a href="#">관심목록</a></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>
