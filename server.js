@@ -7,6 +7,34 @@ const PORT = 3000;
 const API_KEY = process.env.API_KEY;
 const API_BASE = "https://carrot.techfree.kr";
 
+// 이미지 업로드
+// 이미지 업로드
+app.post("/api/images", async (req, res) => {
+  try {
+    const headers = { "X-API-Key": API_KEY };
+    if (req.headers.authorization) {
+      headers.Authorization = req.headers.authorization;
+    }
+    if (req.headers["content-type"]) {
+      headers["Content-Type"] = req.headers["content-type"];
+    }
+
+    const response = await fetch(`${API_BASE}/api/images`, {
+      method: "POST",
+      headers,
+      body: req,
+      duplex: "half",
+    });
+
+    const text = await response.text();
+    console.log("이미지 업로드:", response.status, text);
+    res.status(response.status).send(text);
+  } catch (error) {
+    console.error("이미지 업로드 실패:", error);
+    res.status(500).json({ error: "이미지 업로드에 실패했습니다." });
+  }
+});
+
 app.use(express.json());
 app.use("/html", express.static("html"));
 app.use("/css", express.static("css"));
@@ -187,4 +215,9 @@ app.get("/api/products/:id", (req, res) => {
 
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}`);
+});
+
+// 상품 등록
+app.post("/api/products", (req, res) => {
+  proxyToApi(req, res, "/api/products");
 });
