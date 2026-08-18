@@ -35,7 +35,13 @@ body {
     font-weight: bold;
 }
 
-.mainLogoText {
+#tradeNav,
+#locationNav {
+    color: var(--gray-800);
+}
+
+#tradeNav.activeNav,
+#locationNav.activeNav {
     color: var(--orange-600);
 }
 
@@ -77,10 +83,11 @@ body {
     width: 98px; height: 39px;
     border: 1px solid var(--gray-200);
     border-radius: 8px;
-    font-size: 1.063rem; color: var(--gray-900);
+    font-size: 1.063rem; color: var(--gray-400);
     background-color: var(--gray-000);
     font-weight: 400;
     font-family: inherit;
+    cursor: pointer;
 }
 
 #upperLoginButton {
@@ -96,6 +103,7 @@ body {
     background-color: var(--gray-000);
     font-weight: 400;
     font-family: inherit;
+    cursor: pointer;
 }
 
 #loginStatusHeader:not([hidden]),
@@ -103,6 +111,49 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.profileDropdown {
+    position: relative;
+}
+
+#profileButton {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 50%;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.defaultIcon {
+    display: block;
+    width: 40px;
+    height: 40px;
+}
+
+#dropdownMenu {
+    position: absolute;
+    gap: 3px;
+    width: max-content;
+    white-space: nowrap;
+    padding: 0;
+    border: 1px solid var(--orange-600);
+    border-radius: 3px;
+}
+
+.dropdownList {
+    background-color: var(--gray-000);
+    font-size: 0.9rem;
+    padding: 10px;
+    color: var(--gray-600);
+    box-sizing: border-box;
+    border-top: 1px solid var(--gray-300);
+}
+
+#firstDropdownchild {
+    border-top: none;
 }
 
 /* 반응형 미디어쿼리, 로그인 상태로 전환 후 버튼2개일 때 체크해서 적용 */
