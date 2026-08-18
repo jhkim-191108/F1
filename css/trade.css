@@ -1,0 +1,213 @@
+/* ========== 플로팅 버튼 ========== */
+.btn-floating {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  width: 106px;
+  height: 106px;
+  background-color: var(--orange-600);
+  color: var(--gray-000);
+  border-radius: 50%;
+  position: fixed;
+  right: 40px;
+  bottom: 40px;
+  z-index: 10;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-floating:hover {
+  transform: translateY(-2px);
+}
+
+/* ========== 배너 ========== */
+.banner {
+  height: 360px;
+  background-color: var(--yellow-200);
+  overflow: hidden;
+}
+
+.banner-con {
+  height: 100%;
+  margin: 0 auto;
+  max-width: 1120px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.banner-con .title-box .title {
+  font-size: 3.1rem;
+  font-weight: 700;
+  line-height: 4rem;
+  margin-bottom: 24px;
+  color: var(--gray-900);
+  white-space: nowrap;
+}
+
+.banner-con .title-box .sub-title {
+  font-size: 1.375rem;
+  opacity: 0.5;
+  font-weight: 400;
+  line-height: 26px;
+}
+
+.banner-con .img-box {
+  width: 476px;
+  min-width: 363px;
+  height: 100%;
+}
+
+/* ========== 인기매물 ========== */
+.popular-con {
+  max-width: 1000px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.popular-con .title-box {
+  text-align: center;
+  padding-top: 112px;
+  padding-bottom: 64px;
+}
+
+.popular-con .title-box .title {
+  color: var(--gray-900);
+  font-size: 2.625rem;
+  font-weight: 700;
+  line-height: 54px;
+}
+
+.popular-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 40px;
+}
+
+.popular-item {
+  min-width: 120px;
+}
+
+.popular-thumb {
+  height: 210px;
+  background-color: var(--gray-200);
+  border-radius: 12px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.popular-thumb img {
+  height: 100%;
+}
+
+.popular-text-box {
+  color: var(--gray-900);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.popular-name {
+  font-size: 1.063rem;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.popular-price {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.popular-location {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--gray-600);
+}
+
+.popular-info {
+  gap: 4px;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+}
+
+.popular-info .num {
+  font-size: 0.75rem;
+}
+
+.popular-info .dot {
+  color: var(--gray-300);
+}
+
+/* ========== 모바일 ========== */
+@media (max-width: 768px) {
+  .banner {
+    height: 274px;
+  }
+
+  .banner-con {
+    padding: 0 32px;
+  }
+
+  .banner-con .title-box .title {
+    font-size: 2.75rem;
+    line-height: 54px;
+  }
+
+  .banner-con .title-box .sub-title {
+    font-size: 1.125rem;
+  }
+
+  .popular-con .title-box {
+    padding-bottom: 32px;
+  }
+
+  .popular-con .title-box .title {
+    font-size: 2rem;
+  }
+
+  .popular-list {
+    grid-template-columns: repeat(3, 1fr);
+    padding: 0 32px;
+  }
+}
+
+@media (max-width: 480px) {
+  .banner {
+    height: 274px;
+  }
+
+  .banner-con {
+    padding: 0 24px;
+  }
+
+  .banner-con .title-box .title {
+    font-size: 2.125rem;
+    line-height: 44px;
+  }
+
+  .banner-con .title-box .sub-title {
+    font-size: 1rem;
+  }
+
+  .banner-con .img-box {
+    display: none;
+  }
+
+  .popular-con .title-box {
+    padding-top: 80px;
+    padding-bottom: 24px;
+  }
+
+  .popular-con .title-box .title {
+    font-size: 1.625rem;
+  }
+
+  .popular-list {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0 24px;
+  }
+}

@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>trade-post</title>
+    <link rel="stylesheet" href="../css/common.css" />
+    <link rel="stylesheet" href="../css/reset.css" />
+    <link rel="stylesheet" href="../css/trade-post.css" />
+    <link rel="stylesheet" href="../css/header.css" />
+  </head>
+  <body>
+    <!-- 거래 게시글 -->
+    <!-- 헤더 -->
+    <header class="upperBar">
+      <!-- header내부 섹션1 : 로고 및 중고거래 동네인증 버튼 -->
+      <nav id="upperBarLeft">
+        <!-- 로고 이미지 + 홈화면 링크 -->
+        <a href="../html/index.html">
+          <img src="../images/logo.png" alt="당근로고" class="upperLogo" />
+        </a>
+        <!-- 로고 이미지 옆 버튼 묶음 div -->
+        <div class="upperLeftText">
+          <a href="../html/index.html" class="mainLogoText">중고거래</a>
+          <a href="../html/location.html" class="locationVerify">동네인증</a>
+        </div>
+      </nav>
+      <!-- header 내부 섹션2 : flex, gap이 10으로 동일하기 때문에 따로 나눠서 감싸지 않음-->
+      <div id="upperBarRight">
+        <!-- 검색창 js로 엔터눌러 검색 등을 하기 위해 form으로 감쌈-->
+        <form id="searchForm">
+          <input
+            type="search"
+            name="search"
+            id="searchTextArea"
+            placeholder="물품이나 동네를 검색해보세요"
+          />
+        </form>
+        <!-- 로그아웃 상태에서만 보일 버튼 -->
+        <div id="logoutStatusHeader">
+          <a href="../html/login.html" id="upperLoginButton">로그인</a>
+        </div>
+
+        <!-- 로그인 상태에서만 보일 버튼 -->
+        <div id="loginStatusHeader" hidden>
+          <!-- 채팅하기버튼 -->
+          <a href="../html/chat.html" id="upperChatButton">채팅하기</a>
+          <!-- 로그아웃버튼 -->
+          <button type="button" id="upperLogoutButton">로그아웃</button>
+        </div>
+      </div>
+    </header>
+    <!-- 메인 -->
+    <main>
+      <!-- 메인 컨테이너 -->
+      <div class="main-con">
+        <!-- 뒤로가기 버튼 -->
+        <div class="btn-back-box">
+          <button class="btn-back">
+            <span>&lt;</span>
+            <span>뒤로가기</span>
+          </button>
+        </div>
+        <!-- 게시글 콘텐츠 -->
+        <article class="post">
+          <!-- 콘텐츠 - 이미지 -->
+          <div class="img-box">
+            <img src="../images/popular-thumb-01.webp" alt="게시글 이미지" />
+          </div>
+          <!-- 콘텐츠 - 프로필 + 채팅하기 버튼 -->
+          <div class="post-box-1">
+            <!-- 콘텐츠 - 프로필 -->
+            <div class="post-profile">
+              <!-- 프로필 - 아이디-->
+              <span class="post-id">당근을 흔들어주세요</span>
+              <!-- 프로필 - 지역-->
+              <span class="post-loc">부평 1동</span>
+            </div>
+            <!-- 채팅하기 버튼 -->
+            <a href="#">
+              <button class="btn-chat">채팅하기</button>
+            </a>
+          </div>
+
+          <!-- 라인 -->
+          <div class="line"></div>
+
+          <!-- 콘텐츠 - 게시글 정보 -->
+          <div class="post-box-2">
+            <!-- 게시글 정보 - 게시글 제목 -->
+            <h1 class="post-title">RAIVE 블랙 카프리 팬츠</h1>
+            <!-- 게시글 정보 - 부가 정보 -->
+            <div class="post-sub">
+              <!-- 부가 정보 - 가격 -->
+              <span class="post-price">34,000원</span>
+              <!-- 부가 정보 - 조회, 채팅 -->
+              <div class="stat">
+                <span>조회</span>
+                <span class="view-num">44</span>
+                <span class="devider">|</span>
+                <span>채팅</span>
+                <span class="chat-num">1</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 콘텐츠 - 본문 -->
+          <div class="post-content">
+            <!-- 본문 - 텍스트 -->
+            <p class="post-text">
+              RAIVE 블랙 카프리 팬츠 판매해요.
+              <br />작년에 구매했는데 사이즈가 안맞아서 태그도 안 뜯고 그대로
+              있어요. <br />새 상품이라고 보시면 됩니다!
+              <br />
+              <br />
+              사이즈는 M이고, 색상은 사진처럼 딥네이비/블랙에 가까운 컬러예요.
+              <br />학생이라 자주 확인 못 할 수도 있어서 채팅 남겨주시면 빠르게
+              답장드릴게요 <br />직거래 우선이고, 필요하시면 택배거래도
+              가능합니다.
+              <br />
+              <br />가격 제안은 편하게 채팅으로 말씀해주세요!
+            </p>
+          </div>
+
+          <!-- 콘텐츠 - 거래 장소 -->
+          <div class="post-place">
+            <span>희망 거래장소</span>
+            <span class="devider">|</span>
+            <span class="place-text">부평역 1번출구</span>
+          </div>
+
+          <!-- 콘텐츠 - 버튼 -->
+          <div class="post-btn-box">
+            <!-- 삭제하기 버튼 -->
+            <button class="btn-delete">삭제하기</button>
+            <span class="devider">|</span>
+            <!-- 수정하기 버튼 -->
+            <button class="btn-edit">수정하기</button>
+          </div>
+        </article>
+      </div>
+    </main>
+    <script src="../js/trade-post.js"></script>
+    <script src= "../js/header.js"></script>
+  </body>
+</html>
