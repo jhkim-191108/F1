@@ -1,19 +1,19 @@
 :root{
---gray-000: #FFFFFF
---gray-050: #F8F9FA
---gray-100: #F2F3F6 
---gray-200: #DBDCE2 
---gray-300: #D0D1DA 
---gray-400: #BDBEC8 
---gray-500: #AAABB4 
---gray-600: #898A93 
---gray-700: #686971 
---gray-800: #525359 
---gray-900: #111111 
---yellow-200: #FFFAE0  
---orange-600: #FF6F0E  
---green-200: #E6F3E6 
---green-400: #C2E8C2 
+--gray-000: #FFFFFF;
+--gray-050: #F8F9FA;
+--gray-100: #F2F3F6; 
+--gray-200: #DBDCE2; 
+--gray-300: #D0D1DA; 
+--gray-400: #BDBEC8; 
+--gray-500: #AAABB4; 
+--gray-600: #898A93; 
+--gray-700: #686971; 
+--gray-800: #525359; 
+--gray-900: #111111; 
+--yellow-200: #FFFAE0;  
+--orange-600: #FF6F0E;  
+--green-200: #E6F3E6; 
+--green-400: #C2E8C2; 
 }
 
 @font-face {
