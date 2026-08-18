@@ -104,3 +104,94 @@ body {
     align-items: center;
     gap: 10px;
 }
+
+/* 반응형 미디어쿼리, 로그인 상태로 전환 후 버튼2개일 때 체크해서 적용 */
+/* 큰 태블릿 */
+@media (max-width: 1024px) {
+    .upperBar {
+        padding: 7px 32px;
+    }
+    #upperBarLeft {
+        gap: 32px;
+    }
+    .upperLeftText {
+        gap: 20px;
+    }
+    #searchTextArea {
+        width: 220px;
+    }
+}
+/* 큰폰 ~ 작은 태블릿 */
+@media (max-width: 768px) {
+    .upperBar {
+        padding: 7px 24px;
+    }
+    #upperBarLeft {
+        gap: 20px;
+    }
+    .upperLeftText {
+        gap: 16px;
+    }
+    #searchForm {
+        flex: 1;
+        min-width: 0;
+    }
+    #searchTextArea {
+        width: 100%;
+    }
+    #searchTextArea::placeholder {
+        font-size: 0.75rem;
+    }
+}
+/* 공간이 부족해지는 breakpoint, 2줄로 바뀌도록 수정 */
+@media (max-width: 684px) {
+    .upperBar {
+        height: auto;
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        row-gap: 8px;
+    }
+    #upperBarRight {
+        width: 100%;
+        min-width: 0;
+    }
+    #searchForm {
+        flex: 1;
+        min-width: 0;
+    }
+    #searchTextArea {
+        width: 100%;
+    }
+    /* 2줄로 바뀌며 검색창 부분이 늘어나니까 다시 placeholder 글자크기 키움 */
+    #searchTextArea::placeholder {
+        font-size: 0.8rem;
+    }
+}
+
+/* 일반 모바일 */
+@media (max-width: 480px) {
+    .upperBar {
+        height: auto;
+        padding: 8px 12px;
+        flex-wrap: wrap;
+        row-gap: 8px;
+    }
+    #upperBarLeft {
+        gap: 12px;
+    }
+    #upperBarRight {
+        width: 100%;
+        min-width: 0;
+    }
+    #searchForm {
+        flex: 1;
+        min-width: 0;
+    }
+    #searchTextArea {
+        width: 100%;
+    }
+    /* 공간은 충분하지만 화면이 작아지니까 글자크기 0.1rem줄임 */
+    #searchTextArea::placeholder {
+        font-size: 0.7rem;
+    }
+}
