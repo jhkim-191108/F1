@@ -44,6 +44,27 @@ document.querySelector(".btn-back").addEventListener("click", () => {
   if (history.length > 1) {
     history.back();
   } else {
-    window.location.href = "trade.html"; // 기록 없으면 목록으로
+    window.location.href = "trade.html";
   }
+});
+
+//채팅하기
+document.querySelector(".btn-chat").addEventListener("click", () => {
+  const token = localStorage.getItem("token");
+
+  fetch("/api/chats", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ productId: productId }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      const chatId = data.chat?.id || data.id;
+      window.location.href = `chat.html?id=${chatId}`;
+    })
+    .catch((err) => console.error("채팅방을 못 만들었어요:", err));
 });
