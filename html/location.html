@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>당근 - 동네인증</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/location.css">
+</head>
+<body>
+
+        <!-- 상단Header -->
+    <header class="upperBar">
+        <!-- header내부 섹션1 : 로고 및 중고거래 동네인증 버튼 -->
+        <nav id="upperBarLeft">
+        <!-- 로고 이미지 + 홈화면 링크 -->
+            <a href="./onboarding.html">
+                <img src="../img/logo.png" alt="당근로고" class="upperLogo">
+            </a>
+            <!-- 로고 이미지 옆 버튼 묶음 div -->
+            <div class="upperLeftText">
+                <a href="./trade.html" class="mainLogoText">중고거래</a>
+                <a href="./location.html" class="locationVerify">동네인증</a>
+            </div>
+        </nav>
+        <!-- header 내부 섹션2 : flex, gap이 10으로 동일하기 때문에 따로 나눠서 감싸지 않음-->
+        <div id="upperBarRight">
+            <!-- 검색창 js로 엔터눌러 검색 등을 하기 위해 form으로 감쌈-->
+            <form id="searchForm">
+                <input type="search" name="search" id="searchTextArea" placeholder="물품이나 동네를 검색해보세요">
+            </form>
+            <!-- 로그아웃 상태에서만 보일 버튼 -->
+            <div id="logoutStatusHeader">
+                <a href="./login.html" id="upperLoginButton">로그인</a>
+            </div>
+            
+            <!-- 로그인 상태에서만 보일 버튼 -->
+            <div id="loginStatusHeader" hidden>
+                <!-- 채팅하기버튼 -->
+                <a href="./chat.html" id="upperChatButton">채팅하기</a>
+                <!-- 로그아웃버튼 -->
+                <button type="button" id="upperLogoutButton">로그아웃</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="location">
+    <section class="location-box">
+
+        <div class="location-set">
+        <label class="location-label" data-role="title">어디에 살고 계신가요?</label>
+            <div class="input-row">
+                <input type="text" class="location-input" placeholder="예) 서울 강서구 화곡동" data-role="input">
+                <button class="btn-outline" data-role="edit-btn">내 동네 설정</button>
+            </div>
+        </div>
+
+        <div class="location-verify">
+            <p class="location-label">현재 위치로 동네 인증하기</p>
+            
+            <!-- 지도 API가 여기에 렌더링 -->
+            <div id="map" class="location-map"></div>
+            
+            <p class="location-status" data-role="status"></p>
+            
+            <button class="btn-confirm" data-role="confirm-btn" disabled>동네인증 완료하기</button>
+        </div>
+
+    </section>
+    </main>
+
+    <script src="../common/common.js"></script>
+    <!-- 지도 API 스크립트는 여기에 (예: 카카오맵 SDK) -->
+    <script src="location.js"></script>
+</body>
+</html>
