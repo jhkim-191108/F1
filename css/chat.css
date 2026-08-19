@@ -270,16 +270,15 @@ body {
     align-items: center;
     justify-content: center;
     background: var(--orange-600);
-    font-size: 0.8125rem;
     font-weight: 700;
     border: 1px solid var(--orange-600);
     border-radius: 20px;
-    padding: 3px 8px 3px 8px;
     line-height: 1;
-    width: 40px;
-    height: 20px;
+    padding: 0px 2px;
+    width: 50px;
+    height: 25px;
     color: var(--gray-000);
-    font-weight: 500;
+    font-size: 0.725rem;
 }
 
 

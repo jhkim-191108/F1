@@ -1,13 +1,13 @@
-const chatRoomListEl = document.getElementById("chatRoomList");
-const chatMessageAreaEl = document.getElementById("chatMessageArea");
-const chatSendForm = document.getElementById("chatSendForm");
-const chatInput = document.getElementById("chatInput");
-const chatCreateBtn = document.getElementById("chatCreateBtn");
-const chatCreateModal = document.getElementById("chatCreateModal");
-const chatCreateForm = document.getElementById("chatCreateForm");
-const chatModalClose = document.getElementById("chatModalClose");
-const chatModalBackdrop = document.getElementById("chatModalBackdrop");
-
+const chatRoomListEl = document.querySelector("#chatRoomList");
+const chatMessageAreaEl = document.querySelector("#chatMessageArea");
+const chatSendForm = document.querySelector("#chatSendForm");
+const chatInput = document.querySelector("#chatInput");
+const chatCreateBtn = document.querySelector("#chatCreateBtn");
+const chatCreateModal = document.querySelector("#chatCreateModal");
+const chatCreateForm = document.querySelector("#chatCreateForm");
+const chatModalClose = document.querySelector("#chatModalClose");
+const chatModalBackdrop = document.querySelector("#chatModalBackdrop");
+const chatMannerTemp= document.querySelector("#chatMannerTemp")
 let myUserId = null;
 let currentRoomId = null;
 let allChatList = [];
@@ -141,7 +141,7 @@ function renderRoomHeader(room) {
     document.querySelector(".chat-product-title").textContent = room.product.title;
     document.querySelector(".chat-product-price").textContent = formatPrice(room.product.price);
     document.querySelector(".chat-product-status").textContent = room.product.statusLabel || "";
-
+    document.querySelector(".chat-manner-temp").textContent = `${room.product.seller.mannerTemp}°C`;
     const thumb = document.querySelector(".chat-product-thumb");
     if (room.product.thumbnail) {
         thumb.style.backgroundImage = `url("${room.product.thumbnail}")`;
