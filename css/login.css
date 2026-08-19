@@ -89,11 +89,3 @@ body {
     text-decoration: none;
 }
 
-.google-btn {
-    background: var(--gray-000);
-    color: var(--gray-900);
-}
-
-.google-btn img {
-    margin-right: 7px;
-}

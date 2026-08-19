@@ -1,28 +1,4 @@
 
-// 수정 모드인지 확인
-const editParams = new URLSearchParams(window.location.search);
-const editId = editParams.get("id");
-
-// 수정 모드면 기존 값 채워넣기
-if (editId) {
-  fetch(`/api/products/${editId}`)
-    .then((res) => res.json())
-    .then((data) => {
-      const p = data.product || data;
-      document.querySelector("#write-title").value = p.title;
-      document.querySelector("#write-price").value = p.price;
-      document.querySelector("#write-desc").value = p.description;
-      document.querySelector("#write-place").value = p.location;
-
-      if (p.thumbnail?.startsWith("http")) {
-        uploadedImageUrl = p.thumbnail;
-        preview.src = p.thumbnail;
-        preview.hidden = false;
-        cameraIcon.hidden = true;
-      }
-    });
-}
-
 const fileInput = document.querySelector("#write-image");
 const cameraIcon = document.querySelector(".icon-camera");
 const preview = document.querySelector(".preview");
@@ -56,8 +32,6 @@ fileInput.addEventListener("change", async () => {
     });
 
     const data = await response.json();
-
-    // console.log("이미지 응답:", data);
 
     if (!response.ok) {
       alert(data.message || "이미지 업로드에 실패했습니다.");
@@ -127,32 +101,39 @@ document.querySelector(".btn-done").addEventListener("click", async () => {
 
   const token = localStorage.getItem("token");
 
-  fetch(editId ? `/api/products/${editId}` : "/api/products", {
-    method: editId ? "PATCH" : "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify({
-      title,
-      description,
-      price,
-      location,
-      images: uploadedImageUrl ? [uploadedImageUrl] : [],
-    }),
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("등록 응답:", data);
+  const body = {
+    title,
+    description,
+    price,
+    location,
+    images: uploadedImageUrl ? [uploadedImageUrl] : [],
+  };
 
-      if (!data.product) {
-        alert("등록에 실패했어요. 다시 시도해주세요.");
-        return;
-      }
+  const isEdit = Boolean(editId);
+  const url = isEdit ? `/api/products/${editId}` : "/api/products";
+  const method = isEdit ? "PATCH" : "POST";
 
-      window.location.href = `trade-post.html?id=${data.product.id}`;
-    })
-    .catch((err) => console.error("상품 등록 실패:", err));
+  try {
+    const response = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(body),
+    });
 
+    const data = await response.json();
+
+    if (!response.ok) {
+      alert(data.message || "저장에 실패했습니다.");
+      return;
+    }
+
+    window.location.href = `trade-post.html?id=${data.product.id}`;
+  } catch (error) {
+    console.error("상품 저장 실패:", error);
+    alert("상품 저장 중 오류가 발생했습니다.");
+  }
 });
 
