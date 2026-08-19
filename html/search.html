@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="중고거래 상품을 검색하고 확인할 수 있는 서비스입니다.">
     <title>당근마켓 검색</title>
-    <link rel="stylesheet" href="./reset.css">
-    <link rel="stylesheet" href="./common.css">
-    <link rel="stylesheet" href="./header.css">
-    <link rel="stylesheet" href="./search.css">
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="../css/header.css">
+    <link rel="stylesheet" href="../css/search.css">
 </head>
 <body>
     <!-- 상단Header -->
@@ -16,8 +16,8 @@
         <!-- header내부 섹션1 : 로고 및 중고거래 동네인증 버튼 -->
         <nav id="upperBarLeft">
         <!-- 로고 이미지 + 홈화면 링크 -->
-            <a href="./index.html">
-                <img src="./img/logo.png" alt="당근로고" class="upperLogo">
+            <a href="./onboarding.html">
+                <img src="../images/logo.png" alt="당근로고" class="upperLogo">
             </a>
             <!-- 로고 이미지 옆 버튼 묶음 div -->
             <div class="upperLeftText">
@@ -45,10 +45,10 @@
                 <!-- 프로필 버튼 -->
                 <div class="profileDropdown">
                     <button type="button" id="profileButton" aria-expanded="false" aria-controls="dropdownMenu" aria-label="프로필 메뉴 열기">
-                        <img src="./img/profile.svg" alt="" class="defaultIcon"/>
+                        <img src="../images/profile.svg" alt="" class="defaultIcon"/>
                     </button>
                     <ul id="dropdownMenu" hidden>
-                        <li class="dropdownList" id="firstDropdownchild">😊<a href="#">프로필보기</a></li>
+                        <li class="dropdownList" id="firstDropdownchild">😊<a href="./mypage.html">프로필보기</a></li>
                         <li class="dropdownList">📈<a href="#">판매관리</a></li>
                         <li class="dropdownList">🛒<a href="#">구매내역</a></li>
                         <li class="dropdownList">👀<a href="#">관심목록</a></li>
@@ -86,7 +86,7 @@
                 <button type="button" id="nextPage" class="pageButton" aria-label="다음 페이지">&gt</button>
             </nav>
         </main>
-    <script src="./header.js"></script>
-    <script src="./search.js"></script>
+    <script src="../js/header.js"></script>
+    <script src="../js/search.js"></script>
 </body>
 </html>
