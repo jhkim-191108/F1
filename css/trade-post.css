@@ -23,7 +23,6 @@ main {
   width: 100%;
   padding-top: 38px;
   text-align: left;
-  margin-top: 60px;
   margin-bottom: 20px;
 }
 
@@ -166,6 +165,10 @@ main {
   gap: 8px;
   font-size: 0.875rem;
   font-weight: 400;
+}
+
+.post-btn-box[hidden] {
+  display: none;
 }
 
 .post-btn-box button {

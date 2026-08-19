@@ -242,6 +242,20 @@ body {
     flex-shrink: 0;
 }
 
+.chat-back-btn {
+    display: none;
+    flex-shrink: 0;
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    background-color: var(--gray-000);
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+}
+
 .chat-room-header-id {
     font-size: 1.125rem;
     font-weight: 700;
@@ -426,131 +440,121 @@ body {
     filter: brightness(0.95);
 }
 
-.chat-fab {
-    position: fixed;
-    right: 32px;
-    bottom: 32px;
-    width: 56px;
-    height: 56px;
-    border: none;
-    border-radius: 50%;
-    background-color: var(--orange-600);
-    color: var(--gray-000);
-    font-size: 2rem;
-    line-height: 1;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
-    z-index: 20;
-}
+@media (max-width: 480px) {
+    body {
+        height: 100dvh;
+    }
 
-.chat-fab:hover {
-    filter: brightness(0.95);
-}
+    .main {
+        margin-top: 0;
+        min-height: 0;
+    }
 
-.chat-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    z-index: 30;
-    align-items: center;
-    justify-content: center;
-    
-    
-}
+    .chat-content {
+        width: 100%;
+        position: relative;
+    }
 
-.chat-modal.is-open {
-    display: flex;
-    
-}
+    .chat-list-container {
+        width: 100%;
+        min-width: 0;
+        border-right: none;
+    }
 
-.chat-modal-backdrop {
-    position: absolute;
-    inset: 0;
-    background-color: rgba(17, 17, 17, 0.4);
-}
+    .chat-content-container {
+        display: none;
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        z-index: 2;
+    }
 
-.chat-modal-panel {
-    position: relative;
-    width: 400px;
-    max-width: calc(100% - 48px);
-    padding: 24px;
-    background-color: var(--gray-000);
-    border-radius: 12px;
-    z-index: 1;
-}
+    .chat-content.is-room-open .chat-list-container {
+        display: none;
+    }
 
-.chat-modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
+    .chat-content.is-room-open .chat-content-container {
+        display: flex;
+    }
 
-.chat-modal-header h2 {
-    font-size: 1.125rem;
-    font-weight: 700;
-    color: var(--gray-900);
-}
+    .chat-back-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
 
-.chat-modal-close {
-    width: 32px;
-    height: 32px;
-    border: none;
-    background: transparent;
-    font-size: 1.5rem;
-    line-height: 1;
-    color: var(--gray-600);
-    cursor: pointer;
-}
+    .chat-info {
+        padding: 16px;
+    }
 
-.chat-modal-field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 16px;
-}
+    .chat-ai,
+    .chat-room-item {
+        padding: 14px 16px;
+    }
 
-.chat-modal-field label {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: var(--gray-900);
-}
+    .chat-room-header,
+    .chat-product-bar {
+        padding-left: 16px;
+        padding-right: 16px;
+    }
 
-.chat-modal-field input,
-.chat-modal-field textarea {
-    width: 100%;
-    padding: 12px 14px;
-    font-family: inherit;
-    font-size: 0.9375rem;
-    color: var(--gray-900);
-    background-color: var(--gray-100);
-    border: none;
-    border-radius: 8px;
-    outline: none;
-    box-sizing: border-box;
-}
+    .chat-room-header {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        gap: 8px;
+    }
 
-.chat-modal-field textarea {
-    min-height: 96px;
-    resize: none;
-    line-height: 1.5;
-}
+    .chat-room-header-id {
+        flex: 1;
+        font-size: 1rem;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
 
-.chat-modal-field input::placeholder,
-.chat-modal-field textarea::placeholder {
-    color: var(--gray-500);
-}
+    .chat-leave-btn {
+        padding: 6px 10px;
+        font-size: 0.8125rem;
+    }
 
-.chat-modal-submit {
-    width: 100%;
-    margin-top: 8px;
-    padding: 12px 16px;
-    font-family: inherit;
-    font-size: 0.9375rem;
-    font-weight: 600;
-    color: var(--gray-000);
-    background-color: var(--orange-600);
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+    .chat-product-bar {
+        padding-top: 10px;
+        padding-bottom: 12px;
+    }
+
+    .chat-product-status {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+
+    .chat-unread-toggle span:first-child {
+        font-size: 0.75rem;
+    }
+
+    .chat-message-area {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .chat-message-bubble {
+        max-width: 78%;
+        padding: 10px 14px;
+        font-size: 0.875rem;
+    }
+
+    .chat-input-area {
+        margin: 0 12px 12px;
+        padding: 12px;
+    }
+
+    .chat-input {
+        min-height: 64px;
+        font-size: 0.875rem;
+    }
+
+    .chat-send-btn {
+        padding: 8px 14px;
+        font-size: 0.8125rem;
+    }
 }

@@ -2,11 +2,6 @@ const chatRoomListEl = document.querySelector("#chatRoomList");
 const chatMessageAreaEl = document.querySelector("#chatMessageArea");
 const chatSendForm = document.querySelector("#chatSendForm");
 const chatInput = document.querySelector("#chatInput");
-const chatCreateBtn = document.querySelector("#chatCreateBtn");
-const chatCreateModal = document.querySelector("#chatCreateModal");
-const chatCreateForm = document.querySelector("#chatCreateForm");
-const chatModalClose = document.querySelector("#chatModalClose");
-const chatModalBackdrop = document.querySelector("#chatModalBackdrop");
 const chatMannerTemp= document.querySelector("#chatMannerTemp")
 let myUserId = null;
 let currentRoomId = null;
@@ -124,7 +119,7 @@ function createChatRoomItem(chat) {
 
 // 채팅 목록 그리기
 function renderChatList() {
-    const unreadOnly = document.getElementById("unreadToggle").checked;
+    const unreadOnly = document.querySelector("#unreadToggle").checked;
     const visibleList = unreadOnly
         ? allChatList.filter((chat) => chat.unreadCount > 0)
         : allChatList;
@@ -254,6 +249,8 @@ async function openChatRoom(roomId) {
         item.classList.toggle("is-active", Number(item.dataset.roomId) === Number(roomId));
     });
 
+    document.querySelector(".chat-content").classList.add("is-room-open");
+
     await fetchChatList();
 }
 
@@ -294,6 +291,7 @@ async function leaveChatRoom() {
     }
 
     clearRoomView();
+    document.querySelector(".chat-content").classList.remove("is-room-open");
     await fetchChatList();
 }
 
@@ -324,17 +322,6 @@ async function sendMessage(content) {
     await fetchChatList();
 }
 
-// 채팅방 만들기 모달
-function openCreateModal() {
-    chatCreateModal.classList.add("is-open");
-    document.getElementById("createProductId").focus();
-}
-
-function closeCreateModal() {
-    chatCreateModal.classList.remove("is-open");
-    chatCreateForm.reset();
-}
-
 // 메시지 전송
 chatSendForm.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -345,55 +332,46 @@ chatSendForm.addEventListener("submit", async (event) => {
     }
 
     chatInput.value = "";
-    await sendMessage(content);
+
+    try {
+        await sendMessage(content);
+    } catch (error) {
+        console.error(error);
+    }
 });
 
 // 채팅방 나가기
-document.getElementById("chatLeaveBtn").addEventListener("click", () => {
-    leaveChatRoom().catch(console.error);
+document.querySelector("#chatLeaveBtn").addEventListener("click", async () => {
+    try {
+        await leaveChatRoom();
+    } catch (error) {
+        console.error(error);
+    }
 });
 
-// 채팅방 만들기
-chatCreateBtn.addEventListener("click", openCreateModal);
-chatModalClose.addEventListener("click", closeCreateModal);
-chatModalBackdrop.addEventListener("click", closeCreateModal);
-
-chatCreateForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-
-    const productId = Number(document.getElementById("createProductId").value);
-    const content = document.getElementById("createMessage").value.trim();
-
-    const response = await fetch("/api/chats", {
-        method: "POST",
-        headers: authHeaders({
-            "Content-Type": "application/json",
-        }),
-        body: JSON.stringify({ productId }),
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-        alert(data.message || "채팅방을 만들지 못했습니다.");
-        return;
-    }
-
-    closeCreateModal();
-    await fetchChatList();
-    await openChatRoom(data.room.id);
-
-    if (content) {
-        await sendMessage(content);
-    }
+// 목록으로
+document.querySelector("#chatBackBtn").addEventListener("click", () => {
+    document.querySelector(".chat-content").classList.remove("is-room-open");
 });
 
 // 읽지 않은 채팅
-document.getElementById("unreadToggle").addEventListener("change", () => {
+document.querySelector("#unreadToggle").addEventListener("change", () => {
     renderChatList();
 });
 
 // 시작
-fetchMe()
-    .then(() => fetchChatList())
-    .catch(console.error);
+async function initChat() {
+    try {
+        await fetchMe();
+        await fetchChatList();
+
+        const roomId = new URLSearchParams(window.location.search).get("id");
+        if (roomId) {
+            await openChatRoom(roomId);
+        }
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+initChat();

@@ -1,3 +1,5 @@
+let profileImageUrl = "";
+
 // 토큰 헤더
 function authHeaders(extra = {}) {
     const token = localStorage.getItem("token");
@@ -26,7 +28,7 @@ function formatJoinDate(dateString) {
 
 // 내 정보 표시
 function renderUser(user) {
-    const avatar = document.getElementById("profileImage");
+    const avatar = document.querySelector("#profileImage");
     const hasImage = user.profileImage && user.profileImage !== "string";
 
     if (hasImage) {
@@ -35,14 +37,14 @@ function renderUser(user) {
         avatar.style.backgroundImage = "";
     }
 
-    document.getElementById("nickname").textContent = user.nickname || "";
-    document.getElementById("email").textContent = user.email || "";
-    document.getElementById("location").textContent = user.location || "";
-    document.getElementById("createdAt").textContent = formatJoinDate(user.createdAt);
+    document.querySelector("#nickname").textContent = user.nickname || "";
+    document.querySelector("#email").textContent = user.email || "";
+    document.querySelector("#location").textContent = user.location || "";
+    document.querySelector("#createdAt").textContent = formatJoinDate(user.createdAt);
 
-    document.getElementById("nicknameInput").value = user.nickname || "";
-    document.getElementById("locationInput").value = user.location || "";
-    document.getElementById("profileImageInput").value = hasImage ? user.profileImage : "";
+    document.querySelector("#nicknameInput").value = user.nickname || "";
+    document.querySelector("#locationInput").value = user.location || "";
+    profileImageUrl = hasImage ? user.profileImage : "";
 }
 
 // 내 정보 조회
@@ -55,54 +57,93 @@ async function fetchMe() {
         return;
     }
 
-    const response = await fetch("/api/auth/me", {
-        headers: authHeaders(),
-    });
+    try {
+        const response = await fetch("/api/auth/me", {
+            headers: authHeaders(),
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if (!response.ok) {
-        alert(data.message || "회원 정보를 불러오지 못했습니다.");
-        location.href = "./login.html";
-        return;
+        if (!response.ok) {
+            alert(data.message || "회원 정보를 불러오지 못했습니다.");
+            location.href = "./login.html";
+            return;
+        }
+
+        renderUser(data.user);
+    } catch (error) {
+        console.error(error);
     }
-
-    renderUser(data.user);
 }
 
 // 정보 수정
 async function updateMe(userData) {
-    const response = await fetch("/api/auth/me", {
-        method: "PATCH",
-        headers: authHeaders({
-            "Content-Type": "application/json",
-        }),
-        body: JSON.stringify(userData),
-    });
+    try {
+        const response = await fetch("/api/auth/me", {
+            method: "PATCH",
+            headers: authHeaders({
+                "Content-Type": "application/json",
+            }),
+            body: JSON.stringify(userData),
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    if (!response.ok) {
-        alert(data.message || "정보 수정에 실패했습니다.");
-        return;
+        if (!response.ok) {
+            alert(data.message || "정보 수정에 실패했습니다.");
+            return;
+        }
+
+        renderUser(data.user);
+        alert("정보가 수정되었습니다.");
+    } catch (error) {
+        console.error(error);
     }
-
-    renderUser(data.user);
-    alert("정보가 수정되었습니다.");
 }
 
-document.getElementById("mypageForm").addEventListener("submit", async (event) => {
+document.querySelector("#mypageForm").addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const nickname = document.getElementById("nicknameInput").value.trim();
-    const location = document.getElementById("locationInput").value.trim();
-    const profileImage = document.getElementById("profileImageInput").value.trim();
+    const nickname = document.querySelector("#nicknameInput").value.trim();
+    const location = document.querySelector("#locationInput").value.trim();
 
     await updateMe({
         nickname,
         location,
-        profileImage: profileImage || null,
+        profileImage: profileImageUrl || null,
     });
 });
 
-fetchMe().catch(console.error);
+// 프로필 이미지 업로드
+document.querySelector("#profileImageFile").addEventListener("change", async (event) => {
+    const file = event.target.files[0];
+    if (!file) {
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+        const response = await fetch("/api/images", {
+            method: "POST",
+            headers: authHeaders(),
+            body: formData,
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert(data.message || "이미지 업로드에 실패했습니다.");
+            return;
+        }
+
+        profileImageUrl = data.image.url;
+        document.querySelector("#profileImage").style.backgroundImage = `url("${profileImageUrl}")`;
+    } catch (error) {
+        console.error("이미지 업로드 실패:", error);
+        alert("이미지 업로드 중 오류가 발생했습니다.");
+    }
+});
+
+fetchMe();

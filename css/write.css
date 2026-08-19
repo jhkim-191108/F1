@@ -95,6 +95,7 @@ textarea {
 /* ========== 모바일 ========== */
 @media (max-width: 480px) {
   .write {
+    margin-top: 0;
     font-size: 0.875rem;
   }
   .write-box-1 {

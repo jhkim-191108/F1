@@ -74,6 +74,7 @@
 
             <div class="chat-content-container">
                 <div class="chat-room-header">
+                    <button type="button" class="chat-back-btn" id="chatBackBtn" aria-label="채팅 목록으로">목록</button>
                     <h2 class="chat-room-header-id"></h2>
                     <span class="chat-manner-temp"></span>
                     <button type="button" class="chat-leave-btn" id="chatLeaveBtn">나가기</button>
@@ -98,33 +99,9 @@
         </section>
     </main>
 
-    <button type="button" class="chat-fab" id="chatCreateBtn" aria-label="채팅방 만들기">+</button>
-
-    <div class="chat-modal" id="chatCreateModal">
-        <div class="chat-modal-backdrop" id="chatModalBackdrop"></div>
-        <div class="chat-modal-panel">
-            <div class="chat-modal-header">
-                <h2>채팅방 만들기</h2>
-                <button type="button" class="chat-modal-close" id="chatModalClose" aria-label="닫기">×</button>
-            </div>
-            <form class="chat-modal-form" id="chatCreateForm">
-                <div class="chat-modal-field">
-                    <label for="createProductId">상품 번호</label>
-                    <input type="number" id="createProductId" name="productId" min="1" placeholder="채팅할 상품 번호를 입력해주세요" required />
-                </div>
-                <div class="chat-modal-field">
-                    <label for="createMessage">메시지</label>
-                    <textarea id="createMessage" name="content" placeholder="상대방에게 보낼 메시지를 입력해주세요"></textarea>
-                </div>
-                <button type="submit" class="chat-modal-submit">채팅 보내기</button>
-            </form>
-        </div>
-    </div>
-
-    
     <script src="../js/header.js"></script>
     <script src="../js/chat.js"></script>
-    <script src="../header.js"></script>
+    <script src="../js/header.js"></script>
 
 </body>
 </html>

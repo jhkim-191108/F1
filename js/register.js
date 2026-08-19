@@ -5,8 +5,14 @@ registerForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
     const userId = document.querySelector("#userId").value.trim();
+    const nickname = document.querySelector("#nickname").value.trim();
     const password = document.querySelector("#password").value;
     const passwordConfirm = document.querySelector("#passwordConfirm").value;
+
+    if (!nickname) {
+        alert("닉네임을 입력해주세요.");
+        return;
+    }
 
     // 비밀번호 확인
     if (password !== passwordConfirm) {
@@ -17,7 +23,7 @@ registerForm.addEventListener("submit", async (event) => {
     await signupUser({
         email: userId,
         password,
-        nickname: userId
+        nickname
     });
 });
 

@@ -55,16 +55,47 @@ async function loadProductForEdit() {
     return;
   }
 
-  try {
-    const response = await fetch(`/api/products/${editId}`);
-    const data = await response.json();
+  const token = localStorage.getItem("token");
 
-    if (!response.ok) {
+  if (!token) {
+    alert("로그인이 필요합니다.");
+    location.href = "./login.html";
+    return;
+  }
+
+  try {
+    const [productResponse, meResponse] = await Promise.all([
+      fetch(`/api/products/${editId}`),
+      fetch("/api/auth/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+    ]);
+
+    const data = await productResponse.json();
+    const meData = await meResponse.json();
+
+    if (!productResponse.ok) {
       alert(data.message || "상품 정보를 불러오지 못했습니다.");
       return;
     }
 
+    if (!meResponse.ok) {
+      alert(meData.message || "로그인이 필요합니다.");
+      location.href = "./login.html";
+      return;
+    }
+
     const product = data.product || data;
+    const sellerId = product.seller?.id;
+    const myId = meData.user?.id;
+
+    if (String(sellerId) !== String(myId)) {
+      alert("본인 게시글만 수정할 수 있습니다.");
+      location.href = `./trade-post.html?id=${editId}`;
+      return;
+    }
 
     document.querySelector("#write-title").value = product.title || "";
     document.querySelector("#write-price").value = product.price || "";

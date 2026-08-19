@@ -163,12 +163,13 @@ inputEl.addEventListener("input", () => {
 });
 
 // "내 동네 설정" 버튼: 검색해서 고른 동네가 현재 GPS 주소와 같은 구/동인지 확인 후 확정
-setBtn.addEventListener("click", () => {
+setBtn.addEventListener("click", async () => {
     if (!selectedCoords) {
         setStatusEl.textContent = "목록에서 동네를 선택해주세요.";
         setStatusEl.classList.add("is-error");
         return;
     }
+
     if (!currentAddress) {
         setStatusEl.textContent = "현재 위치를 확인하는 중입니다. 잠시 후 다시 시도해주세요.";
         setStatusEl.classList.add("is-error");
@@ -182,16 +183,69 @@ setBtn.addEventListener("click", () => {
 
     setStatusEl.textContent = "";
     setStatusEl.classList.remove("is-error");
+
     myDong = selectedDong;
-    resultsEl.hidden = true;
-    renderState();
+
+    // 서버에 내 동네 저장
+    try {
+        const response = await fetch("/api/auth/me", {
+            method: "PATCH",
+            headers: authHeaders({
+                "Content-Type": "application/json",
+            }),
+            body: JSON.stringify({
+                location: myDong,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "동네 저장에 실패했습니다.");
+        }
+
+        console.log("동네 저장 완료:", data.user.location);
+        resultsEl.hidden = true;
+        renderState();
+
+    } catch (error) {
+        console.error("동네 저장 실패:", error);
+
+        setStatusEl.textContent = "동네 저장에 실패했습니다.";
+        setStatusEl.classList.add("is-error");
+    }
 });
 
 // "동네인증 완료하기" 버튼: GPS로 감지된 현재 위치로 확정
-confirmBtn.addEventListener("click", () => {
+confirmBtn.addEventListener("click", async () => {
     if (!currentDong) return;
+
     myDong = currentDong;
-    renderState();
+
+    try {
+        const response = await fetch("/api/auth/me", {
+            method: "PATCH",
+            headers: authHeaders({
+                "Content-Type": "application/json",
+            }),
+            body: JSON.stringify({
+                location: myDong,
+            }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            throw new Error(data.message || "동네 저장에 실패했습니다.");
+        }
+
+        console.log("동네 저장 완료:", data.user.location);
+        renderState();
+
+    } catch (error) {
+        console.error("동네 저장 실패:", error);
+        statusEl.textContent = "동네 저장에 실패했습니다.";
+    }
 });
 
 // ---------- 상태 렌더링 ----------
@@ -243,7 +297,17 @@ function showMyLocation() {
             renderState();
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-    );
+    );  
+}
+function authHeaders(extra = {}) {
+    const token = localStorage.getItem("token");
+    const headers = { ...extra };
+
+    if (token) {
+        headers.Authorization = `Bearer ${token}`;
+    }
+
+    return headers;
 }
 
 renderState();

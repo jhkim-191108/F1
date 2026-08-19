@@ -12,14 +12,22 @@ body {
     flex: 1;
     min-height: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
+    padding-top: 48px;
     background-color: var(--gray-100);
-    margin-top: 60px;
 }
 
 .register-form {
     width: 360px;
+}
+
+.register-title {
+    margin-bottom: 24px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    text-align: center;
 }
 
 .register-field {
@@ -84,4 +92,43 @@ body {
     color: var(--orange-600);
     text-align: center;
     text-decoration: none;
+}
+
+@media (max-width: 480px) {
+    body {
+        height: auto;
+        min-height: 100dvh;
+    }
+
+    .register {
+        width: 100%;
+        padding: 24px 16px 32px;
+        align-items: flex-start;
+        justify-content: center;
+    }
+
+    .register-form {
+        padding-top: 20px;
+        width: 100%;
+        max-width: 360px;
+    }
+
+    .register-title {
+        margin-bottom: 16px;
+        font-size: 1.125rem;
+    }
+
+    .register-field {
+        margin-bottom: 24px;
+    }
+
+    .register-field input,
+    .register-btn {
+        padding: 12px 14px;
+        font-size: 0.9375rem;
+    }
+
+    .register-guide {
+        margin-top: 24px;
+    }
 }

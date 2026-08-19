@@ -49,7 +49,13 @@
             <h1 class="mypage-title">마이페이지</h1>
 
             <div class="mypage-profile">
-                <div class="mypage-avatar" id="profileImage"></div>
+                <div class="mypage-avatar-wrap">
+                    <div class="mypage-avatar" id="profileImage"></div>
+                    <label class="mypage-avatar-edit" for="profileImageFile">
+                        <img src="../images/write-add-img.png" alt="프로필 사진 변경" />
+                    </label>
+                    <input type="file" id="profileImageFile" accept="image/*" hidden />
+                </div>
                 <p class="mypage-nickname" id="nickname"></p>
                 <p class="mypage-email" id="email"></p>
                 <p class="mypage-location" id="location"></p>
@@ -63,11 +69,7 @@
                 </div>
                 <div class="mypage-field">
                     <label for="locationInput">지역</label>
-                    <input type="text" id="locationInput" name="location" placeholder="지역을 입력해주세요" />
-                </div>
-                <div class="mypage-field">
-                    <label for="profileImageInput">프로필 이미지 URL</label>
-                    <input type="text" id="profileImageInput" name="profileImage" placeholder="이미지 URL을 입력해주세요" />
+                    <input type="text" id="locationInput" name="location" placeholder="지역을 입력해주세요" disabled/>
                 </div>
                 <button type="submit" class="mypage-btn">정보 수정</button>
             </form>

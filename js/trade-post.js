@@ -3,6 +3,7 @@ const productId = params.get("id");
 const token = localStorage.getItem("token");
 
 let sellerId = null;
+let currentUserId = null;
 
 // 상품 정보 가져오기
 async function getProduct() {
@@ -77,10 +78,10 @@ async function checkOwner() {
       );
     }
 
-    const myId = data.user?.id;
+    currentUserId = data.user?.id;
 
     document.querySelector(".post-btn-box").hidden =
-      myId !== sellerId;
+      String(currentUserId) !== String(sellerId);
 
   } catch (err) {
     console.error("사용자 확인 실패:", err);
@@ -170,6 +171,11 @@ document.querySelector(".btn-delete").addEventListener("click", async () => {
 
 // 수정하기
 document.querySelector(".btn-edit").addEventListener("click", () => {
+  if (!token || String(currentUserId) !== String(sellerId)) {
+    alert("본인 게시글만 수정할 수 있습니다.");
+    return;
+  }
+
   window.location.href = `write.html?id=${productId}`;
 });
 
