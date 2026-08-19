@@ -31,7 +31,7 @@ async function loadPopularProducts() {
                                 ? `<img 
                                     src="${product.thumbnail}" 
                                     alt="${product.title}"
-                                  >`
+                                >`
                                 : ""
                         }
                     </div>
