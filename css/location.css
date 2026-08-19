@@ -143,6 +143,7 @@
     cursor: not-allowed;
 }
 
+/* 에러메세지 모달 */
 
 .modal-overlay {
     position: fixed;
@@ -201,4 +202,65 @@
     background: var(--orange-600);
     color: var(--gray-000);
     font-weight: bold;
+}
+
+
+/* ---------- 1200px 이하 ---------- */
+@media (max-width: 1200px) {
+    .location {
+        padding: 48px 60px 48px;
+        padding-top: calc(60px + 48px);
+    }
+
+    .location-map { height: 400px; }
+}
+
+/* ---------- 768px 이하 (태블릿 → 모바일) ---------- */
+@media (max-width: 768px) {
+    .location {
+        padding: 32px 24px 32px;
+        padding-top: calc(60px + 32px);
+    }
+
+    .location-label { font-size: 0.95rem; }
+
+    .input-row { gap: 8px; }
+
+    .btn-outline { padding: 12px 16px; font-size: 0.9rem; }
+
+    .location-map { height: 320px; }
+    .location-status { font-size: 0.95rem; }
+
+    .btn-confirm { padding: 14px; font-size: 1rem; }
+
+    .modal-box { max-width: 300px; padding: 24px 20px; }
+    .modal-message { font-size: 0.95rem; }
+}
+
+/* ---------- 480px 이하 (작은 모바일) ---------- */
+@media (max-width: 480px) {
+    .location {
+        padding: 24px 16px 24px;
+        padding-top: calc(60px + 24px);
+    }
+
+    .location-input {
+        padding: 12px 14px;
+        font-size: 0.9rem;
+    }
+
+    .btn-outline {
+        padding: clamp(8px, 3vw, 14px) clamp(10px, 4vw, 20px);
+        font-size: clamp(0.75rem, 3vw, 1rem);
+        white-space: nowrap;
+    }
+
+    .location-map { height: 260px;}
+
+    .btn-confirm { font-size: 0.95rem; padding: 12px; }
+
+    .modal-overlay { padding: 16px; }
+    .modal-box { max-width: 100%; padding: 20px 16px; }
+    .modal-actions { flex-direction: column; }
+
 }
