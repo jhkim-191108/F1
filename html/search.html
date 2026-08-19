@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="중고거래 상품을 검색하고 확인할 수 있는 서비스입니다.">
+    <title>당근마켓 검색</title>
+    <link rel="stylesheet" href="./reset.css">
+    <link rel="stylesheet" href="./common.css">
+    <link rel="stylesheet" href="./header.css">
+    <link rel="stylesheet" href="./search.css">
+</head>
+<body>
+    <!-- 상단Header -->
+    <header class="upperBar">
+        <!-- header내부 섹션1 : 로고 및 중고거래 동네인증 버튼 -->
+        <nav id="upperBarLeft">
+        <!-- 로고 이미지 + 홈화면 링크 -->
+            <a href="./index.html">
+                <img src="./img/logo.png" alt="당근로고" class="upperLogo">
+            </a>
+            <!-- 로고 이미지 옆 버튼 묶음 div -->
+            <div class="upperLeftText">
+                <a href="./trade.html" id="tradeNav">중고거래</a>
+                <a href="./location.html" id="locationNav" hidden>동네인증</a>
+            </div>
+        </nav>
+        <!-- header 내부 섹션2 : flex, gap이 10으로 동일하기 때문에 따로 나눠서 감싸지 않음-->
+        <div id="upperBarRight">
+            <!-- 검색창 js로 엔터눌러 검색 등을 하기 위해 form으로 감쌈-->
+            <form id="searchForm">
+                <input type="search" name="search" id="searchTextArea" placeholder="물품이나 동네를 검색해보세요">
+            </form>
+            <!-- 로그아웃 상태에서만 보일 버튼 -->
+            <div id="logoutStatusHeader">
+                <a href="./login.html" id="upperLoginButton">로그인</a>
+            </div>
+            
+            <!-- 로그인 상태에서만 보일 버튼 -->
+            <div id="loginStatusHeader" hidden>
+                <!-- 채팅하기버튼 -->
+                <a href="./chat.html" id="upperChatButton">채팅하기</a>
+                <!-- 로그아웃버튼 -->
+                <button type="button" id="upperLogoutButton">로그아웃</button>
+                <!-- 프로필 버튼 -->
+                <div class="profileDropdown">
+                    <button type="button" id="profileButton" aria-expanded="false" aria-controls="dropdownMenu" aria-label="프로필 메뉴 열기">
+                        <img src="./img/profile.svg" alt="" class="defaultIcon"/>
+                    </button>
+                    <ul id="dropdownMenu" hidden>
+                        <li class="dropdownList" id="firstDropdownchild">😊<a href="#">프로필보기</a></li>
+                        <li class="dropdownList">📈<a href="#">판매관리</a></li>
+                        <li class="dropdownList">🛒<a href="#">구매내역</a></li>
+                        <li class="dropdownList">👀<a href="#">관심목록</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+        <!-- 메인 -->
+        <main id="main">
+            <h1 class="srOnly">중고거래 상품 검색 및 탐색</h1>
+            <!-- 메인섹션 전체 박스 section그 아래div 여기에 그리드 적용 -->
+            <section id="mainSectionGrid">
+                <h2 class="srOnly">검색결과</h2>
+                <!-- 여기에 JS에서 받아온 카드들이 들어올 예정 -->
+                <!-- 예시용 카드 양식 -->
+                <article class="mainGridCardBox">
+                    <img src="https://pub-b15f5fc07ddb441e8d9a1de9f83f2c2f.r2.dev/test/project/camping-p.png" alt="상품이미지" id="productImg">
+                    <div class="productInfo">
+                        <h3 class="productName">위니아 정수기</h3>
+                        <p class="productPrice">70,000원</p>
+                        <p class="productAddress">인천광역시 연수구</p>
+                    </div>
+                    <div class="productMeta">
+                        <span class="meta">조회 60</span>
+                        <span class="meta">•</span>
+                        <span class="meta">채팅 22</span>
+                    </div>
+                </article>
+            </section>
+            <!-- 하단 페이지 넘기기 버튼 -->
+            <nav id="pageList" aria-label="상품 페이지 조작">
+                <button type="button" id="prevPage" class="pageButton" aria-label="이전 페이지">&lt</button>
+                <span id="pageNums" aria-label="페이지 번호">1 / 1</span>
+                <button type="button" id="nextPage" class="pageButton" aria-label="다음 페이지">&gt</button>
+            </nav>
+        </main>
+    <script src="./header.js"></script>
+    <script src="./search.js"></script>
+</body>
+</html>
