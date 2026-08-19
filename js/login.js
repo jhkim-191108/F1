@@ -24,7 +24,7 @@ async function loginUser(userData) {
         });
 
         const data = await response.json();
-        console.log("로그인 응답:", data);
+        // console.log("로그인 응답:", data);
 
         if (!response.ok) {
             alert(data.message || "로그인에 실패했습니다.");

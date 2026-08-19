@@ -32,7 +32,7 @@ async function signupUser(userData) {
         });
 
         const data = await response.json();
-        console.log("회원가입 응답:", data);
+        // console.log("회원가입 응답:", data);
 
         if (!response.ok) {
             alert(data.message || "회원가입에 실패했습니다.");

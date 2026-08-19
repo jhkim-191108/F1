@@ -8,7 +8,6 @@ const API_KEY = process.env.API_KEY;
 const API_BASE = "https://carrot.techfree.kr";
 
 // 이미지 업로드
-// 이미지 업로드
 app.post("/api/images", async (req, res) => {
   try {
     const headers = { "X-API-Key": API_KEY };
@@ -27,7 +26,7 @@ app.post("/api/images", async (req, res) => {
     });
 
     const text = await response.text();
-    console.log("이미지 업로드:", response.status, text);
+    // console.log("이미지 업로드:", response.status, text);
     res.status(response.status).send(text);
   } catch (error) {
     console.error("이미지 업로드 실패:", error);
@@ -65,8 +64,8 @@ async function proxyToApi(req, res, path) {
     const response = await fetch(`${API_BASE}${path}`, options);
     const text = await response.text();
 
-    console.log(req.method, path, response.status);
-    console.log("response:", text);
+    // console.log(req.method, path, response.status);
+    // console.log("response:", text);
 
     res.status(response.status).send(text);
   } catch (error) {
@@ -81,7 +80,7 @@ async function proxyToApi(req, res, path) {
 // 회원가입
 app.post("/api/auth/signup", async (req, res) => {
   try {
-    console.log("request:", req.body);
+    // console.log("request:", req.body);
 
     const response = await fetch(`${API_BASE}/api/auth/signup`, {
       method: "POST",
@@ -94,8 +93,8 @@ app.post("/api/auth/signup", async (req, res) => {
 
     const text = await response.text();
 
-    console.log("status:", response.status);
-    console.log("response:", text);
+    // console.log("status:", response.status);
+    // console.log("response:", text);
 
     res.status(response.status).send(text);
   } catch (error) {
@@ -110,7 +109,7 @@ app.post("/api/auth/signup", async (req, res) => {
 // 로그인
 app.post("/api/auth/login", async (req, res) => {
   try {
-    console.log("request:", req.body);
+    // console.log("request:", req.body);
 
     const response = await fetch(`${API_BASE}/api/auth/login`, {
       method: "POST",
@@ -123,8 +122,8 @@ app.post("/api/auth/login", async (req, res) => {
 
     const text = await response.text();
 
-    console.log("status:", response.status);
-    console.log("response:", text);
+    // console.log("status:", response.status);
+    // console.log("response:", text);
 
     res.status(response.status).send(text);
   } catch (error) {
@@ -165,8 +164,8 @@ app.get("/api/chats", async (req, res) => {
 
     const text = await response.text();
 
-    console.log("status:", response.status);
-    console.log("response:", text);
+    // console.log("status:", response.status);
+    // console.log("response:", text);
 
     res.status(response.status).send(text);
   } catch (error) {
@@ -213,11 +212,21 @@ app.get("/api/products/:id", (req, res) => {
   proxyToApi(req, res, `/api/products/${req.params.id}`);
 });
 
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
+// 상품 수정
+app.patch("/api/products/:id", (req, res) => {
+  proxyToApi(req, res, `/api/products/${req.params.id}`);
+});
+
+// 상품 삭제
+app.delete("/api/products/:id", (req, res) => {
+  proxyToApi(req, res, `/api/products/${req.params.id}`);
 });
 
 // 상품 등록
 app.post("/api/products", (req, res) => {
   proxyToApi(req, res, "/api/products");
+});
+
+app.listen(PORT, () => {
+  console.log(`http://localhost:${PORT}`);
 });

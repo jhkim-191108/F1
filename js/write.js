@@ -1,8 +1,8 @@
-// js/write.js
-
 const fileInput = document.querySelector("#write-image");
 const cameraIcon = document.querySelector(".icon-camera");
 const preview = document.querySelector(".preview");
+const params = new URLSearchParams(window.location.search);
+const editId = params.get("id");
 
 let uploadedImageUrl = "";
 
@@ -28,7 +28,7 @@ fileInput.addEventListener("change", () => {
   })
     .then((res) => res.json())
     .then((data) => {
-      console.log("이미지 응답:", data);
+      // console.log("이미지 응답:", data);
       uploadedImageUrl = data.image.url;
 
       preview.src = uploadedImageUrl;
@@ -38,7 +38,29 @@ fileInput.addEventListener("change", () => {
     .catch((err) => console.error("이미지 업로드 실패:", err));
 });
 
-// 완료 버튼 → 상품 등록
+// 수정이면 기존 글 채우기
+if (editId) {
+  fetch(`/api/products/${editId}`)
+    .then((res) => res.json())
+    .then((data) => {
+      const product = data.product || data;
+
+      document.querySelector("#write-title").value = product.title || "";
+      document.querySelector("#write-price").value = product.price || "";
+      document.querySelector("#write-desc").value = product.description || "";
+      document.querySelector("#write-place").value = product.location || "";
+
+      if (product.thumbnail?.startsWith("http")) {
+        uploadedImageUrl = product.thumbnail;
+        preview.src = product.thumbnail;
+        preview.hidden = false;
+        cameraIcon.hidden = true;
+      }
+    })
+    .catch((err) => console.error("상품 정보를 못 가져왔어요:", err));
+}
+
+// 완료 버튼 → 상품 등록/수정
 document.querySelector(".btn-done").addEventListener("click", () => {
   const title = document.querySelector("#write-title").value;
   const price = Number(
@@ -53,25 +75,36 @@ document.querySelector(".btn-done").addEventListener("click", () => {
   }
 
   const token = localStorage.getItem("token");
+  const body = {
+    title,
+    description,
+    price,
+    location,
+    images: uploadedImageUrl ? [uploadedImageUrl] : [],
+  };
 
-  fetch("/api/products", {
-    method: "POST",
+  const isEdit = Boolean(editId);
+  const url = isEdit ? `/api/products/${editId}` : "/api/products";
+  const method = isEdit ? "PATCH" : "POST";
+
+  fetch(url, {
+    method,
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({
-      title,
-      description,
-      price,
-      location,
-      images: uploadedImageUrl ? [uploadedImageUrl] : [],
-    }),
+    body: JSON.stringify(body),
   })
-    .then((res) => res.json())
-    .then((data) => {
-      console.log("등록 응답:", data);
+    .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
+    .then(({ ok, data }) => {
+      // console.log("저장 응답:", data);
+
+      if (!ok) {
+        alert(data.message || "저장에 실패했습니다.");
+        return;
+      }
+
       window.location.href = `trade-post.html?id=${data.product.id}`;
     })
-    .catch((err) => console.error("상품 등록 실패:", err));
+    .catch((err) => console.error("상품 저장 실패:", err));
 });
