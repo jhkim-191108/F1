@@ -26,7 +26,6 @@ app.post("/api/images", async (req, res) => {
     });
 
     const text = await response.text();
-    // console.log("이미지 업로드:", response.status, text);
     res.status(response.status).send(text);
   } catch (error) {
     console.error("이미지 업로드 실패:", error);
@@ -64,9 +63,6 @@ async function proxyToApi(req, res, path) {
     const response = await fetch(`${API_BASE}${path}`, options);
     const text = await response.text();
 
-    // console.log(req.method, path, response.status);
-    // console.log("response:", text);
-
     res.status(response.status).send(text);
   } catch (error) {
     console.error("API 요청 실패:", path, error);
@@ -78,61 +74,13 @@ async function proxyToApi(req, res, path) {
 }
 
 // 회원가입
-app.post("/api/auth/signup", async (req, res) => {
-  try {
-    // console.log("request:", req.body);
-
-    const response = await fetch(`${API_BASE}/api/auth/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-Key": API_KEY,
-      },
-      body: JSON.stringify(req.body),
-    });
-
-    const text = await response.text();
-
-    // console.log("status:", response.status);
-    // console.log("response:", text);
-
-    res.status(response.status).send(text);
-  } catch (error) {
-    console.error("회원가입 API 요청 실패:", error);
-
-    res.status(500).json({
-      error: "회원가입 요청에 실패했습니다.",
-    });
-  }
+app.post("/api/auth/signup", (req, res) => {
+  proxyToApi(req, res, "/api/auth/signup");
 });
 
-// 로그인
-app.post("/api/auth/login", async (req, res) => {
-  try {
-    // console.log("request:", req.body);
-
-    const response = await fetch(`${API_BASE}/api/auth/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-API-Key": API_KEY,
-      },
-      body: JSON.stringify(req.body),
-    });
-
-    const text = await response.text();
-
-    // console.log("status:", response.status);
-    // console.log("response:", text);
-
-    res.status(response.status).send(text);
-  } catch (error) {
-    console.error("로그인 API 요청 실패:", error);
-
-    res.status(500).json({
-      error: "로그인 요청에 실패했습니다.",
-    });
-  }
+//로그인
+app.post("/api/auth/login", (req, res) => {
+  proxyToApi(req, res, "/api/auth/login");
 });
 
 // 내 정보 조회
@@ -146,35 +94,8 @@ app.patch("/api/auth/me", (req, res) => {
 });
 
 // 채팅 목록
-app.get("/api/chats", async (req, res) => {
-  try {
-    const headers = {
-      "X-API-Key": API_KEY,
-      Accept: "application/json",
-    };
-
-    if (req.headers.authorization) {
-      headers.Authorization = req.headers.authorization;
-    }
-
-    const response = await fetch(`${API_BASE}/api/chats`, {
-      method: "GET",
-      headers,
-    });
-
-    const text = await response.text();
-
-    // console.log("status:", response.status);
-    // console.log("response:", text);
-
-    res.status(response.status).send(text);
-  } catch (error) {
-    console.error("채팅 목록 API 요청 실패:", error);
-
-    res.status(500).json({
-      error: "채팅 목록을 가져오지 못했습니다.",
-    });
-  }
+app.get("/api/chats", (req, res) => {
+  proxyToApi(req, res, "/api/chats");
 });
 
 // 채팅방 만들기
