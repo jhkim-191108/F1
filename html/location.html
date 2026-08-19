@@ -54,7 +54,9 @@
             <div class="input-row">
                 <input type="text" class="location-input" placeholder="예) 서울 강서구 화곡동" data-role="input">
                 <button class="btn-outline" data-role="edit-btn">내 동네 설정</button>
+                <ul class="location-results" data-role="search-results" hidden></ul>
             </div>
+            <p class="location-status" data-role="set-status"></p>
         </div>
 
         <div class="location-verify">
@@ -66,11 +68,22 @@
             
             <button class="btn-confirm" data-role="confirm-btn" disabled>동네인증 완료하기</button>
         </div>
-
+    
     </section>
+
+    <!-- 에러 메세지 모달 -->
+    <div class="modal-overlay" data-role="distance-modal" hidden>
+        <div class="modal-box">
+            <p class="modal-message">실제 계신 위치와 너무 멀어서<br>인증할 수 없어요.</p>
+            <div class="modal-actions">
+                <button type="button" class="btn-modal-cancel" data-role="modal-cancel">취소</button>
+                <button type="button" class="btn-modal-edit" data-role="modal-edit">동네 수정하기</button>
+            </div>
+        </div>
+    </div>
     </main>
 
-    <script src="../common/common.js"></script>
+    <script src="../js/common.js"></script>
     <!-- 지도 API 스크립트는 여기에 (예: 카카오맵 SDK) -->
     <script src="../js/location.js"></script>
 

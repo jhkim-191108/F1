@@ -89,27 +89,23 @@ document.querySelector(".btn-chat").addEventListener("click", () => {
 
 // 삭제하기
 document.querySelector(".btn-delete").addEventListener("click", () => {
-  if (!confirm("이 게시글을 삭제할까요?")) {
-    return;
-  }
+  if (!confirm("정말 삭제할까요?")) return;
+
+  const token = localStorage.getItem("token");
 
   fetch(`/api/products/${productId}`, {
     method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+    headers: { Authorization: `Bearer ${token}` },
   })
-    .then((res) => res.json().then((data) => ({ ok: res.ok, data })))
-    .then(({ ok, data }) => {
-      if (!ok) {
-        alert(data.message || "삭제에 실패했습니다.");
-        return;
-      }
-
-      alert(data.message || "삭제되었습니다.");
+    .then((res) => {
+      if (!res.ok) throw new Error("삭제 실패");
       window.location.href = "trade.html";
     })
-    .catch((err) => console.error("상품 삭제 실패:", err));
+    .catch((err) => {
+      console.error(err);
+      alert("삭제에 실패했어요.");
+    });
+
 });
 
 // 수정하기
