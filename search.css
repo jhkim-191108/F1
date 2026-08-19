@@ -14,9 +14,10 @@
     margin-top: 40px;
     display: grid;
     grid-template-columns: repeat(auto-fit, 210px);
+    gap: 40px;
 }
 
-#productImg {
+.productImg {
     width: 210px;
     height: 210px;
     border-radius: 5px;

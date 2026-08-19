@@ -1,16 +1,76 @@
+const mainSectionGrid = document.querySelector("#mainSectionGrid");
 
-async function getProducts() {
+// 주소에서 검색어 가져오기
+const params = new URLSearchParams(location.search);
+const keyword = params.get("keyword") || "";
+// 검색어를 받아서 상품을 요청하는 함수만들기
+async function getProducts(keyword) {
     try{
-        const response = await fetch(`/api/products`);
-
+        // 1. 로그인 토큰 가져오기
+        const token = localStorage.getItem("token");
+        // 헤더를 담을 빈 상자를 만들어 줌
+        const headers = {};
+        // 토큰이 있을때만 인증 헤더를 넣음
+        if (token !== null) {
+            headers.Authorization = `Bearer ${token}`;
+        }
+        // fetch() 에서는 위로 headers를 넘겨준다
+        const response = await fetch(`/api/products?q=${encodeURIComponent(keyword)}`, {
+            headers: headers
+        }
+    );
+        // 에러 확인
         if(!response.ok) throw new Error(response.status);
-    
+    // j.som형식으로 데이터 받기
     const data = await response.json();
     console.log(data);
 
+    renderProducts(data.items);
     } catch (error) {
         console.error("실패", error.message);
     }
 }
 
-getProducts();
+function renderProducts(products) {
+    // HTML에 만들어둔 예시 상품카드 제거
+    const oldCard = mainSectionGrid.querySelectorAll(".mainGridCardBox");
+
+    oldCard.forEach(function (card) {
+        card.remove();
+    });
+
+    // API에서 받은 상품들을 하나씩 반복
+    // 받은 상품들(Products)에서 상품(product)을 하나 꺼내서 product라고 부름
+    products.forEach(function (product) {
+        // article을 하나 만들고 그 article을 card에 저장
+        const card = document.createElement("article");
+        // 위에 선언한 card에 클래스추가
+        card.classList.add("mainGridCardBox");
+
+        // article안에 들어갈 속성들 innerHTML로 추가
+        card.innerHTML = `
+            <img src="${product.thumbnail}" alt="${product.title}" class="productImg">
+            <div class="productInfo">
+                <h3 class="productName">${product.title}</h3>
+                <p class="productPrice">${product.price.toLocaleString()}원</p>
+                <p class="productAddress">${product.location}</p>
+            </div>
+            <div class="productMeta">
+                <span class="meta">조회 ${product.viewCount}</span>
+                <span class="meta">•</span>
+                <span class="meta">채팅 ${product.chatCount}</span>
+            </div>
+    `;
+    // HTML 내 mainSectionGrid에 append(추가)
+    mainSectionGrid.append(card);
+    });
+}
+
+// 나중에server.js로 옮겨서 넣을것
+// app.get("/api/products", (req, res) => {
+//     // 검색창에서 요청받은 query string까지 같이 전달하게 만들기(keyword=아이폰 부분까지)
+//     proxyToApi(req, res, req.originalUrl);
+// });
+
+// 1에서 가져온 keyword를 2번 함수에 전달
+getProducts(keyword);
