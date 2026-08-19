@@ -51,7 +51,7 @@ async function proxyToApi(req, res, path) {
     }
 
     const options = {
-      method: req.method,
+      method: (req.method || "GET").toUpperCase(),
       headers,
     };
 
