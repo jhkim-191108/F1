@@ -12,25 +12,33 @@
     
 </head>
 <body>
+    <!-- 상단Header -->
     <header class="upperBar">
         <!-- header내부 섹션1 : 로고 및 중고거래 동네인증 버튼 -->
         <nav id="upperBarLeft">
         <!-- 로고 이미지 + 홈화면 링크 -->
-            <a href="../html/onboarding.html">
+            <a href="./onboarding.html">
                 <img src="../images/logo.png" alt="당근로고" class="upperLogo">
             </a>
             <!-- 로고 이미지 옆 버튼 묶음 div -->
+            <!-- 현재 페이지면 주황. 동네인증은 로그인 후에만 보임 -->
             <div class="upperLeftText">
-                <a href="../html/trade.html" class="mainLogoText">중고거래</a>
-                <a href="./location.html" class="locationVerify">동네인증</a>
+                <a href="./trade.html" id="tradeNav">중고거래</a>
+                <a href="./location.html" id="locationNav" hidden>동네인증</a>
             </div>
         </nav>
         <!-- header 내부 섹션2 : flex, gap이 10으로 동일하기 때문에 따로 나눠서 감싸지 않음-->
         <div id="upperBarRight">
             <!-- 검색창 js로 엔터눌러 검색 등을 하기 위해 form으로 감쌈-->
-            <form id="searchForm">
-                <input type="search" name="search" id="searchTextArea" placeholder="물품이나 동네를 검색해보세요">
-            </form>
+            <!-- 작은 화면은 돋보기로 검색창을 열고 닫음 -->
+            <div class="searchWrap">
+                <button type="button" id="searchToggle" aria-label="검색 열기" aria-expanded="false">
+                    <img src="../images/icon-search.svg" alt="돋보기버튼">
+                </button>
+                <form id="searchForm">
+                    <input type="search" name="search" id="searchTextArea" placeholder="물품이나 동네를 검색해보세요">
+                </form>
+            </div>
             <!-- 로그아웃 상태에서만 보일 버튼 -->
             <div id="logoutStatusHeader">
                 <a href="./login.html" id="upperLoginButton">로그인</a>
@@ -42,14 +50,29 @@
                 <a href="./chat.html" id="upperChatButton">채팅하기</a>
                 <!-- 로그아웃버튼 -->
                 <button type="button" id="upperLogoutButton">로그아웃</button>
+                <!-- 프로필 버튼 -->
+                <div class="profileDropdown">
+                    <button type="button" id="profileButton" aria-label="프로필 메뉴" aria-expanded="false">
+                        <img src="../images/profile.svg" alt="" class="defaultIcon"/>
+                    </button>
+                    <!-- 모바일에서만 열림. 데스크톱은 프로필 클릭 시 마이페이지 -->
+                    <ul id="dropdownMenu" hidden>
+                        <li><a href="./mypage.html">마이페이지</a></li>
+                        <li><a href="./chat.html">채팅</a></li>
+                        <li><button type="button" class="dropdown-logout">로그아웃</button></li>
+                    </ul>
+                </div>
             </div>
         </div>
     </header>
     <main class="main">
+        <!-- 채팅: 왼쪽 목록 / 오른쪽 대화 -->
         <section class="chat-content">
+            <!-- 채팅 목록. JS에서 방을 채움 -->
             <div class="chat-list-container">
                 <div class="chat-info">
                     <h1 class="chat-info-id"></h1>
+                    <!-- 안읽은 방만 보기 -->
                     <label class="chat-unread-toggle">
                         <span>읽지 않은 채팅</span>
                         <input type="checkbox" id="unreadToggle" />
@@ -72,36 +95,63 @@
                 </ul>
             </div>
 
+            <!-- 채팅방. 상대 정보 + 말풍선 + 입력 -->
             <div class="chat-content-container">
                 <div class="chat-room-header">
-                    <button type="button" class="chat-back-btn" id="chatBackBtn" aria-label="채팅 목록으로">목록</button>
-                    <h2 class="chat-room-header-id"></h2>
-                    <span class="chat-manner-temp"></span>
-                    <button type="button" class="chat-leave-btn" id="chatLeaveBtn">나가기</button>
+                    <!-- 모바일에서 목록으로 돌아가기 -->
+                    <button type="button" class="chat-back-btn" id="chatBackBtn" aria-label="채팅 목록으로">
+                        <img src="../images/icon-back.png" alt="뒤로가기">
+                    </button>
+                    <div class="chat-room-header-user">
+                        <div class="chat-room-header-top">
+                            <h2 class="chat-room-header-id"></h2>
+                            <span class="chat-manner-temp"></span>
+                        </div>
+                        <p class="chat-room-header-location"></p>
+                    </div>
+                    <!-- ... 메뉴. 나가기만 -->
+                    <button type="button" class="chat-more-btn" id="chatMoreBtn" aria-label="더보기" aria-expanded="false">
+                        <img src="../images/icon-kebab.png" alt="케밥메뉴">
+                    </button>
                 </div>
 
+                <!-- 이 채팅이 연결된 상품 -->
                 <div class="chat-product-bar">
                     <div class="chat-product-thumb"></div>
                     <div class="chat-product-info">
-                        <p class="chat-product-title"></p>
+                        <p class="chat-product-title-row">
+                            <span class="chat-product-status"></span>
+                            <span class="chat-product-title"></span>
+                        </p>
                         <p class="chat-product-price"></p>
                     </div>
-                    <button type="button" class="chat-product-status"></button>
                 </div>
 
+                <!-- 말풍선. JS에서 채움. 상대만 프로필 -->
                 <div class="chat-message-area" id="chatMessageArea"></div>
 
                 <form class="chat-input-area" id="chatSendForm">
-                    <textarea class="chat-input" id="chatInput" placeholder="메시지를 입력해주세요"></textarea>
+                    <textarea class="chat-input" id="chatInput" placeholder="메시지 보내기" rows="1"></textarea>
                     <button type="submit" class="chat-send-btn">전송</button>
                 </form>
+
+                <!-- ... 누르면 열리는 하단 메뉴. 나가기 + 닫기 -->
+                <div class="chat-menu-overlay" id="chatMenuOverlay">
+                    <div class="chat-menu-sheet" role="dialog" aria-label="채팅방 메뉴">
+                        <div class="chat-menu-handle"></div>
+                        <button type="button" class="chat-menu-leave" id="chatLeaveBtn">
+                            <img src="../images/icon-trashcan.png" alt="채팅나가기">
+                            채팅방 나가기
+                        </button>
+                        <button type="button" class="chat-menu-close" id="chatMenuClose">닫기</button>
+                    </div>
+                </div>
             </div>
         </section>
     </main>
 
     <script src="../js/header.js"></script>
     <script src="../js/chat.js"></script>
-    <script src="../js/header.js"></script>
 
 </body>
 </html>

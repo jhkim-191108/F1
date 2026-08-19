@@ -1,3 +1,4 @@
+// 인기매물 목록 / 더 보기
 const listEl = document.querySelector(".pop-grid");
 const moreBtn = document.querySelector(".pop-items-more");
 

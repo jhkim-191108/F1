@@ -1,4 +1,4 @@
-
+// 글쓰기/수정. 주소에 ?id= 있으면 수정, 없으면 새 글
 const fileInput = document.querySelector("#write-image");
 const cameraIcon = document.querySelector(".icon-camera");
 const preview = document.querySelector(".preview");
@@ -7,12 +7,12 @@ const editId = params.get("id");
 
 let uploadedImageUrl = "";
 
-// 카메라 아이콘 클릭 → 파일 선택창 열기
+// 카메라 아이콘 → 숨겨둔 file input
 cameraIcon.addEventListener("click", () => {
   fileInput.click();
 });
 
-// 파일 고르면 서버에 업로드
+// 고른 사진을 POST /api/images 하고 미리보기
 fileInput.addEventListener("change", async () => {
   const file = fileInput.files[0];
   if (!file) return;
@@ -49,7 +49,7 @@ fileInput.addEventListener("change", async () => {
   }
 });
 
-// 수정이면 기존 글 채우기
+// 수정이면 기존 글 채움. 본인 글 아니면 상세로 돌려보냄
 async function loadProductForEdit() {
   if (!editId) {
     return;
@@ -116,7 +116,7 @@ async function loadProductForEdit() {
 
 loadProductForEdit();
 
-// 완료 버튼 → 상품 등록/수정
+// 완료. 수정은 PATCH, 새 글은 POST
 document.querySelector(".btn-done").addEventListener("click", async () => {
   const title = document.querySelector("#write-title").value;
   const price = Number(

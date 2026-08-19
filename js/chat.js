@@ -1,13 +1,18 @@
+// 채팅. 왼쪽 목록 / 오른쪽 대화. 상대 메시지에만 프로필
 const chatRoomListEl = document.querySelector("#chatRoomList");
 const chatMessageAreaEl = document.querySelector("#chatMessageArea");
 const chatSendForm = document.querySelector("#chatSendForm");
 const chatInput = document.querySelector("#chatInput");
-const chatMannerTemp= document.querySelector("#chatMannerTemp")
+const chatMenuOverlay = document.querySelector("#chatMenuOverlay");
+const chatMoreBtn = document.querySelector("#chatMoreBtn");
+
+// 내 id, 열린 방, 전체 목록, 상대 프로필
 let myUserId = null;
 let currentRoomId = null;
 let allChatList = [];
+let partnerProfileImage = "";
 
-// 토큰 헤더
+// 로그인 토큰을 Authorization 헤더에 붙임
 function authHeaders(extra = {}) {
     const token = localStorage.getItem("token");
     const headers = { ...extra };
@@ -19,7 +24,7 @@ function authHeaders(extra = {}) {
     return headers;
 }
 
-// 시간 포맷
+// 목록에 쓸 상대 시간. 예: 3분 전
 function formatTime(dateString) {
     if (!dateString) {
         return "";
@@ -45,7 +50,7 @@ function formatTime(dateString) {
     return `${Math.floor(days / 7)}주전`;
 }
 
-// 메시지 시간
+// 말풍선 옆 시각. 예: 오후 3:20
 function formatClock(dateString) {
     if (!dateString) {
         return "";
@@ -65,7 +70,7 @@ function formatPrice(price) {
     return `${Number(price).toLocaleString("ko-KR")}원`;
 }
 
-// 채팅 목록 아이템
+// 채팅방 한 줄. 클릭하면 그 방 열기
 function createChatRoomItem(chat) {
     const li = document.createElement("li");
     li.className = "chat-room-item";
@@ -117,7 +122,7 @@ function createChatRoomItem(chat) {
     return li;
 }
 
-// 채팅 목록 그리기
+// 채팅 목록 그리기. 안읽음만 보기면 필터
 function renderChatList() {
     const unreadOnly = document.querySelector("#unreadToggle").checked;
     const visibleList = unreadOnly
@@ -130,26 +135,63 @@ function renderChatList() {
     });
 }
 
-// 채팅방 헤더
+// 프로필 이미지 있는지
+function hasProfileImage(url) {
+    return Boolean(url) && url !== "string";
+}
+
+// 닉네임, 매너온도, 상품 정보, 상대 프로필 URL 채움
 function renderRoomHeader(room) {
     document.querySelector(".chat-room-header-id").textContent = room.partner.nickname;
+    document.querySelector(".chat-room-header-location").textContent = room.product.location || "";
     document.querySelector(".chat-product-title").textContent = room.product.title;
     document.querySelector(".chat-product-price").textContent = formatPrice(room.product.price);
     document.querySelector(".chat-product-status").textContent = room.product.statusLabel || "";
-    document.querySelector(".chat-manner-temp").textContent = `${room.product.seller.mannerTemp}°C`;
+
+    const mannerTemp = room.product.seller?.mannerTemp;
+    document.querySelector(".chat-manner-temp").textContent = mannerTemp ? `${mannerTemp}°C` : "";
+
     const thumb = document.querySelector(".chat-product-thumb");
-    if (room.product.thumbnail) {
+    if (hasProfileImage(room.product.thumbnail)) {
         thumb.style.backgroundImage = `url("${room.product.thumbnail}")`;
     } else {
         thumb.style.backgroundImage = "";
     }
+
+    partnerProfileImage = room.partner.profileImage || "";
 }
 
-// 메시지 말풍선
-function createMessageEl(message) {
+// 상대 동그란 프로필. 이어서 온 메시지는 자리만 비움
+function createPartnerAvatar(grouped) {
+    const avatar = document.createElement("div");
+    avatar.className = "chat-message-avatar";
+
+    if (grouped) {
+        avatar.classList.add("is-hidden");
+        return avatar;
+    }
+
+    if (hasProfileImage(partnerProfileImage)) {
+        avatar.style.backgroundImage = `url("${partnerProfileImage}")`;
+        return avatar;
+    }
+
+    const img = document.createElement("img");
+    img.src = "../images/profile.svg";
+    img.alt = "";
+    avatar.append(img);
+    return avatar;
+}
+
+// 말풍선. 내 메시지는 오른쪽, 상대는 왼쪽+프로필
+function createMessageEl(message, grouped = false) {
     const isMine = Number(message.senderId) === Number(myUserId);
     const wrap = document.createElement("div");
     wrap.className = isMine ? "chat-message chat-message-sent" : "chat-message chat-message-received";
+
+    if (grouped) {
+        wrap.classList.add("is-grouped");
+    }
 
     const bubble = document.createElement("p");
     bubble.className = "chat-message-bubble";
@@ -161,23 +203,25 @@ function createMessageEl(message) {
 
     if (isMine) {
         wrap.append(time, bubble);
-    } else {
-        wrap.append(bubble, time);
+        return wrap;
     }
 
+    wrap.append(createPartnerAvatar(grouped), bubble, time);
     return wrap;
 }
 
 // 메시지 목록 그리기
 function renderMessages(messages) {
     chatMessageAreaEl.replaceChildren();
-    messages.forEach((message) => {
-        chatMessageAreaEl.append(createMessageEl(message));
+    messages.forEach((message, index) => {
+        const prev = messages[index - 1];
+        const grouped = Boolean(prev) && Number(prev.senderId) === Number(message.senderId);
+        chatMessageAreaEl.append(createMessageEl(message, grouped));
     });
     chatMessageAreaEl.scrollTop = chatMessageAreaEl.scrollHeight;
 }
 
-// 내 정보 조회
+// 내 닉네임을 목록 위에 표시하려고 조회
 async function fetchMe() {
     const response = await fetch("/api/auth/me", {
         headers: authHeaders(),
@@ -218,7 +262,7 @@ async function fetchChatList() {
     renderChatList();
 }
 
-// 채팅방 열기
+// 방 상세 + 메시지를 같이 불러와서 대화 화면 채움
 async function openChatRoom(roomId) {
     currentRoomId = roomId;
 
@@ -249,6 +293,7 @@ async function openChatRoom(roomId) {
         item.classList.toggle("is-active", Number(item.dataset.roomId) === Number(roomId));
     });
 
+    // 모바일에서 대화 화면 열기
     document.querySelector(".chat-content").classList.add("is-room-open");
 
     await fetchChatList();
@@ -257,15 +302,19 @@ async function openChatRoom(roomId) {
 // 채팅방 화면 비우기
 function clearRoomView() {
     currentRoomId = null;
+    partnerProfileImage = "";
     document.querySelector(".chat-room-header-id").textContent = "";
+    document.querySelector(".chat-room-header-location").textContent = "";
+    document.querySelector(".chat-manner-temp").textContent = "";
     document.querySelector(".chat-product-title").textContent = "";
     document.querySelector(".chat-product-price").textContent = "";
     document.querySelector(".chat-product-status").textContent = "";
     document.querySelector(".chat-product-thumb").style.backgroundImage = "";
     chatMessageAreaEl.replaceChildren();
+    closeChatMenu();
 }
 
-// 채팅방 나가기
+// DELETE로 방 나간 뒤 목록으로
 async function leaveChatRoom() {
     if (!currentRoomId) {
         alert("나갈 채팅방을 먼저 선택해주세요.");
@@ -291,6 +340,7 @@ async function leaveChatRoom() {
     }
 
     clearRoomView();
+    // 모바일에서 목록으로
     document.querySelector(".chat-content").classList.remove("is-room-open");
     await fetchChatList();
 }
@@ -317,7 +367,9 @@ async function sendMessage(content) {
         return;
     }
 
-    chatMessageAreaEl.append(createMessageEl(data.message));
+    const last = chatMessageAreaEl.lastElementChild;
+    const grouped = Boolean(last) && last.classList.contains("chat-message-sent");
+    chatMessageAreaEl.append(createMessageEl(data.message, grouped));
     chatMessageAreaEl.scrollTop = chatMessageAreaEl.scrollHeight;
     await fetchChatList();
 }
@@ -340,8 +392,30 @@ chatSendForm.addEventListener("submit", async (event) => {
     }
 });
 
+// ... 누르면 나가기만 있는 하단 메뉴
+function openChatMenu() {
+    chatMenuOverlay.classList.add("is-open");
+    chatMoreBtn.setAttribute("aria-expanded", "true");
+}
+
+function closeChatMenu() {
+    chatMenuOverlay.classList.remove("is-open");
+    chatMoreBtn.setAttribute("aria-expanded", "false");
+}
+
+chatMoreBtn.addEventListener("click", openChatMenu);
+
+document.querySelector("#chatMenuClose").addEventListener("click", closeChatMenu);
+
+chatMenuOverlay.addEventListener("click", (event) => {
+    if (event.target === chatMenuOverlay) {
+        closeChatMenu();
+    }
+});
+
 // 채팅방 나가기
 document.querySelector("#chatLeaveBtn").addEventListener("click", async () => {
+    closeChatMenu();
     try {
         await leaveChatRoom();
     } catch (error) {
@@ -351,6 +425,7 @@ document.querySelector("#chatLeaveBtn").addEventListener("click", async () => {
 
 // 목록으로
 document.querySelector("#chatBackBtn").addEventListener("click", () => {
+    closeChatMenu();
     document.querySelector(".chat-content").classList.remove("is-room-open");
 });
 
@@ -365,6 +440,7 @@ async function initChat() {
         await fetchMe();
         await fetchChatList();
 
+        // 주소에 ?id= 있으면 그 방 열기
         const roomId = new URLSearchParams(window.location.search).get("id");
         if (roomId) {
             await openChatRoom(roomId);

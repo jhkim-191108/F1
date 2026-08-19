@@ -8,6 +8,7 @@
 .hero {
     display: flex;
     align-items: center;
+    justify-content: center;
     max-width: 100%;
     height: 727px;
     margin: 0 auto;
@@ -77,6 +78,7 @@
 .town-life {
     display: flex;
     align-items: center;
+    justify-content: center;
     max-width: 100%;
     margin: 0 auto;
     padding: 100px 40px;
@@ -117,6 +119,7 @@
 
 /* 동네생활 */
 .town-life {
+    
     background: var(--green-200);
 }
 .town-text2 { padding: 234px 0px 219px 217px; }
@@ -170,6 +173,7 @@
     padding: 112px 560px 64px 560px;
 }
 
+/* 인기매물 카드. JS에서 상위 8개 채움 */
 .pop-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -213,6 +217,7 @@
     color: var(--gray-600);
 }
 
+/* 더 보기 → trade.html */
 .pop-items-more {
     appearance: none;
     -webkit-appearance: none;

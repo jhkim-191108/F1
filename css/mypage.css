@@ -1,3 +1,4 @@
+/* 마이페이지. 프로필 + 정보 수정 폼 */
 body {
     height: 100vh;
     display: flex;
@@ -30,6 +31,7 @@ body {
     text-align: center;
 }
 
+/* 프로필 카드. 닉네임/이메일/지역/가입일 */
 .mypage-profile {
     display: flex;
     flex-direction: column;
@@ -56,6 +58,7 @@ body {
     border-radius: 50%;
 }
 
+/* 카메라 뱃지. 클릭하면 사진 선택 */
 .mypage-avatar-edit {
     position: absolute;
     right: -4px;
@@ -94,6 +97,7 @@ body {
     line-height: 1.5;
 }
 
+/* 닉네임 수정 폼 */
 .mypage-field {
     display: flex;
     flex-direction: column;
@@ -140,11 +144,13 @@ body {
     border-radius: 8px;
     cursor: pointer;
 }
+/* 지역은 동네인증에서만 바꿔서 수정 불가처럼 보이게 */
 #locationInput{
     cursor: not-allowed;
     background: var(--gray-200);
     color: var(--gray-800);
 }
+/* 480px 이하 */
 @media (max-width: 480px) {
     body {
         height: auto;

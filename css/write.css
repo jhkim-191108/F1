@@ -1,3 +1,4 @@
+/* 글쓰기/수정 폼 */
 .write {
   background-color: var(--gray-000);
   color: var(--gray-900);
@@ -20,6 +21,7 @@
   gap: 40px;
 }
 
+/* 사진 등록. 카메라 아이콘 누르면 파일 선택 */
 .write-box-1 .img-box {
   width: 210px;
   height: 210px;
@@ -81,6 +83,7 @@ textarea {
   font-family: inherit;
 }
 
+/* 완료. 새 글 등록 또는 수정 저장 */
 .btn-done {
   width: 100%;
   background-color: var(--orange-600);

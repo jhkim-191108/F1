@@ -1,3 +1,4 @@
+// 상품 상세. 본인 글이면 수정/삭제, 채팅하기는 방 만들고 이동
 const params = new URLSearchParams(window.location.search);
 const productId = params.get("id");
 const token = localStorage.getItem("token");
@@ -5,7 +6,7 @@ const token = localStorage.getItem("token");
 let sellerId = null;
 let currentUserId = null;
 
-// 상품 정보 가져오기
+// GET /api/products/:id 로 제목, 가격, 본문 채움
 async function getProduct() {
   try {
     const res = await fetch(`/api/products/${productId}`);
@@ -56,7 +57,7 @@ async function getProduct() {
 }
 
 
-// 내 글인지 확인
+// 로그인한 사람이 판매자면 수정/삭제 버튼 보여줌
 async function checkOwner() {
   try {
     if (!token || !sellerId) {
@@ -100,7 +101,7 @@ document.querySelector(".btn-back").addEventListener("click", () => {
 });
 
 
-// 채팅하기
+// POST /api/chats 후 chat.html?id= 로 이동
 document.querySelector(".btn-chat").addEventListener("click", async () => {
   try {
     const res = await fetch("/api/chats", {
@@ -139,7 +140,7 @@ document.querySelector(".btn-chat").addEventListener("click", async () => {
 });
 
 
-// 삭제하기
+// DELETE /api/products/:id 후 목록으로
 document.querySelector(".btn-delete").addEventListener("click", async () => {
   if (!confirm("이 게시글을 삭제할까요?")) {
     return;
@@ -169,7 +170,7 @@ document.querySelector(".btn-delete").addEventListener("click", async () => {
 });
 
 
-// 수정하기
+// 본인 글만 write.html?id= 로 보냄
 document.querySelector(".btn-edit").addEventListener("click", () => {
   if (!token || String(currentUserId) !== String(sellerId)) {
     alert("본인 게시글만 수정할 수 있습니다.");

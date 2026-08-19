@@ -1,6 +1,7 @@
+// 마이페이지. 내 정보 조회/수정, 프로필 사진은 파일 업로드
 let profileImageUrl = "";
 
-// 토큰 헤더
+// 로그인 토큰을 Authorization 헤더에 붙임
 function authHeaders(extra = {}) {
     const token = localStorage.getItem("token");
     const headers = { ...extra };
@@ -43,11 +44,12 @@ function renderUser(user) {
     document.querySelector("#createdAt").textContent = formatJoinDate(user.createdAt);
 
     document.querySelector("#nicknameInput").value = user.nickname || "";
+    // 지역은 동네인증에서만 변경. 입력칸은 disabled
     document.querySelector("#locationInput").value = user.location || "";
     profileImageUrl = hasImage ? user.profileImage : "";
 }
 
-// 내 정보 조회
+// GET /api/auth/me. 없으면 로그인으로
 async function fetchMe() {
     const token = localStorage.getItem("token");
 
@@ -76,7 +78,7 @@ async function fetchMe() {
     }
 }
 
-// 정보 수정
+// PATCH /api/auth/me
 async function updateMe(userData) {
     try {
         const response = await fetch("/api/auth/me", {
@@ -101,6 +103,7 @@ async function updateMe(userData) {
     }
 }
 
+// 정보 수정 제출
 document.querySelector("#mypageForm").addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -114,7 +117,7 @@ document.querySelector("#mypageForm").addEventListener("submit", async (event) =
     });
 });
 
-// 프로필 이미지 업로드
+// 카메라 뱃지로 고른 파일을 POST /api/images 한 뒤 URL 보관
 document.querySelector("#profileImageFile").addEventListener("change", async (event) => {
     const file = event.target.files[0];
     if (!file) {
@@ -146,4 +149,5 @@ document.querySelector("#profileImageFile").addEventListener("change", async (ev
     }
 });
 
+// 페이지 시작
 fetchMe();

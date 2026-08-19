@@ -2,6 +2,7 @@ body {
     background-color: var(--gray-050);
 }
 
+/* 상단 헤더. 스크롤해도 위에 고정 */
 .upperBar {
     position: sticky;
     top:0;
@@ -15,6 +16,7 @@ body {
     box-sizing: border-box;
 }
 
+/* 왼쪽: 로고 + 중고거래/동네인증 */
 #upperBarLeft {
     display: flex;
     flex-direction: row;
@@ -36,15 +38,22 @@ body {
 }
 
 #tradeNav,
-#locationNav {
+#locationNav,
+.mainLogoText,
+.locationVerify {
     color: var(--gray-800);
+    text-decoration: none;
 }
 
+/* 지금 페이지 메뉴는 주황 */
 #tradeNav.activeNav,
-#locationNav.activeNav {
+#locationNav.activeNav,
+.mainLogoText.activeNav,
+.locationVerify.activeNav {
     color: var(--orange-600);
 }
 
+/* 오른쪽: 검색 + 로그인/채팅/로그아웃/프로필 */
 #upperBarRight{
     display: flex;
     align-items: center;
@@ -60,6 +69,21 @@ body {
     box-sizing: border-box;
 }
 
+/* 작은 화면용 돋보기. 기본은 숨김 */
+#searchToggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: none;
+    padding: 0;
+    color: var(--gray-800);
+    cursor: pointer;
+}
+
+/* 로그인했을 때 채팅하기 */
 #upperChatButton {
     display: inline-flex;
     align-items: center;
@@ -74,6 +98,7 @@ body {
     font-weight: 400;
 }
 
+/* 로그인했을 때 로그아웃 */
 #upperLogoutButton {
     display: inline-flex;
     align-items: center;
@@ -90,6 +115,7 @@ body {
     cursor: pointer;
 }
 
+/* 로그아웃 상태 로그인 버튼 */
 #upperLoginButton {
     display: inline-flex;
     align-items: center;
@@ -106,6 +132,7 @@ body {
     cursor: pointer;
 }
 
+/* 로그인/로그아웃 묶음. hidden이면 안 보임 */
 #loginStatusHeader:not([hidden]),
 #logoutStatusHeader:not([hidden]) {
     display: flex;
@@ -113,17 +140,18 @@ body {
     gap: 10px;
 }
 
-.profileDropdown {
-    position: relative;
-}
-
+/* 프로필. 데스크톱은 마이페이지, 모바일은 드롭다운 */
 #profileButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 40px;
     height: 40px;
     border: none;
     border-radius: 50%;
     background: none;
     padding: 0;
+    overflow: hidden;
     cursor: pointer;
 }
 
@@ -133,26 +161,20 @@ body {
     height: 40px;
 }
 
+.profileDropdown {
+    position: relative;
+}
+
+/* 모바일 프로필 메뉴. 기본은 숨김 */
 #dropdownMenu {
-    position: absolute;
-    width: max-content;
-    white-space: nowrap;
-    padding: 0;
-    border: 1px solid var(--orange-600);
-    border-radius: 3px;
+    display: none;
+    list-style: none;
+    margin: 0;
 }
 
-.dropdownList {
-    background-color: var(--gray-000);
-    font-size: 0.9rem;
-    padding: 10px;
-    color: var(--gray-600);
-    box-sizing: border-box;
-    border-top: 1px solid var(--gray-300);
-}
-
-#firstDropdownchild {
-    border-top: none;
+#searchToggle img{
+    width: 30px;
+    height: 30px;
 }
 
 /* 반응형 미디어쿼리, 로그인 상태로 전환 후 버튼2개일 때 체크해서 적용 */
@@ -216,6 +238,39 @@ body {
     #searchTextArea::placeholder {
         font-size: 0.8rem;
     }
+
+    .upperBar {
+        flex-wrap: nowrap;
+        height: 60px;
+    }
+
+    #upperBarRight {
+        width: auto;
+        flex: 0 0 auto;
+    }
+
+    /* 돋보기만 두고, 검색창은 헤더 아래에 펼침 */
+    #searchToggle {
+        display: inline-flex;
+    }
+
+    #searchForm {
+        display: none;
+    }
+
+    .searchWrap.is-open #searchForm {
+        display: block;
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        top: calc(100% + 8px);
+        z-index: 1100;
+    }
+
+    .searchWrap.is-open #searchTextArea {
+        width: 100%;
+        box-shadow: 0 4px 12px rgba(17, 17, 17, 0.12);
+    }
 }
 
 /* 일반 모바일 */
@@ -243,5 +298,80 @@ body {
     /* 공간은 충분하지만 화면이 작아지니까 글자크기 0.1rem줄임 */
     #searchTextArea::placeholder {
         font-size: 0.7rem;
+    }
+
+    /* 채팅/로그아웃은 숨기고 프로필 메뉴에서 씀 */
+    #upperChatButton,
+    #upperLogoutButton {
+        display: none;
+    }
+
+    /* 프로필 드롭다운. 마이페이지/채팅/로그아웃 */
+    #dropdownMenu:not([hidden]) {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        z-index: 1100;
+        min-width: 148px;
+        padding: 6px 0;
+        background-color: var(--gray-000);
+        border: 1px solid var(--gray-200);
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(17, 17, 17, 0.12);
+    }
+
+    #dropdownMenu a,
+    #dropdownMenu button {
+        display: block;
+        width: 100%;
+        padding: 12px 16px;
+        font-family: inherit;
+        font-size: 0.9375rem;
+        color: var(--gray-800);
+        text-align: left;
+        text-decoration: none;
+        background: none;
+        border: none;
+        cursor: pointer;
+        box-sizing: border-box;
+    }
+
+    #dropdownMenu a:hover,
+    #dropdownMenu button:hover {
+        background-color: var(--gray-050);
+    }
+
+    .upperBar {
+        flex-wrap: nowrap;
+        height: 60px;
+    }
+
+    #upperBarRight {
+        width: auto;
+        flex: 0 0 auto;
+    }
+
+    #searchToggle {
+        display: inline-flex;
+    }
+
+    #searchForm {
+        display: none;
+    }
+
+    .searchWrap.is-open #searchForm {
+        display: block;
+        position: absolute;
+        left: 12px;
+        right: 12px;
+        top: calc(100% + 8px);
+        z-index: 1100;
+    }
+
+    .searchWrap.is-open #searchTextArea {
+        width: 100%;
+        box-shadow: 0 4px 12px rgba(17, 17, 17, 0.12);
     }
 }

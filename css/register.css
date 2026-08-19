@@ -1,3 +1,4 @@
+/* 회원가입 화면. 헤더 아래 폼을 위쪽에 둠 */
 body {
     height: 100vh;
     display: flex;
@@ -8,6 +9,7 @@ body {
     box-sizing: border-box;
 }
 
+/* 폼 영역. 위쪽 정렬 */
 .register {
     flex: 1;
     min-height: 0;
@@ -30,6 +32,7 @@ body {
     text-align: center;
 }
 
+/* 아이디/닉네임/비밀번호 칸 */
 .register-field {
     display: flex;
     flex-direction: column;
@@ -63,6 +66,7 @@ body {
     box-shadow: 0 0 0 2px var(--orange-600);
 }
 
+/* 회원가입 제출 버튼 */
 .register-btn {
     width: 100%;
     margin-top: 8px;
@@ -77,6 +81,7 @@ body {
     cursor: pointer;
 }
 
+/* 로그인 페이지로 가는 안내 */
 .register-guide {
     margin-top: 32px;
     font-size: 0.875rem;
@@ -94,6 +99,7 @@ body {
     text-decoration: none;
 }
 
+/* 480px 이하. 폼 너비를 화면에 맞춤 */
 @media (max-width: 480px) {
     body {
         height: auto;

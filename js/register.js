@@ -1,6 +1,7 @@
+// 회원가입. 닉네임 필수, 아이디 칸 값은 API email로 전송
 const registerForm = document.querySelector("#registerForm");
 
-// 회원가입
+// 회원가입 제출
 registerForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
@@ -14,7 +15,6 @@ registerForm.addEventListener("submit", async (event) => {
         return;
     }
 
-    // 비밀번호 확인
     if (password !== passwordConfirm) {
         alert("비밀번호가 일치하지 않습니다.");
         return;
@@ -27,6 +27,7 @@ registerForm.addEventListener("submit", async (event) => {
     });
 });
 
+// POST /api/auth/signup
 async function signupUser(userData) {
     try {
         const response = await fetch("/api/auth/signup", {
@@ -38,7 +39,6 @@ async function signupUser(userData) {
         });
 
         const data = await response.json();
-        // console.log("회원가입 응답:", data);
 
         if (!response.ok) {
             alert(data.message || "회원가입에 실패했습니다.");
