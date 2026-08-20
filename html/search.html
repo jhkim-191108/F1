@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="../css/search.css">
 </head>
 <body>
-    <!-- 상단Header -->
+    <!-- 상단Header --> 
     <header class="upperBar">
         <!-- header내부 섹션1 : 로고 및 중고거래 동네인증 버튼 -->
         <nav id="upperBarLeft">
@@ -71,28 +71,15 @@
             <section id="mainSectionGrid">
                 <h2 class="srOnly">검색결과</h2>
                 <!-- 여기에 JS에서 받아온 카드들이 들어올 예정 -->
-                <!-- 예시용 카드 양식 -->
-                <article class="mainGridCardBox">
-                    <img src="https://pub-b15f5fc07ddb441e8d9a1de9f83f2c2f.r2.dev/test/project/camping-p.png" alt="상품이미지" class="productImg">
-                    <div class="productInfo">
-                        <h3 class="productName">위니아 정수기</h3>
-                        <p class="productPrice">70,000원</p>
-                        <p class="productAddress">인천광역시 연수구</p>
-                    </div>
-                    <div class="productMeta">
-                        <span class="meta">조회 60</span>
-                        <span class="meta">•</span>
-                        <span class="meta">채팅 22</span>
-                    </div>
-                </article>
             </section>
             <!-- 하단 페이지 넘기기 버튼 -->
             <nav id="pageList" aria-label="상품 페이지 조작">
                 <button type="button" id="prevPage" class="pageButton" aria-label="이전 페이지">&lt</button>
-                <span id="pageNums" aria-label="페이지 번호">1 / 1</span>
+                <span id="pageNums" aria-label="페이지 번호"></span>
                 <button type="button" id="nextPage" class="pageButton" aria-label="다음 페이지">&gt</button>
             </nav>
         </main>
+
     <script src="../js/header.js"></script>
     <script src="../js/search.js"></script>
 </body>
