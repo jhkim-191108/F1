@@ -27,7 +27,7 @@ async function getProducts(keyword, page = 1) {
             headers.Authorization = `Bearer ${token}`;
         }
         // fetch() 에서는 위로 headers를 넘겨준다
-        const response = await fetch(`/api/products?q=${encodeURIComponent(keyword)}&page=${page}`, {
+        const response = await fetch(`/api/products?q=${encodeURIComponent(keyword)}&page=${page}&limit=8`, {
             headers: headers
         }
     );
