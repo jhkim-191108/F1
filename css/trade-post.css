@@ -10,12 +10,14 @@ button {
 /* ========== 메인 ========== */
 main {
   padding: 0 24px;
+  box-sizing: border-box;
 }
 
 .main-con {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
+  box-sizing: border-box;
 }
 
 /* ========== 뒤로가기 버튼 ========== */
@@ -46,6 +48,7 @@ main {
   flex-direction: column;
   gap: 20px;
   align-items: flex-start;
+  box-sizing: border-box;
 }
 
 .post .img-box {
@@ -55,13 +58,19 @@ main {
   border-radius: 10px;
   cursor: pointer;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
 }
 
 .post .img-box img {
+  max-width: 100%;
+  max-height: 100%;
   width: auto;
-  height: 100%;
-  margin: 0 auto;
+  height: auto;
   object-fit: contain;
+  display: block;
 }
 
 .post-box-1,
@@ -180,8 +189,30 @@ main {
 
 /* ========== 모바일 ========== */
 @media (max-width: 768px) {
+  main {
+    padding: 0 12px;
+  }
+
   .post {
-    padding: 24px;
+    padding: 16px;
+  }
+
+  .post .img-box {
+    height: auto;
+    min-height: 200px;
+    max-height: none;
+  }
+
+  .post .img-box img {
+    width: 100%;
+    height: auto;
+    max-height: none;
+  }
+
+  .post-box-2 .post-title {
+    white-space: normal;
+    word-break: keep-all;
+    text-align: left;
   }
 
   .btn-back {
@@ -190,7 +221,7 @@ main {
 
   .btn-chat {
     font-size: 0.875rem;
-    padding: 10px 30px;
+    padding: 10px 20px;
   }
 
   .post-box-2 {

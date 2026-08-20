@@ -1,8 +1,7 @@
 // =========================================================
 // 동네인증 페이지 스크립트
-// - .location-set  : 직접 검색해서 동네를 고르고 "내 동네 설정"으로 확정
-// - .location-verify: GPS로 감지된 현재 위치를 "동네인증 완료하기"로 확정
-// 두 경로 모두 최종적으로 서버(/api/auth/me)에 location을 저장함
+// - .location-set  : 직접 검색해서 내 동네만 "내 동네 설정"으로 화면에 확정 (서버 저장 안 함)
+// - .location-verify: "동네인증 완료하기"를 누르면 마이페이지(PATCH /api/auth/me)에 location 저장
 // =========================================================
 
 // Nominatim(OpenStreetMap) API 주소
@@ -35,7 +34,8 @@ const modalCancelBtn = document.querySelector('[data-role="modal-cancel"]');
 const modalEditBtn = document.querySelector('[data-role="modal-edit"]');
 
 // ---------- 상태값 ----------
-let myDong = null;           // 최종 확정된 동네 (설정 완료 시 채워짐)
+let myDong = null;           // 내 동네 설정으로 확정한 동네 (시 구 동)
+let isCertified = false;     // 동네인증 완료하기를 눌러 서버에 저장했는지
 let currentDong = null;      // 화면에 보여줄 GPS 주소 문자열
 let currentAddress = null;   // { si, gu, dong } - GPS 위치 비교용
 let selectedDong = null;     // 검색 목록에서 고른 동네 이름 (화면 표시용)
@@ -57,11 +57,73 @@ function showMap(lat, lng) {
 // ---------- Nominatim address 객체 -> {si, gu, dong} ----------
 // Nominatim은 지역마다 필드명이 조금씩 달라서(quarter/neighbourhood/suburb/village 등)
 // 여러 후보를 우선순위대로 시도해서 하나라도 있으면 그걸 씀
+// 시/도 이름인지 (서울특별시, 대구광역시 등)
+function isSiName(name) {
+    return /광역시$|특별시$|특별자치시$|도$/.test(name);
+}
+
+// 구/군 이름인지
+function isGuName(name) {
+    return /구$|군$/.test(name);
+}
+
 function extractAddressParts(addr) {
-    const dong = addr.quarter || addr.neighbourhood || addr.suburb || addr.village || "";
-    const gu = addr.borough || addr.city_district || "";
-    const si = addr.city || addr.province || "";
+    // 한국 동은 quarter뿐 아니라 legal(행정구역)로 오는 경우가 있음
+    let dong =
+        addr.quarter ||
+        addr.neighbourhood ||
+        addr.suburb ||
+        addr.village ||
+        addr.town ||
+        addr.hamlet ||
+        addr.legal ||
+        "";
+
+    if (!dong) {
+        // quarter/legal이 비면, 끝이 동/가/읍/면/리인 값을 동으로 씀
+        for (const value of Object.values(addr)) {
+            if (
+                typeof value === "string" &&
+                /[동일가읍면리]$/.test(value) &&
+                !isSiName(value) &&
+                !isGuName(value)
+            ) {
+                dong = value;
+                break;
+            }
+        }
+    }
+
+    // city가 구 이름인 경우가 있어서, 광역시/도는 province·state·city 순으로 고름
+    let si = "";
+    for (const name of [addr.province, addr.state, addr.city]) {
+        if (name && isSiName(name)) {
+            si = name;
+            break;
+        }
+    }
+    if (!si) {
+        si = addr.province || addr.state || addr.city || "";
+    }
+
+    let gu = "";
+    for (const name of [addr.borough, addr.city_district, addr.county, addr.city]) {
+        if (name && isGuName(name)) {
+            gu = name;
+            break;
+        }
+    }
+
     return { si, gu, dong };
+}
+
+// "대구광역시 달서구 두류동"처럼 시/구/동 순으로 붙임
+function formatDong(parts) {
+    if (!parts) {
+        return "";
+    }
+
+    return [parts.si, parts.gu, parts.dong].filter(Boolean).join(" ");
 }
 
 // ---------- 좌표 -> 주소 (GPS 자동감지용) ----------
@@ -143,7 +205,7 @@ distanceModal.addEventListener("click", (e) => {
     if (e.target === distanceModal) closeDistanceModal();
 });
 
-// 검색 결과 클릭
+// 검색 결과 클릭. 입력창에는 display_name 대신 시 구 동 형식을 넣음
 resultsEl.addEventListener("click", (e) => {
     const li = e.target.closest("li");
     if (!li) return;
@@ -152,7 +214,7 @@ resultsEl.addEventListener("click", (e) => {
     selectedDong = place.display_name;
     selectedCoords = { lat: Number(place.lat), lng: Number(place.lon) };
     selectedAddress = extractAddressParts(place.address ?? {});
-    inputEl.value = selectedDong;
+    inputEl.value = formatDong(selectedAddress) || selectedDong;
     resultsEl.hidden = true;
     setStatusEl.textContent = "";
     setStatusEl.classList.remove("is-error");
@@ -208,7 +270,28 @@ setBtn.addEventListener("click", async () => {
     setStatusEl.textContent = "";
     setStatusEl.classList.remove("is-error");
 
-    myDong = selectedDong;
+    // 화면 확정만. 마이페이지 저장은 동네인증 완료하기에서 함
+    myDong = formatDong(selectedAddress) || selectedDong;
+    isCertified = false;
+    resultsEl.hidden = true;
+    renderState();
+});
+
+// "동네인증 완료하기" 버튼: 설정해 둔 내 동네를 마이페이지에 저장
+confirmBtn.addEventListener("click", async () => {
+    if (!currentDong) return; // GPS 위치 확인 전이면 아무것도 안 함 (버튼도 disabled 상태)
+
+    // 당근처럼 내 동네를 먼저 고른 뒤에만 인증
+    if (!myDong) {
+        statusEl.textContent = "내 동네를 먼저 설정해주세요.";
+        return;
+    }
+
+    // 설정한 동네가 현재 위치와 다르면 인증하지 않음
+    if (!isSameArea(currentAddress, selectedAddress)) {
+        openDistanceModal();
+        return;
+    }
 
     // 서버에 내 동네 저장
     try {
@@ -229,42 +312,7 @@ setBtn.addEventListener("click", async () => {
         }
 
         console.log("동네 저장 완료:", data.user.location);
-        resultsEl.hidden = true;
-        renderState();
-
-    } catch (error) {
-        console.error("동네 저장 실패:", error);
-
-        setStatusEl.textContent = "동네 저장에 실패했습니다.";
-        setStatusEl.classList.add("is-error");
-    }
-});
-
-// "동네인증 완료하기" 버튼: GPS로 감지된 현재 위치로 확정
-confirmBtn.addEventListener("click", async () => {
-    if (!currentDong) return; // GPS 위치 확인 전이면 아무것도 안 함 (버튼도 disabled 상태)
-
-    myDong = currentDong;
-
-    // 서버에 내 동네 저장 (검색 경로와 동일한 방식)
-    try {
-        const response = await fetch("/api/auth/me", {
-            method: "PATCH",
-            headers: authHeaders({
-                "Content-Type": "application/json",
-            }),
-            body: JSON.stringify({
-                location: myDong,
-            }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            throw new Error(data.message || "동네 저장에 실패했습니다.");
-        }
-
-        console.log("동네 저장 완료:", data.user.location);
+        isCertified = true;
         renderState();
 
     } catch (error) {
@@ -274,11 +322,17 @@ confirmBtn.addEventListener("click", async () => {
 });
 
 // ---------- 상태 렌더링 ----------
-// myDong(확정된 동네) 유무에 따라 제목/안내 문구를 바꿔줌
+// 내 동네 설정 후면 제목을 "설정된 동네:"로 바꾸고, 서버 저장 후에만 인증 완료 문구
 function renderState() {
     if (myDong) {
         titleEl.textContent = `설정된 동네: ${myDong}`;
-        statusEl.textContent = "동네 인증이 완료되었습니다.";
+        if (isCertified) {
+            statusEl.textContent = "동네 인증이 완료되었습니다.";
+        } else {
+            statusEl.textContent = currentDong
+                ? `현재 위치: ${currentDong}`
+                : "위치를 확인하는 중입니다...";
+        }
     } else {
         titleEl.textContent = "어디에 살고 계신가요?";
         statusEl.textContent = currentDong
@@ -307,9 +361,7 @@ function showMyLocation() {
             showMap(lat, lng);
             try {
                 currentAddress = await reverseGeocode(lat, lng);
-                currentDong = [currentAddress.si, currentAddress.gu, currentAddress.dong]
-                    .filter(Boolean)
-                    .join(" ");
+                currentDong = formatDong(currentAddress);
             } catch (err) {
                 // 역지오코딩 API 실패 시에도 FALLBACK으로 대체해서 흐름이 끊기지 않게 함
                 currentAddress = { si: FALLBACK.si, gu: FALLBACK.gu, dong: FALLBACK.dong };

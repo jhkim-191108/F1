@@ -13,6 +13,9 @@
   margin-top: 98px;
   font-size: 1rem;
   font-weight: 400;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
 }
 
 .write-box-1 {
@@ -44,6 +47,8 @@
 
 .write-info {
   width: 320px;
+  max-width: 100%;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -99,13 +104,24 @@ textarea {
 @media (max-width: 768px) {
   .write {
     margin-top: 0;
+    padding: 20px;
     font-size: 0.875rem;
+    gap: 24px;
   }
+
   .write-box-1 {
     flex-direction: column;
+    gap: 16px;
   }
 
   .write-box-1 .img-box {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    max-width: 210px;
+  }
+
+  .write-info {
     width: 100%;
   }
 }

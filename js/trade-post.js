@@ -101,8 +101,14 @@ document.querySelector(".btn-back").addEventListener("click", () => {
 });
 
 
-// POST /api/chats 후 chat.html?id= 로 이동
+// POST /api/chats 후 chat.html?id= 로 이동. 비로그인이면 로그인 페이지로
 document.querySelector(".btn-chat").addEventListener("click", async () => {
+  if (!token) {
+    alert("로그인이 필요합니다.");
+    window.location.href = "./login.html";
+    return;
+  }
+
   try {
     const res = await fetch("/api/chats", {
       method: "POST",

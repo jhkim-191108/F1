@@ -93,7 +93,9 @@
 }
 
 .popular-thumb {
-  height: 210px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
   background-color: var(--gray-200);
   border-radius: 12px;
   margin-bottom: 16px;
@@ -101,7 +103,10 @@
 }
 
 .popular-thumb img {
+  width: 100%;
   height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .popular-text-box {
@@ -144,6 +149,17 @@
 
 /* ========== 모바일 ========== */
 @media (max-width: 768px) {
+  .btn-floating {
+    width: 64px;
+    height: 64px;
+    right: 16px;
+    bottom: 16px;
+    font-size: 0.75rem;
+    padding: 8px;
+    text-align: center;
+    line-height: 1.2;
+  }
+
   .banner {
     height: 274px;
   }

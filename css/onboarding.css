@@ -468,7 +468,7 @@
     /* 인기매물 제목/그리드 추가 축소 */
     .pop-title { font-size: 1.5rem; padding: 32px 16px 24px; }
     .pop-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 16px;
     }
 
