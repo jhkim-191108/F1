@@ -129,7 +129,8 @@ app.delete("/api/chats/:id", (req, res) => {
 
 // 상품 목록. 중고거래, 온보딩 인기매물
 app.get("/api/products", (req, res) => {
-  proxyToApi(req, res, "/api/products");
+//검색창에서 요청받은 query string까지 같이 전달하게 만들기(keyword=아이폰 부분까지)
+    proxyToApi(req, res, req.originalUrl);
 });
 
 // 상품 상세. trade-post, 글 수정 시 기존 값 채우기
