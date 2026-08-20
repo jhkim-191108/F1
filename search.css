@@ -1,3 +1,4 @@
+/* H(제목)태그 숨김표시 */
 .srOnly {
     position: absolute;
     width: 1px;
@@ -7,7 +8,7 @@
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
 }
-
+/* 메인-검색 결과 그리드 섹션 */
 #mainSectionGrid {
     margin-left: 120px;
     margin-right: 120px;
@@ -16,7 +17,7 @@
     grid-template-columns: repeat(auto-fit, 210px);
     gap: 40px;
 }
-
+/* 상품 이미지 */
 .productImg {
     width: 210px;
     height: 210px;
@@ -24,7 +25,7 @@
     overflow: hidden;
     cursor: pointer;
 }
-
+/* 상품 정보란 */
 .productInfo {
     margin-top: 16px;
     display: flex;
@@ -50,7 +51,7 @@
     font-weight: 400;
     color: var(--gray-600);
 }
-
+/* 조호수 및 채팅수 */
 .productMeta {
     margin-top: 6px;
     display: flex;
@@ -63,7 +64,7 @@
     font-weight: 400;
     color: var(--gray-600);
 }
-
+/* 페이지 번호 조작 */
 #pageList {
     display: flex;
     justify-content: center;
@@ -77,26 +78,34 @@
     padding: 0;
     transition: all 0.3s;
 }
-
+/* 페이지 조작버튼 마우스 올릴 시 변화 */
 #pageList button:hover {
     color: blue;
-    transform: scale(1.5rem);
+    transform: scale(1.5);
 }
-
+/* 이전페이지 아이콘 */
 #prevPage {
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--gray-500);
 }
-
+/* 다음페이지 아이콘 */
 #nextPage {
     font-size: 1.25rem;
     font-weight: 600;
     color: var(--gray-700);
 }
-
+/* 페이지번호 */
 #pageNums {
     font-size: 1.063rem;
     font-weight: 600;
     color: var(--gray-700);
+}
+/* 검색 결과 없음 */
+.emptyMessage {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 0;
+    font-size: 1rem;
+    color: var(--gray-600);
 }

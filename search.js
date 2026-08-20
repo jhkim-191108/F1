@@ -1,10 +1,22 @@
+// DOM요소 연결
 const mainSectionGrid = document.querySelector("#mainSectionGrid");
+const pageNums = document.querySelector("#pageNums");
+const prevPage = document.querySelector("#prevPage");
+const nextPage = document.querySelector("#nextPage");
+const searchInput = document.querySelector("#searchTextArea");
 
 // 주소에서 검색어 가져오기
 const params = new URLSearchParams(location.search);
 const keyword = params.get("keyword") || "";
+
+let currentPage = 1;
+let totalPages = 1;
+// 검색 결과가 페이지로 넘어가도 헤더 검색창에 기존 검색어가 남아있게 처리
+if (searchInput) {
+    searchInput.value = keyword;
+}
 // 검색어를 받아서 상품을 요청하는 함수만들기
-async function getProducts(keyword) {
+async function getProducts(keyword, page = 1) {
     try{
         // 1. 로그인 토큰 가져오기
         const token = localStorage.getItem("token");
@@ -15,7 +27,7 @@ async function getProducts(keyword) {
             headers.Authorization = `Bearer ${token}`;
         }
         // fetch() 에서는 위로 headers를 넘겨준다
-        const response = await fetch(`/api/products?q=${encodeURIComponent(keyword)}`, {
+        const response = await fetch(`/api/products?q=${encodeURIComponent(keyword)}&page=${page}`, {
             headers: headers
         }
     );
@@ -26,6 +38,16 @@ async function getProducts(keyword) {
     console.log(data);
 
     renderProducts(data.items);
+
+    // 현재 페이지 표시
+    currentPage = data.page;
+    totalPages = data.totalPages;
+
+    pageNums.textContent = `${currentPage} / ${totalPages}`;
+
+    prevPage.disabled = currentPage <= 1;
+    nextPage.disabled = currentPage >= totalPages;
+
     } catch (error) {
         console.error("실패", error.message);
     }
@@ -38,6 +60,22 @@ function renderProducts(products) {
     oldCard.forEach(function (card) {
         card.remove();
     });
+
+    // "검색 결과가 없습니다."가 생성된 뒤 다시 상품이 생겼을 때 이전 안내문이 남는 걸 방지.
+    const oldEmpty = mainSectionGrid.querySelector(".emptyMessage");
+
+    if (oldEmpty) {
+        oldEmpty.remove();
+    }
+
+    // 검색결과없음 표시
+    if (products.length === 0) {
+        const empty = document.createElement("p");
+        empty.classList.add("emptyMessage");
+        empty.textContent = "검색 결과가 없습니다.";
+        mainSectionGrid.append(empty);
+        return;
+    }
 
     // API에서 받은 상품들을 하나씩 반복
     // 받은 상품들(Products)에서 상품(product)을 하나 꺼내서 product라고 부름
@@ -61,6 +99,10 @@ function renderProducts(products) {
                 <span class="meta">채팅 ${product.chatCount}</span>
             </div>
     `;
+    // 상품 클릭처리
+    card.addEventListener("click", function () {
+        location.href = `./trade_post.html?id=${product.id}`;
+    });
     // HTML 내 mainSectionGrid에 append(추가)
     mainSectionGrid.append(card);
     });
@@ -73,4 +115,22 @@ function renderProducts(products) {
 // });
 
 // 1에서 가져온 keyword를 2번 함수에 전달
-getProducts(keyword);
+
+// 페이지 넘기기 이벤트처리
+prevPage.addEventListener("click", function () {
+    if (currentPage <= 1) {
+        return;
+    }
+
+    getProducts(keyword, currentPage - 1);
+});
+
+nextPage.addEventListener("click", function () {
+    if (currentPage >= totalPages) {
+        return;
+    }
+
+    getProducts(keyword, currentPage + 1);
+});
+
+getProducts(keyword, currentPage);
