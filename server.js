@@ -43,6 +43,10 @@ app.use("/css", express.static("css"));
 app.use("/js", express.static("js"));
 app.use("/images", express.static("images"));
 
+app.get("/", (req,res) => {
+  res.redirect("html/index.html");
+})
+
 // 프론트 요청을 당근 API로 전달. API_KEY + 로그인 토큰 포함
 async function proxyToApi(req, res, path) {
   try {
@@ -154,6 +158,10 @@ app.post("/api/products", (req, res) => {
 });
 
 // 서버 시작
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
-});
+if(require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
