@@ -1,5 +1,15 @@
-const REVERSE_URL = "https://nominatim.openstreetmap.org/reverse";
-const GEO_URL = "https://nominatim.openstreetmap.org/search";
+// =========================================================
+// 동네인증 페이지 스크립트
+// - .location-set  : 직접 검색해서 동네를 고르고 "내 동네 설정"으로 확정
+// - .location-verify: GPS로 감지된 현재 위치를 "동네인증 완료하기"로 확정
+// 두 경로 모두 최종적으로 서버(/api/auth/me)에 location을 저장함
+// =========================================================
+
+// Nominatim(OpenStreetMap) API 주소
+const REVERSE_URL = "https://nominatim.openstreetmap.org/reverse"; // 좌표 -> 주소
+const GEO_URL = "https://nominatim.openstreetmap.org/search";      // 검색어 -> 주소 후보 목록
+
+// GPS를 못 쓰거나(브라우저 미지원) 사용자가 위치 권한을 거부했을 때 쓸 기본값
 const FALLBACK = {
     name: "서울 강서구 화곡동",
     lat: 37.5407,
@@ -9,7 +19,7 @@ const FALLBACK = {
     dong: "화곡동",
 };
 
-// DOM refs
+// ---------- DOM 참조 ----------
 const titleEl = document.querySelector('[data-role="title"]');
 const inputEl = document.querySelector('[data-role="input"]');
 const resultsEl = document.querySelector('[data-role="search-results"]');
@@ -19,19 +29,22 @@ const statusEl = document.querySelector('[data-role="status"]');
 const confirmBtn = document.querySelector('[data-role="confirm-btn"]');
 const map = document.querySelector('#map');
 
+// 검색한 동네가 현재 위치와 너무 다를 때 띄우는 확인 모달
 const distanceModal = document.querySelector('[data-role="distance-modal"]');
 const modalCancelBtn = document.querySelector('[data-role="modal-cancel"]');
 const modalEditBtn = document.querySelector('[data-role="modal-edit"]');
 
-let myDong = null;
+// ---------- 상태값 ----------
+let myDong = null;           // 최종 확정된 동네 (설정 완료 시 채워짐)
 let currentDong = null;      // 화면에 보여줄 GPS 주소 문자열
-let currentAddress = null;   // { si, gu, dong } - 비교용
+let currentAddress = null;   // { si, gu, dong } - GPS 위치 비교용
 let selectedDong = null;     // 검색 목록에서 고른 동네 이름 (화면 표시용)
-let selectedCoords = null;
-let selectedAddress = null;  // { si, gu, dong } - 비교용
-let searchList = [];         // 마지막 검색 결과 원본 목록
+let selectedCoords = null;   // 검색해서 고른 위치의 좌표
+let selectedAddress = null;  // { si, gu, dong } - 검색해서 고른 위치 비교용
+let searchList = [];         // 마지막 검색 결과 원본 목록 (클릭 시 index로 다시 찾기 위함)
 
 // ---------- 지도 ----------
+// 좌표를 중심으로 한 작은 bbox(영역)를 만들어 OpenStreetMap embed URL 생성
 function buildMapUrl(lat, lng) {
     const d = 0.008;
     const bbox = [lng - d, lat - d, lng + d, lat + d].join(",");
@@ -42,6 +55,8 @@ function showMap(lat, lng) {
 }
 
 // ---------- Nominatim address 객체 -> {si, gu, dong} ----------
+// Nominatim은 지역마다 필드명이 조금씩 달라서(quarter/neighbourhood/suburb/village 등)
+// 여러 후보를 우선순위대로 시도해서 하나라도 있으면 그걸 씀
 function extractAddressParts(addr) {
     const dong = addr.quarter || addr.neighbourhood || addr.suburb || addr.village || "";
     const gu = addr.borough || addr.city_district || "";
@@ -55,7 +70,7 @@ async function reverseGeocode(lat, lng) {
     url.searchParams.set("lat", lat);
     url.searchParams.set("lon", lng);
     url.searchParams.set("format", "json");
-    url.searchParams.set("accept-language", "ko");
+    url.searchParams.set("accept-language", "ko"); // 한글 주소로 받기
     const res = await fetch(url);
     if (!res.ok) throw new Error("주소 변환 실패 (HTTP " + res.status + ")");
     const data = await res.json();
@@ -67,7 +82,7 @@ async function geocode(query, count = 5) {
     const url = new URL(GEO_URL);
     url.searchParams.set("q", query);
     url.searchParams.set("format", "json");
-    url.searchParams.set("addressdetails", "1");
+    url.searchParams.set("addressdetails", "1"); // si/gu/dong 비교를 위해 상세 주소 포함
     url.searchParams.set("accept-language", "ko");
     url.searchParams.set("limit", count);
     const res = await fetch(url);
@@ -76,6 +91,7 @@ async function geocode(query, count = 5) {
 }
 
 // ---------- 같은 동네인지 주소로 비교 ----------
+// 좌표 거리 대신 시/구/동 문자열을 직접 비교함
 function isSameArea(current, selected) {
     if (!current || !selected) return false;
     if (!current.gu || !selected.gu) return false;
@@ -84,12 +100,12 @@ function isSameArea(current, selected) {
     if (selected.dong) {
         return current.dong === selected.dong;
     }
-    return true; // 검색 결과에 동 정보가 없으면(구 단위 검색) 구까지만 맞아도 인증 허용
+    return true; // 검색 결과에 동 정보가 없으면 구까지만 맞아도 통과
 }
 
 // ---------- 검색 결과 목록 렌더링 ----------
 function renderResults(list) {
-    searchList = list;
+    searchList = list; // 클릭 이벤트에서 index로 다시 찾기 위해 원본 저장
     resultsEl.innerHTML = "";
     if (!list.length) {
         resultsEl.hidden = true;
@@ -98,7 +114,7 @@ function renderResults(list) {
     list.forEach((place, i) => {
         const li = document.createElement("li");
         li.textContent = place.display_name;
-        li.dataset.index = i;
+        li.dataset.index = i; // 클릭 시 이 index로 searchList에서 원본 데이터 찾음
         resultsEl.appendChild(li);
     });
     resultsEl.hidden = false;
@@ -111,7 +127,9 @@ function openDistanceModal() {
 function closeDistanceModal() {
     distanceModal.hidden = true;
 }
+// 취소 버튼 -> 그냥 모달만 닫기
 modalCancelBtn.addEventListener("click", closeDistanceModal);
+// 동네 수정하기 버튼 -> 모달 닫고 입력값/선택값 초기화해서 다시 검색하게 함
 modalEditBtn.addEventListener("click", () => {
     closeDistanceModal();
     inputEl.value = "";
@@ -120,11 +138,12 @@ modalEditBtn.addEventListener("click", () => {
     selectedCoords = null;
     selectedAddress = null;
 });
+// 모달 바깥(반투명 배경) 클릭 시에도 닫히게
 distanceModal.addEventListener("click", (e) => {
     if (e.target === distanceModal) closeDistanceModal();
 });
 
-// 검색 결과 클릭 (이벤트 위임)
+// 검색 결과 클릭
 resultsEl.addEventListener("click", (e) => {
     const li = e.target.closest("li");
     if (!li) return;
@@ -140,9 +159,11 @@ resultsEl.addEventListener("click", (e) => {
 });
 
 // 입력할 때마다 (디바운스 적용) 검색
+// 타이핑할 때마다 바로 API를 호출하지 않고, 300ms 동안 추가 입력이 없을 때만 검색 실행
 let debounceTimer = null;
 inputEl.addEventListener("input", () => {
     clearTimeout(debounceTimer);
+    // 입력값이 바뀌면 이전에 선택했던 결과는 무효화
     selectedDong = null;
     selectedCoords = null;
     selectedAddress = null;
@@ -164,18 +185,21 @@ inputEl.addEventListener("input", () => {
 
 // "내 동네 설정" 버튼: 검색해서 고른 동네가 현재 GPS 주소와 같은 구/동인지 확인 후 확정
 setBtn.addEventListener("click", async () => {
+    // 목록에서 아직 아무것도 안 골랐으면 안내 문구만 띄우고 중단
     if (!selectedCoords) {
         setStatusEl.textContent = "목록에서 동네를 선택해주세요.";
         setStatusEl.classList.add("is-error");
         return;
     }
 
+    // GPS 위치를 아직 확인 못했으면(비동기 진행 중) 잠시 후 다시 시도하도록 안내
     if (!currentAddress) {
         setStatusEl.textContent = "현재 위치를 확인하는 중입니다. 잠시 후 다시 시도해주세요.";
         setStatusEl.classList.add("is-error");
         return;
     }
 
+    // 현재 위치와 구/동이 다르면 바로 확정하지 않고 확인 모달을 띄움
     if (!isSameArea(currentAddress, selectedAddress)) {
         openDistanceModal();
         return;
@@ -218,10 +242,11 @@ setBtn.addEventListener("click", async () => {
 
 // "동네인증 완료하기" 버튼: GPS로 감지된 현재 위치로 확정
 confirmBtn.addEventListener("click", async () => {
-    if (!currentDong) return;
+    if (!currentDong) return; // GPS 위치 확인 전이면 아무것도 안 함 (버튼도 disabled 상태)
 
     myDong = currentDong;
 
+    // 서버에 내 동네 저장 (검색 경로와 동일한 방식)
     try {
         const response = await fetch("/api/auth/me", {
             method: "PATCH",
@@ -249,6 +274,7 @@ confirmBtn.addEventListener("click", async () => {
 });
 
 // ---------- 상태 렌더링 ----------
+// myDong(확정된 동네) 유무에 따라 제목/안내 문구를 바꿔줌
 function renderState() {
     if (myDong) {
         titleEl.textContent = `설정된 동네: ${myDong}`;
@@ -262,7 +288,9 @@ function renderState() {
 }
 
 // ---------- GPS로 현재 위치 자동 감지 ----------
+// 페이지 진입 시 자동 실행
 function showMyLocation() {
+    // 브라우저가 geolocation 자체를 지원하지 않는 경우 -> 바로 FALLBACK 사용
     if (!navigator.geolocation) {
         currentAddress = { si: FALLBACK.si, gu: FALLBACK.gu, dong: FALLBACK.dong };
         currentDong = FALLBACK.name;
@@ -272,6 +300,7 @@ function showMyLocation() {
         return;
     }
     navigator.geolocation.getCurrentPosition(
+        // 성공 콜백: 좌표를 얻어와서 지도 표시 + 주소로 역변환
         async function (position) {
             const lat = position.coords.latitude;
             const lng = position.coords.longitude;
@@ -282,6 +311,7 @@ function showMyLocation() {
                     .filter(Boolean)
                     .join(" ");
             } catch (err) {
+                // 역지오코딩 API 실패 시에도 FALLBACK으로 대체해서 흐름이 끊기지 않게 함
                 currentAddress = { si: FALLBACK.si, gu: FALLBACK.gu, dong: FALLBACK.dong };
                 currentDong = FALLBACK.name;
                 console.error(err);
@@ -289,6 +319,7 @@ function showMyLocation() {
             confirmBtn.disabled = false;
             renderState();
         },
+        // 실패 콜백: 사용자가 위치 권한을 거부했거나 오류가 난 경우 -> FALLBACK 사용
         function () {
             currentAddress = { si: FALLBACK.si, gu: FALLBACK.gu, dong: FALLBACK.dong };
             currentDong = FALLBACK.name;
@@ -297,8 +328,10 @@ function showMyLocation() {
             renderState();
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-    );  
+    );
 }
+
+// 로그인 시 저장해둔 토큰을 Authorization 헤더에 실어서 반환하는 헬퍼
 function authHeaders(extra = {}) {
     const token = localStorage.getItem("token");
     const headers = { ...extra };
@@ -310,5 +343,6 @@ function authHeaders(extra = {}) {
     return headers;
 }
 
+// 페이지 진입 시 초기 상태 표시 + GPS 위치 감지 시작
 renderState();
 showMyLocation();
