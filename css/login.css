@@ -103,8 +103,8 @@ body {
     text-decoration: none;
 }
 
-/* 480px 이하. 폼 너비를 화면에 맞춤 */
-@media (max-width: 480px) {
+/* 768px 이하. 폼 너비를 화면에 맞춤 */
+@media (max-width: 768px) {
     body {
         height: auto;
         min-height: 100dvh;

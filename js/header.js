@@ -64,7 +64,7 @@ if (dropdownLogoutButton) {
 }
 
 function isMobileHeader() {
-    return window.matchMedia("(max-width: 480px)").matches;
+    return window.matchMedia("(max-width: 768px)").matches;
 }
 
 // 프로필 드롭다운 닫기

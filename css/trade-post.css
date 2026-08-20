@@ -179,7 +179,7 @@ main {
 }
 
 /* ========== 모바일 ========== */
-@media (max-width: 480px) {
+@media (max-width: 768px) {
   .post {
     padding: 24px;
   }

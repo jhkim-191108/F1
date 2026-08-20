@@ -150,8 +150,8 @@ body {
     background: var(--gray-200);
     color: var(--gray-800);
 }
-/* 480px 이하 */
-@media (max-width: 480px) {
+/* 768 이하 */
+@media (max-width: 768px) {
     body {
         height: auto;
         min-height: 100dvh;

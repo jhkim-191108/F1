@@ -43,6 +43,7 @@ body {
 .locationVerify {
     color: var(--gray-800);
     text-decoration: none;
+    cursor: pointer;
 }
 
 /* 지금 페이지 메뉴는 주황 */
@@ -50,6 +51,41 @@ body {
 #locationNav.activeNav,
 .mainLogoText.activeNav,
 .locationVerify.activeNav {
+    color: var(--orange-600);
+}
+
+/* 마우스 올리면 */
+#tradeNav:hover,
+#locationNav:hover,
+.mainLogoText:hover,
+.locationVerify:hover {
+    color: var(--orange-600);
+}
+
+#upperChatButton:hover {
+    background-color: var(--orange-600);
+    color: var(--gray-000);
+}
+
+#upperLogoutButton:hover {
+    border-color: var(--gray-400);
+    color: var(--gray-700);
+    background-color: var(--gray-050);
+}
+
+#upperLoginButton:hover {
+    border-color: var(--orange-600);
+    color: var(--orange-600);
+}
+
+#profileButton:hover,
+#searchToggle:hover {
+    background-color: var(--gray-100);
+}
+
+#dropdownMenu a:hover,
+#dropdownMenu button:hover {
+    background-color: var(--gray-050);
     color: var(--orange-600);
 }
 
@@ -77,6 +113,7 @@ body {
     width: 40px;
     height: 40px;
     border: none;
+    border-radius: 50%;
     background: none;
     padding: 0;
     color: var(--gray-800);
@@ -96,6 +133,8 @@ body {
     background-color: var(--gray-000);
     font-size: 1.063rem; color: var(--orange-600);
     font-weight: 400;
+    text-decoration: none;
+    cursor: pointer;
 }
 
 /* 로그인했을 때 로그아웃 */
@@ -130,6 +169,7 @@ body {
     font-weight: 400;
     font-family: inherit;
     cursor: pointer;
+    text-decoration: none;
 }
 
 /* 로그인/로그아웃 묶음. hidden이면 안 보임 */
@@ -178,75 +218,30 @@ body {
 }
 
 /* 반응형 미디어쿼리, 로그인 상태로 전환 후 버튼2개일 때 체크해서 적용 */
-/* 큰 태블릿 */
-@media (max-width: 1024px) {
-    .upperBar {
-        padding: 7px 32px;
-    }
-    #upperBarLeft {
-        gap: 32px;
-    }
-    .upperLeftText {
-        gap: 20px;
-    }
-    #searchTextArea {
-        width: 220px;
-    }
-}
-/* 큰폰 ~ 작은 태블릿 */
+/* 768px 이하 모바일. 돋보기 검색, 프로필 드롭다운 */
 @media (max-width: 768px) {
     .upperBar {
-        padding: 7px 24px;
-    }
-    #upperBarLeft {
-        gap: 20px;
-    }
-    .upperLeftText {
-        gap: 16px;
-    }
-    #searchForm {
-        flex: 1;
-        min-width: 0;
-    }
-    #searchTextArea {
-        width: 100%;
-    }
-    #searchTextArea::placeholder {
-        font-size: 0.75rem;
-    }
-}
-/* 공간이 부족해지는 breakpoint, 2줄로 바뀌도록 수정 */
-@media (max-width: 684px) {
-    .upperBar {
-        height: auto;
         padding: 8px 12px;
-        flex-wrap: wrap;
-        row-gap: 8px;
-    }
-    #upperBarRight {
-        width: 100%;
-        min-width: 0;
-    }
-    #searchForm {
-        flex: 1;
-        min-width: 0;
-    }
-    #searchTextArea {
-        width: 100%;
-    }
-    /* 2줄로 바뀌며 검색창 부분이 늘어나니까 다시 placeholder 글자크기 키움 */
-    #searchTextArea::placeholder {
-        font-size: 0.8rem;
-    }
-
-    .upperBar {
         flex-wrap: nowrap;
         height: 60px;
+    }
+
+    #upperBarLeft {
+        gap: 12px;
+    }
+
+    .upperLeftText {
+        gap: 16px;
     }
 
     #upperBarRight {
         width: auto;
         flex: 0 0 auto;
+    }
+
+    /* 공간은 충분하지만 화면이 작아지니까 글자크기 0.1rem줄임 */
+    #searchTextArea::placeholder {
+        font-size: 0.7rem;
     }
 
     /* 돋보기만 두고, 검색창은 헤더 아래에 펼침 */
@@ -270,34 +265,6 @@ body {
     .searchWrap.is-open #searchTextArea {
         width: 100%;
         box-shadow: 0 4px 12px rgba(17, 17, 17, 0.12);
-    }
-}
-
-/* 일반 모바일 */
-@media (max-width: 480px) {
-    .upperBar {
-        height: auto;
-        padding: 8px 12px;
-        flex-wrap: wrap;
-        row-gap: 8px;
-    }
-    #upperBarLeft {
-        gap: 12px;
-    }
-    #upperBarRight {
-        width: 100%;
-        min-width: 0;
-    }
-    #searchForm {
-        flex: 1;
-        min-width: 0;
-    }
-    #searchTextArea {
-        width: 100%;
-    }
-    /* 공간은 충분하지만 화면이 작아지니까 글자크기 0.1rem줄임 */
-    #searchTextArea::placeholder {
-        font-size: 0.7rem;
     }
 
     /* 채팅/로그아웃은 숨기고 프로필 메뉴에서 씀 */
@@ -338,40 +305,4 @@ body {
         box-sizing: border-box;
     }
 
-    #dropdownMenu a:hover,
-    #dropdownMenu button:hover {
-        background-color: var(--gray-050);
-    }
-
-    .upperBar {
-        flex-wrap: nowrap;
-        height: 60px;
-    }
-
-    #upperBarRight {
-        width: auto;
-        flex: 0 0 auto;
-    }
-
-    #searchToggle {
-        display: inline-flex;
-    }
-
-    #searchForm {
-        display: none;
-    }
-
-    .searchWrap.is-open #searchForm {
-        display: block;
-        position: absolute;
-        left: 12px;
-        right: 12px;
-        top: calc(100% + 8px);
-        z-index: 1100;
-    }
-
-    .searchWrap.is-open #searchTextArea {
-        width: 100%;
-        box-shadow: 0 4px 12px rgba(17, 17, 17, 0.12);
-    }
 }
