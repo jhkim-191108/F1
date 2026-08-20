@@ -2,7 +2,7 @@ body {
     background-color: var(--gray-050);
 }
 
-/* 상단 헤더. 스크롤해도 위에 고정 */
+/* 상단바 크기 정하기 및 sticky로 고정 */
 .upperBar {
     position: sticky;
     top:0;
@@ -16,7 +16,7 @@ body {
     box-sizing: border-box;
 }
 
-/* 왼쪽: 로고 + 중고거래/동네인증 */
+/* 왼쪽 로고 이미지 및 버튼2개 */
 #upperBarLeft {
     display: flex;
     flex-direction: row;
@@ -37,6 +37,7 @@ body {
     font-weight: bold;
 }
 
+/* active에 따라 색상 다르게 표현할 구간 */
 #tradeNav,
 #locationNav,
 .mainLogoText,
@@ -89,7 +90,7 @@ body {
     color: var(--orange-600);
 }
 
-/* 오른쪽: 검색 + 로그인/채팅/로그아웃/프로필 */
+/* 상단바 우측 검색창 로그인상태별 버튼 */
 #upperBarRight{
     display: flex;
     align-items: center;
@@ -172,7 +173,7 @@ body {
     text-decoration: none;
 }
 
-/* 로그인/로그아웃 묶음. hidden이면 안 보임 */
+/* 로그인/로그아웃 상태에 따라 나머지 하나 숨기기 */
 #loginStatusHeader:not([hidden]),
 #logoutStatusHeader:not([hidden]) {
     display: flex;
@@ -180,7 +181,11 @@ body {
     gap: 10px;
 }
 
-/* 프로필. 데스크톱은 마이페이지, 모바일은 드롭다운 */
+/* 프로필 아이콘+하단 드롭다운 */
+.profileDropdown {
+    position: relative;
+}
+
 #profileButton {
     display: inline-flex;
     align-items: center;
@@ -199,10 +204,6 @@ body {
     display: block;
     width: 40px;
     height: 40px;
-}
-
-.profileDropdown {
-    position: relative;
 }
 
 /* 모바일 프로필 메뉴. 기본은 숨김 */
@@ -304,5 +305,4 @@ body {
         cursor: pointer;
         box-sizing: border-box;
     }
-
 }

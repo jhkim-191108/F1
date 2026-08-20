@@ -24,7 +24,7 @@ function authHeaders(extra = {}) {
     return headers;
 }
 
-// 목록에 쓸 상대 시간. 예: 3분 전
+// 목록에 쓸 상대 시간
 function formatTime(dateString) {
     if (!dateString) {
         return "";
@@ -50,7 +50,7 @@ function formatTime(dateString) {
     return `${Math.floor(days / 7)}주전`;
 }
 
-// 말풍선 옆 시각. 예: 오후 3:20
+// 말풍선 옆 시각
 function formatClock(dateString) {
     if (!dateString) {
         return "";
