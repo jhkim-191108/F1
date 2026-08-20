@@ -1,116 +1,137 @@
-const gridEl = document.querySelector("#mainSectionGrid");
-const pageNumsEl = document.querySelector("#pageNums");
-const prevBtn = document.querySelector("#prevPage");
-const nextBtn = document.querySelector("#nextPage");
+// DOM요소 연결
+const mainSectionGrid = document.querySelector("#mainSectionGrid");
+const pageNums = document.querySelector("#pageNums");
+const prevPage = document.querySelector("#prevPage");
+const nextPage = document.querySelector("#nextPage");
 const searchInput = document.querySelector("#searchTextArea");
 
-const params = new URLSearchParams(window.location.search);
-const keyword = (params.get("search") || "").trim();
+// 주소에서 검색어 가져오기
+const params = new URLSearchParams(location.search);
+const keyword = params.get("keyword") || "";
 
 let currentPage = 1;
-let hasNext = false;
-
+let totalPages = 1;
+// 검색 결과가 페이지로 넘어가도 헤더 검색창에 기존 검색어가 남아있게 처리
 if (searchInput) {
     searchInput.value = keyword;
 }
-
-function formatPrice(price) {
-    return `${Number(price).toLocaleString("ko-KR")}원`;
-}
-
-function createCard(product) {
-    const article = document.createElement("article");
-    article.className = "mainGridCardBox";
-
-    const thumb = product.thumbnail?.startsWith("http")
-        ? `<img src="${product.thumbnail}" alt="${product.title}">`
-        : "";
-
-    article.innerHTML = `
-        <a href="./trade-post.html?id=${product.id}">
-            ${thumb}
-            <div class="productInfo">
-                <h3 class="productName">${product.title}</h3>
-                <p class="productPrice">${formatPrice(product.price)}</p>
-                <p class="productAddress">${product.location || ""}</p>
-            </div>
-            <div class="productMeta">
-                <span class="meta">조회 ${product.viewCount ?? 0}</span>
-                <span class="meta">•</span>
-                <span class="meta">채팅 ${product.chatCount ?? 0}</span>
-            </div>
-        </a>
-    `;
-
-    return article;
-}
-
-async function loadSearchResults() {
-    try {
-        const query = new URLSearchParams({
-            page: String(currentPage),
-        });
-
-        if (keyword) {
-            query.set("q", keyword);
+// 검색어를 받아서 상품을 요청하는 함수만들기
+async function getProducts(keyword, page = 1) {
+    try{
+        // 1. 로그인 토큰 가져오기
+        const token = localStorage.getItem("token");
+        // 헤더를 담을 빈 상자를 만들어 줌
+        const headers = {};
+        // 토큰이 있을때만 인증 헤더를 넣음
+        if (token !== null) {
+            headers.Authorization = `Bearer ${token}`;
         }
-
-        const response = await fetch(`/api/products?${query.toString()}`);
-        const data = await response.json();
-
-        if (!response.ok) {
-            alert(data.message || "검색 결과를 불러오지 못했습니다.");
-            return;
+        // fetch() 에서는 위로 headers를 넘겨준다
+        const response = await fetch(`/api/products?q=${encodeURIComponent(keyword)}&page=${page}`, {
+            headers: headers
         }
+    );
+        // 에러 확인
+        if(!response.ok) throw new Error(response.status);
+    // j.som형식으로 데이터 받기
+    const data = await response.json();
+    console.log(data);
 
-        const items = (data.items || []).filter((product) => {
-            if (!keyword) {
-                return true;
-            }
+    renderProducts(data.items);
 
-            const haystack = `${product.title || ""} ${product.location || ""}`.toLowerCase();
-            return haystack.includes(keyword.toLowerCase());
-        });
+    // 현재 페이지 표시
+    currentPage = data.page;
+    totalPages = data.totalPages;
 
-        gridEl.replaceChildren();
+    pageNums.textContent = `${currentPage} / ${totalPages}`;
 
-        if (items.length === 0) {
-            const empty = document.createElement("p");
-            empty.textContent = "검색 결과가 없습니다.";
-            gridEl.append(empty);
-        } else {
-            items.forEach((product) => {
-                gridEl.append(createCard(product));
-            });
-        }
+    prevPage.disabled = currentPage <= 1;
+    nextPage.disabled = currentPage >= totalPages;
 
-        hasNext = Boolean(data.hasNext);
-        if (pageNumsEl) {
-            pageNumsEl.textContent = `${currentPage} / ${hasNext ? currentPage + 1 : currentPage}`;
-        }
     } catch (error) {
-        console.error(error);
+        console.error("실패", error.message);
     }
 }
 
-if (prevBtn) {
-    prevBtn.addEventListener("click", async () => {
-        if (currentPage <= 1) {
-            return;
-        }
-        currentPage -= 1;
-        await loadSearchResults();
+function renderProducts(products) {
+    // HTML에 만들어둔 예시 상품카드 제거
+    const oldCard = mainSectionGrid.querySelectorAll(".mainGridCardBox");
+
+    oldCard.forEach(function (card) {
+        card.remove();
+    });
+
+    // "검색 결과가 없습니다."가 생성된 뒤 다시 상품이 생겼을 때 이전 안내문이 남는 걸 방지.
+    const oldEmpty = mainSectionGrid.querySelector(".emptyMessage");
+
+    if (oldEmpty) {
+        oldEmpty.remove();
+    }
+
+    // 검색결과없음 표시
+    if (products.length === 0) {
+        const empty = document.createElement("p");
+        empty.classList.add("emptyMessage");
+        empty.textContent = "검색 결과가 없습니다.";
+        mainSectionGrid.append(empty);
+        return;
+    }
+
+    // API에서 받은 상품들을 하나씩 반복
+    // 받은 상품들(Products)에서 상품(product)을 하나 꺼내서 product라고 부름
+    products.forEach(function (product) {
+        // article을 하나 만들고 그 article을 card에 저장
+        const card = document.createElement("article");
+        // 위에 선언한 card에 클래스추가
+        card.classList.add("mainGridCardBox");
+
+        // article안에 들어갈 속성들 innerHTML로 추가
+        card.innerHTML = `
+            <img src="${product.thumbnail}" alt="${product.title}" class="productImg">
+            <div class="productInfo">
+                <h3 class="productName">${product.title}</h3>
+                <p class="productPrice">${product.price.toLocaleString()}원</p>
+                <p class="productAddress">${product.location}</p>
+            </div>
+            <div class="productMeta">
+                <span class="meta">조회 ${product.viewCount}</span>
+                <span class="meta">•</span>
+                <span class="meta">채팅 ${product.chatCount}</span>
+            </div>
+    `;
+    // 상품 클릭처리
+    card.addEventListener("click", function () {
+        console.log("카드 클릭됨", product.id);
+        location.href = `./trade-post.html?id=${product.id}`;
+    });
+    // HTML 내 mainSectionGrid에 append(추가)
+    mainSectionGrid.append(card);
     });
 }
 
-if (nextBtn) {
-    nextBtn.addEventListener("click", async () => {
-        if (!hasNext) {
-            return;
-        }
-        currentPage += 1;
-        await loadSearchResults();
-    });
-}
+// 나중에server.js로 옮겨서 넣을것
+// app.get("/api/products", (req, res) => {
+//     // 검색창에서 요청받은 query string까지 같이 전달하게 만들기(keyword=아이폰 부분까지)
+//     proxyToApi(req, res, req.originalUrl);
+// });
 
-loadSearchResults();
+// 1에서 가져온 keyword를 2번 함수에 전달
+
+// 페이지 넘기기 이벤트처리
+prevPage.addEventListener("click", function () {
+    if (currentPage <= 1) {
+        return;
+    }
+
+    getProducts(keyword, currentPage - 1);
+});
+
+nextPage.addEventListener("click", function () {
+    if (currentPage >= totalPages) {
+        return;
+    }
+
+    getProducts(keyword, currentPage + 1);
+});
+
+getProducts(keyword, currentPage);

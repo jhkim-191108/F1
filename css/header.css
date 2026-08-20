@@ -1,7 +1,7 @@
 body {
     background-color: var(--gray-050);
 }
-
+/* 상단바 크기 정하기 및 sticky로 고정 */
 .upperBar {
     position: sticky;
     top:0;
@@ -14,7 +14,7 @@ body {
     background-color: var(--gray-000);
     box-sizing: border-box;
 }
-
+/* 왼쪽 로고 이미지 및 버튼2개 */
 #upperBarLeft {
     display: flex;
     flex-direction: row;
@@ -34,7 +34,7 @@ body {
     font-size: 1.188rem;
     font-weight: bold;
 }
-
+/* active에 따라 색상 다르게 표현할 구간 */
 #tradeNav,
 #locationNav {
     color: var(--gray-800);
@@ -44,7 +44,7 @@ body {
 #locationNav.activeNav {
     color: var(--orange-600);
 }
-
+/* 상단바 우측 검색창 로그인상태별 버튼 */
 #upperBarRight{
     display: flex;
     align-items: center;
@@ -105,14 +105,14 @@ body {
     font-family: inherit;
     cursor: pointer;
 }
-
+/* 로그인/로그아웃 상태에 따라 나머지 하나 숨기기 */
 #loginStatusHeader:not([hidden]),
 #logoutStatusHeader:not([hidden]) {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
+/* 프로필 아이콘+하단 드롭다운 */
 .profileDropdown {
     position: relative;
 }
