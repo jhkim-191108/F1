@@ -1,0 +1,127 @@
+/* 글쓰기/수정 폼 */
+.write {
+  background-color: var(--gray-000);
+  color: var(--gray-900);
+  border: 1px solid var(--gary-100);
+  border-radius: 10px;
+  overflow: hidden;
+  padding: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  margin-top: 98px;
+  font-size: 1rem;
+  font-weight: 400;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+}
+
+.write-box-1 {
+  width: 100%;
+  display: flex;
+  gap: 40px;
+}
+
+/* 사진 등록. 카메라 아이콘 누르면 파일 선택 */
+.write-box-1 .img-box {
+  width: 210px;
+  height: 210px;
+  border: 1px solid var(--gray-300);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.preview {
+  width: 0%;
+}
+
+.icon-camera {
+  width: 40px;
+  height: 40px;
+}
+
+.write-info {
+  width: 320px;
+  max-width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.write-box-2 {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.input-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+input,
+textarea {
+  width: 100%;
+  background-color: var(--gray-050);
+  border: none;
+  border-radius: 10px;
+  padding: 14px 18px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 220px;
+  font-size: inherit;
+  font-weight: inherit;
+  font-family: inherit;
+}
+
+/* 완료. 새 글 등록 또는 수정 저장 */
+.btn-done {
+  width: 100%;
+  background-color: var(--orange-600);
+  border: 1px solid var(--gary-100);
+  padding: 8px 0;
+  color: var(--gray-000);
+  border-radius: 6px;
+  font-size: 1.063rem;
+  font-weight: 700;
+}
+
+/* ========== 모바일 ========== */
+@media (max-width: 768px) {
+  .write {
+    margin-top: 0;
+    padding: 20px;
+    font-size: 0.875rem;
+    gap: 24px;
+  }
+
+  .write-box-1 {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .write-box-1 .img-box {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    max-width: 210px;
+  }
+
+  .write-info {
+    width: 100%;
+  }
+}
