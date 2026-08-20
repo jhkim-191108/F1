@@ -36,8 +36,53 @@
         },
         {
             "src": "/",
-            "dest": "/html/index.html"
+            "dest": "/html/onboarding.html"
         },
+        {
+            "src": "/login",
+            "dest": "/html/login.html"
+        },
+
+        {
+            "src": "/register",
+            "dest": "/html/register.html"
+        },
+
+        {
+            "src": "/chat",
+            "dest": "/html/chat.html"
+        },
+
+        {
+            "src": "/location",
+            "dest": "/html/location.html"
+        },
+
+        {
+            "src": "/mypage",
+            "dest": "/html/mypage.html"
+        },
+
+        {
+            "src": "/search",
+            "dest": "/html/search.html"
+        },
+
+        {
+            "src": "/trade-post",
+            "dest": "/html/trade-post.html"
+        },
+
+        {
+            "src": "/trade",
+            "dest": "/html/trade.html"
+        },
+
+        {
+            "src": "/write",
+            "dest": "/html/write.html"
+        },
+
         {
             "src": "/(.*)",
             "dest" : "server.js"
