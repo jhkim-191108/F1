@@ -20,10 +20,23 @@
         {
             "src": "images/**",
             "use": "@vercel/static"
+        }
+    ],
+    "redirects": [
+        {
+            "source": "/",
+            "destination": "/html/onboarding.html",
+            "permanent": false
         },
         {
-            "src": "server.js",
-            "use": "@vercel/node"
+            "source": "/html",
+            "destination": "/html/onboarding.html",
+            "permanent": false
+        },
+        {
+            "source": "/html/",
+            "destination": "/html/onboarding.html",
+            "permanent": false
         }
     ],
     "routes" : [
@@ -33,10 +46,6 @@
         },
         {
             "handle": "filesystem"
-        },
-        {
-            "src": "/",
-            "dest": "/html/onboarding.html"
         },
         {
             "src": "/login",

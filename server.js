@@ -43,9 +43,10 @@ app.use("/css", express.static("css"));
 app.use("/js", express.static("js"));
 app.use("/images", express.static("images"));
 
-app.get("/", (req,res) => {
-  res.redirect("html/index.html");
-})
+// 주소창에 / 만 치면 온보딩으로
+app.get("/", (req, res) => {
+  res.redirect("/html/onboarding.html");
+});
 
 // 프론트 요청을 당근 API로 전달. API_KEY + 로그인 토큰 포함
 async function proxyToApi(req, res, path) {
