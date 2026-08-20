@@ -109,3 +109,11 @@
     font-size: 1rem;
     color: var(--gray-600);
 }
+
+/* 페이지가 1페이지 뿐일 때 버튼 비활성화 된 것처럼 표시 */
+#pageList button:disabled {
+    color: var(--gray-300);
+    cursor: default;
+    transform: none;
+    opacity: 0.5;
+}
