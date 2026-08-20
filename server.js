@@ -158,6 +158,11 @@ app.post("/api/products", (req, res) => {
   proxyToApi(req, res, "/api/products");
 });
 
+// 오늘 남은 API·이미지 횟수. 브라우저에서 /api/usage 로 확인
+app.get("/api/usage", (req, res) => {
+  proxyToApi(req, res, "/api/usage");
+});
+
 // 서버 시작
 if(require.main === module) {
   app.listen(PORT, () => {

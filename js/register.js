@@ -45,7 +45,7 @@ async function signupUser(userData) {
             return;
         }
 
-        localStorage.setItem("token", data.token);
+        // 가입만 하고 토큰은 저장하지 않음. 로그인 페이지에서 직접 로그인
         alert("회원가입이 완료되었습니다.");
         location.href = "./login.html";
     } catch (error) {
