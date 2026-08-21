@@ -257,36 +257,36 @@ async function fetchChatList() {
         lastMessage: room.lastMessage ? room.lastMessage.content : "",
         thumbnail: room.product.thumbnail,
         unreadCount: room.unreadCount || 0,
+        room,
     }));
 
     renderChatList();
 }
 
-// 방 상세 + 메시지를 같이 불러와서 대화 화면 채움
+// 방 헤더는 목록 응답을 재사용하고, 메시지 API만 추가로 호출
 async function openChatRoom(roomId) {
     currentRoomId = roomId;
 
-    const [roomResponse, messagesResponse] = await Promise.all([
-        fetch(`/api/chats/${roomId}`, {
-            headers: authHeaders(),
-        }),
-        fetch(`/api/chats/${roomId}/messages`, {
-            headers: authHeaders(),
-        }),
-    ]);
+    const cached = allChatList.find((chat) => Number(chat.id) === Number(roomId));
+    if (cached?.room) {
+        renderRoomHeader(cached.room);
+    }
 
-    if (!roomResponse.ok) {
-        const data = await roomResponse.json();
+    const messagesResponse = await fetch(`/api/chats/${roomId}/messages`, {
+        headers: authHeaders(),
+    });
+
+    if (!messagesResponse.ok) {
+        const data = await messagesResponse.json();
         alert(data.message || "채팅방을 불러오지 못했습니다.");
         return;
     }
 
-    const roomData = await roomResponse.json();
-    renderRoomHeader(roomData.room);
+    const messageData = await messagesResponse.json();
+    renderMessages(messageData.items);
 
-    if (messagesResponse.ok) {
-        const messageData = await messagesResponse.json();
-        renderMessages(messageData.items);
+    if (cached) {
+        cached.unreadCount = 0;
     }
 
     document.querySelectorAll(".chat-room-item").forEach((item) => {
@@ -295,8 +295,7 @@ async function openChatRoom(roomId) {
 
     // 모바일에서 대화 화면 열기
     document.querySelector(".chat-content").classList.add("is-room-open");
-
-    await fetchChatList();
+    renderChatList();
 }
 
 // 채팅방 화면 비우기
@@ -342,7 +341,8 @@ async function leaveChatRoom() {
     clearRoomView();
     // 모바일에서 목록으로
     document.querySelector(".chat-content").classList.remove("is-room-open");
-    await fetchChatList();
+    allChatList = allChatList.filter((chat) => Number(chat.id) !== Number(roomId));
+    renderChatList();
 }
 
 // 메시지 보내기
@@ -371,7 +371,14 @@ async function sendMessage(content) {
     const grouped = Boolean(last) && last.classList.contains("chat-message-sent");
     chatMessageAreaEl.append(createMessageEl(data.message, grouped));
     chatMessageAreaEl.scrollTop = chatMessageAreaEl.scrollHeight;
-    await fetchChatList();
+
+    const cached = allChatList.find((chat) => Number(chat.id) === Number(currentRoomId));
+    if (cached) {
+        cached.lastMessage = data.message.content;
+        cached.time = formatTime(data.message.createdAt);
+        cached.unreadCount = 0;
+        renderChatList();
+    }
 }
 
 // 메시지 전송

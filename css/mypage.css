@@ -16,11 +16,13 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 24px 16px;
     background-color: var(--gray-100);
 }
 
 .mypage-card {
-    width: 360px;
+    width: 100%;
+    max-width: 360px;
 }
 
 .mypage-title {

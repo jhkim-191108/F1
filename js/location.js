@@ -163,6 +163,7 @@ function isSameArea(current, selected) {
         return current.dong === selected.dong;
     }
     return true; // 검색 결과에 동 정보가 없으면 구까지만 맞아도 통과
+
 }
 
 // ---------- 검색 결과 목록 렌더링 ----------

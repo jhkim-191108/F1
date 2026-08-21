@@ -187,6 +187,23 @@ main {
   background-color: transparent;
 }
 
+/* ========== 태블릿 ========== */
+@media (max-width: 1024px) {
+  .post {
+    padding: 24px;
+  }
+
+  .post-box-2 .post-title {
+    white-space: normal;
+    word-break: keep-all;
+    text-align: left;
+  }
+
+  .btn-chat {
+    padding: 10px 24px;
+  }
+}
+
 /* ========== 모바일 ========== */
 @media (max-width: 768px) {
   main {

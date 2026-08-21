@@ -358,6 +358,17 @@
     }
 
     /* 동네소개 섹션들 */
+    .town-market,
+    .town-shop,
+    .town-life {
+        gap: 40px;
+        padding: 80px 32px;
+    }
+
+    .town-text h2, .town-text2 h2, .town-text3 h2 {
+        font-size: 2rem;
+    }
+
     .town-img img,
     .town-img2 img,
     .town-img3 img { margin: 0 auto;}

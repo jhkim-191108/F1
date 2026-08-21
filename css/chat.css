@@ -16,7 +16,7 @@ body {
 
 .chat-content {
     background-color: var(--gray-000);
-    width: 80%;
+    width: min(80%, 1200px);
     height: 100%;
     display: flex;
     overflow: hidden;
@@ -31,7 +31,8 @@ body {
 /* 왼쪽: 채팅 목록. 안읽음 필터 + 방 리스트 */
 .chat-list-container {
     width: 34%;
-    min-width: 280px;
+    min-width: 0;
+    flex: 0 0 34%;
     display: flex;
     flex-direction: column;
     border-right: 1px solid var(--gray-200);
@@ -205,8 +206,12 @@ body {
 .chat-room-item-thumb,
 .chat-product-thumb {
     background-color: var(--gray-200);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: 6px;
     flex-shrink: 0;
+    overflow: hidden;
 }
 
 .chat-room-item-thumb {
@@ -597,8 +602,8 @@ body {
     width: 20px;
     height: 20px;
 }
-/* 768px. 목록과 대화를 한 화면씩 보여줌 */
-@media (max-width: 768px) {
+/* 1024px부터 목록/대화를 한 화면씩. 브라우저를 줄여도 한쪽이 안 찌그러짐 */
+@media (max-width: 1024px) {
     body {
         height: 100dvh;
     }
@@ -615,6 +620,7 @@ body {
 
     .chat-list-container {
         width: 100%;
+        flex: 1 1 auto;
         min-width: 0;
         border-right: none;
     }
